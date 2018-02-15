@@ -1,0 +1,51 @@
+{
+  "name": "T-Shirt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "NODE_ENV=production webpack",
+    "dev": "webpack-dev-server --hot --inline"
+  },
+  "dependencies": {
+    "abi-decoder": "^1.0.9",
+    "axios": "^0.16.2",
+    "bignumber.js": "^4.0.4",
+    "eth-sig-util": "^1.4.2",
+    "ethereumjs-tx": "^1.3.3",
+    "file-loader": "^1.1.6",
+    "jquery": "^3.2.1",
+    "prop-types": "^15.5.10",
+    "react": "^16.0.0",
+    "react-bootstrap": "^0.31.5",
+    "react-dom": "^16.0.0",
+    "react-modal": "^3.1.10",
+    "react-number-format": "^3.1.3",
+    "react-places-autocomplete": "^6.0.2",
+    "react-router-dom": "^4.2.2",
+    "react-share": "^2.0.0",
+    "url-loader": "^0.6.2",
+    "web3": "0.20.1",
+    "web3-provider-engine": "^13.6.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-react-statements": "^0.7.3",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "css-loader": "^0.28.7",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.5.6",
+    "webpack-dev-server": "^2.7.1"
+  }
+}
