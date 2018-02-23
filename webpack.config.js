@@ -52,7 +52,7 @@ module.exports = {
                 loader: 'url-loader'
             },
             {
-                test: /\.(?:png|jpg|jpeg|JPEG|svg)$/,
+                test: /\.(?:png|jpg|jpeg|JPEG|gif|svg)$/,
                 loader: 'file-loader',
                 query: {
                     // Inline images smaller than 10kb as data URIs        limit: 10000

@@ -1,0 +1,256 @@
+
+a:active,a:focus {
+	outline: expression(hideFocus='true');
+}
+
+
+
+#tabs {
+	width: 100%;
+	margin: 0 auto;
+	margin-top: 64px;
+}
+#tabs ul{
+    width: 462px;
+    margin-right: 75px;
+    display: inline-block;
+    vertical-align: top;
+}
+#tabs li {margin-bottom: 48px;margin-left: -19px;}
+#tabs li:first-child {margin-bottom: 20px;margin-top: 20px;}
+#tabs li > p {font-family: Museo Sans Cyrl;font-style: normal;font-weight: bold;line-height: 48px;font-size: 22px;letter-spacing: -0.5px;color: #33404D;padding-left: 19px;}
+
+#tabs li a {
+	display: block;
+	text-decoration: none;
+	background: #ffffff;
+	border-radius: 16px;
+	font-family: Soleil;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 28px;
+	font-size: 16px;
+	color: #035674;
+	padding: 25px 30px 25px 10px;
+	/* overflow: hidden; */
+	position:relative;
+	box-shadow: 0px 2px 8px rgba(32, 118, 157, 0.1);
+}
+
+#tabs li a:after {
+	content:"";
+	background: url(../images/lending/tabs.png) no-repeat;
+	position: absolute;
+	width: 12px;
+	height: 24px;
+	right: -12px;
+	top: 41%;
+}
+
+
+#tabs li a span {width: 64px;height: 64px;background: rgba(96, 198, 236, 0.05);display: inline-block;font-family: Soleil;font-style: normal;font-weight: 800;font-size: 32px;text-align: center;text-transform: uppercase;color: rgba(51, 64, 77, 0.2);border-radius: 50%;line-height: 60px;margin-right: 7px;vertical-align: top;}
+
+#tabs li a small {
+	width: 365px;
+	display: inline-block;
+	vertical-align: top;
+	padding-top: 7px;
+}
+
+
+#tabs li a:hover {
+}
+
+#tabs_container {
+	overflow: hidden;
+	position: relative;
+	background: url(../images/lending/bg_tabs.png) no-repeat;
+	width: 448px;
+	height: 868px!important;
+	padding: 0 50px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#tabs_container > div {
+	top: 70px;
+	width: 364px;
+	left:  0;
+	right: 0;
+	margin: auto;
+	overflow: hidden;
+	height: 100%;
+}
+
+.transition {
+	-webkit-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	-o-transition: all .3s ease-in-out;
+	-ms-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out;
+
+	-webkit-transition-delay: .3s;
+	-moz-transition-delay: .3s;
+	-o-transition-delay: .3s;
+	-ms-transition-delay: .3s;
+	transition-delay: .3s;
+}
+
+.make_transist {
+	-webkit-transition: all .3s ease-in-out;
+	-moz-transition: all .3s ease-in-out;
+	-o-transition: all .3s ease-in-out;
+	-ms-transition: all .3s ease-in-out;
+	transition: all .3s ease-in-out;
+}
+
+.hidescale {
+	-webkit-transform: scale(0.9);
+	-moz-transform: scale(0.9);
+	-o-transform: scale(0.9);
+	-ms-transform: scale(0.9);
+	transform: scale(0.9);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	filter: alpha(opacity=0);
+	opacity: 0;
+}
+
+.showscale {
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-o-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+	-webkit-transition-delay: .3s;
+	-moz-transition-delay: .3s;
+	-o-transition-delay: .3s;
+	-ms-transition-delay: .3s;
+	transition-delay: .3s;
+	z-index: 9;
+}
+
+.hideleft {
+	-webkit-transform: translateX(-100%);
+	-moz-transform: translateX(-100%);
+	-o-transform: translateX(-100%);
+	-ms-transform: translateX(-100%);
+	transform: translateX(-100%);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	opacity: 0;
+}
+
+.showleft {
+	-webkit-transform: translateX(0px);
+	-moz-transform: translateX(0px);
+	-o-transform: translateX(0px);
+	-ms-transform: translateX(0px);
+	transform: translateX(0px);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+
+	-webkit-transition-delay: .3s;
+	-moz-transition-delay: .3s;
+	-o-transition-delay: .3s;
+	-ms-transition-delay: .3s;
+	transition-delay: .3s;
+}
+
+.hidescaleup {
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	transform: scale(1.1);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	opacity: 0;
+}
+
+.showscaleup {
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-o-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+
+	-webkit-transition-delay: .3s;
+	-moz-transition-delay: .3s;
+	-o-transition-delay: .3s;
+	-ms-transition-delay: .3s;
+	transition-delay: .3s;
+}
+
+.hideflip {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: alpha(opacity=0);
+	opacity: 0;
+
+	-webkit-transform: rotatey(-90deg) scale(1.1);
+	-moz-transform: rotatey(-90deg) scale(1.1);
+	-o-transform: rotatey(-90deg) scale(1.1);
+	-ms-transform: rotatey(-90deg) scale(1.1);
+	transform: rotatey(-90deg) scale(1.1);
+
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+.showflip {
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: alpha(opacity=100);
+	opacity: 1;
+
+	-webkit-transition-delay: .3s;
+	-moz-transition-delay: .3s;
+	-o-transition-delay: .3s;
+	-ms-transition-delay: .3s;
+	transition-delay: .3s;
+
+	-webkit-transform: rotatey(0deg) scale(1);
+	-moz-transform: rotatey(0deg) scale(1);
+	-o-transform: rotatey(0deg) scale(1);
+	-ms-transform: rotatey(0deg) scale(1);
+	transform: rotatey(0deg) scale(1);
+
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	-o-transform-origin: 50% 50%;
+	-ms-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+.tabulous_active {
+	color: #FAFBFC!important;
+	background-image: linear-gradient(283deg, #6fcaec, #00aae9)!important;
+	box-shadow: 0 18px 32px 0 rgba(32, 118, 157, 0.3)!important;
+}
+
+#tabs li a.tabulous_active span {color: #FAFBFC;background: rgba(255, 255, 255, 0.16);}
+
+#tabs li a.tabulous_active:after {
+	content:"";
+	background: url(../images/lending/tabs_h.png) no-repeat;
+	position: absolute;
+	width: 12px;
+	height: 24px;
+	right: -11px;
+	top: 41%;
+}
+
+
+.tabulousclear {
+	display: block;
+	clear: both;
+}

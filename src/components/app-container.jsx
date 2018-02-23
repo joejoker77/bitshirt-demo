@@ -5,6 +5,7 @@ import App from './app';
 import AppPersonal from './app-personal';
 import Header from './header';
 import Disconnected from './disconnected';
+import Home from './home';
 
 export class AppContainer extends Component {
     constructor(props) {
@@ -71,7 +72,8 @@ export class AppContainer extends Component {
             return(
                 <Router>
                     <Switch>
-                        <Route exact path='/' component={App}/>
+                        <Route exact path='/' component={Home} />
+                        <Route exact path='/app' component={App}/>
                         <Route exact path='/t-shirt/:number' component={AppPersonal}/>
                     </Switch>
                 </Router>
