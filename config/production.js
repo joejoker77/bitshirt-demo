@@ -1,4 +1,4 @@
 const productionConfig = {
-  apiEndpoint: 'http://bitshirt.co/api'
+  apiEndpoint: 'http://charity.loc/api'
 }
 module.exports = productionConfig;

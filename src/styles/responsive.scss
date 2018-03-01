@@ -1,871 +1,904 @@
- @media (max-width: 1024px) {
-     body {
-         min-width: 0;
+@media (max-width: 1024px) {
+  body {
+    min-width: 0;
+  }
+  .container {
+    padding: 0 10px;
+  }
+  #faq {
+    z-index: 9;
+    position: relative;
+    max-width: 98%;
+    margin: -380px auto 30px;
+    padding: 40px 5px 40px;
+  }
+  .drawer {
+    width: 49%;
+    margin-bottom: 10px;
+    margin-right: 1%;
+  }
+  #stock {
+    max-width: 98%;
+  }
+  img {
+    max-width: 100%;
+    height: initial;
+  }
+  .header_container h1 {
+    line-height: 35px;
+    font-size: 35px;
+  }
+  #header {
+    height: 555px;
+    overflow: hidden;
+  }
+  .header_container {
+    padding-top: 95px;
+    position: relative;
+    z-index: 2;
+  }
+  .header_img {
+    position: absolute;
+    right: -75px;
+    bottom: -4px;
+    width: 53vw;
+    z-index: 0;
+    max-width: 550px;
+  }
+  .logo_container {
+    padding-top: 35px;
+  }
+  .menu_container {
+    padding-top: 30px;
+  }
+  .proof_video {
+    position: absolute;
+    width: 350px;
+    height: initial;
+    right: 0;
+    top: 10px;
+    overflow: hidden;
+  }
+  h2 {
+    line-height: 35px;
+    font-size: 35px;
+  }
+  .f-nav .top_container {
+    height: 55px;
+  }
+  .f-nav .logo_container {
+    padding-top: 11px;
+  }
+  .f-nav .menu_container {
+    padding-top: 5px;
+  }
+  .header_bottom {
+    height: 90px;
+    border-radius: 15px;
+    width: 98%;
+    padding: 15px 15px;
+    margin: 25px auto 0;
+    overflow: hidden;
+    max-width: 750px;
+  }
+  .header_bottom p {
+    width: 275px;
+    line-height: 19px;
+    font-size: 13px;
+    padding-top: 12px;
+  }
+  .header_bottom p:last-child {
+    width: 210px;
+  }
+  .header_bottom p:first-child {
+    width: 215px;
+  }
+  .header_bottom img {
+    padding-right: 12px;
+    margin-top: -3px;
+    width: 55px;
+  }
+  .coll_2 {
+    width: 48%;
+  }
+  .coll_2:first-child {
+    margin-right: 2%;
+  }
+  #tabs {
+    margin-top: 30px;
+  }
+  #tabs li {
+    margin-left: 0px;
+  }
+  #tabs ul {
+    width: 45%;
+    margin-right: 25px;
+  }
+  #tabs li a span {
+    width: 50px;
+    height: 50px;
+    line-height: 45px;
+  }
+  #tabs li a small {
+    padding-top: 0;
+    width: 80%;
+  }
+  #tabs li {
+    margin-bottom: 30px;
+  }
+  #tabs_container {
+    width: 51%;
+    background-size: contain;
+    padding: 0 35px;
+  }
+  #tabs_container > div {
+    width: 100%;
+    position: relative !important;
+  }
+  #tabs_container video {
+    max-width: 100%;
+  }
+  .stock_img {
+    position: relative;
+    top: 0;
+    z-index: 1;
+    width: 586px;
+    margin: auto;
+    left: -30px;
+  }
+  .stock_img_t {
+    width: 650px;
+    max-width: 650px;
+  }
+  #stock {
+    max-width: 98%;
+    padding: 50px 20px;
+    height: initial;
+  }
+  .stock_img_c {
+    top: auto;
+    height: 341px;
+    bottom: 42px;
+    background-size: 600px 314px;
+  }
+  .as-graph{
+    &.progress{
+      bottom: 199px;
+      left: -35px;
     }
-     .container {
-         padding: 0 10px;
-    }
-     #faq {
-         z-index: 9;
-         position: relative;
-         max-width: 98%;
-         margin: -380px auto 30px;
-         padding: 40px 5px 40px;
-    }
-     .drawer {
-         width: 49%;
-         margin-bottom: 10px;
-         margin-right: 1%;
-    }
-     #stock {
-         max-width: 98%;
-    }
-     img {
-         max-width: 100%;
-         height:initial;
-    }
-     .header_container h1 {
-         line-height: 35px;
-         font-size: 35px;
-    }
-     header {
-         height: 555px;
-         overflow: hidden;
-    }
-     .header_container {
-         padding-top: 95px;
-         position: relative;
-         z-index: 2;
-    }
-     .header_img {
-         position: absolute;
-         right: -75px;
-         bottom: -4px;
-         width: 53vw;
-         z-index: 0;
-         max-width: 550px;
-    }
-     .logo_container {
-         padding-top: 35px;
-    }
-     .menu_container {
-         padding-top: 30px;
-    }
-     .proof_video {
-         position: absolute;
-         width: 350px;
-         height: initial;
-         right: 0;
-         top: 10px;
-         overflow: hidden;
-    }
-     h2 {
-         line-height: 35px;
-         font-size: 35px;
-    }
-     .f-nav .top_container {
-         height: 55px;
-    }
-     .f-nav .logo_container {
-         padding-top: 11px;
-    }
-     .f-nav .menu_container {
-         padding-top: 5px;
-    }
-     .header_bottom {
-         height: 90px;
-         border-radius: 15px;
-         width: 98%;
-         padding: 15px 15px;
-         margin: auto;
-         margin-top: -15px;
-         overflow: hidden;
-         max-width: 750px;
-    }
-     .header_bottom p {
-         width: 275px;
-         line-height: 19px;
-         font-size: 13px;
-         padding-top: 12px;
-    }
-     .header_bottom p:last-child {
-         width: 210px;
-    }
-     .header_bottom p:first-child {
-         width: 215px;
-    }
-     .header_bottom img {
-         padding-right: 12px;
-         margin-top: -3px;
-         width: 55px;
-    }
-     .coll_2 {
-         width: 48%;
-    }
-     .coll_2:first-child {
-         margin-right: 2%;
-    }
-     #tabs {
-         margin-top: 30px;
-    }
-     #tabs li {
-         margin-left: 0px;
-    }
-     #tabs ul {
-         width: 45%;
-         margin-right: 25px;
-    }
-     #tabs li a span {
-         width: 50px;
-         height: 50px;
-         line-height: 45px;
-    }
-     #tabs li a small {
-         padding-top: 0;
-         width: 80%;
-    }
-     #tabs li {
-         margin-bottom: 30px;
-    }
-     #tabs_container {
-         width: 51%;
-         background-size: contain;
-         padding: 0 35px;
-    }
-     #tabs_container > div {
-         width: 100%;
-         position: relative!important;
-    }
-     #tabs_container video {
-         max-width: 100%;
-    }
-     .stock_img {
-         position: relative;
-         top: 0;
-         z-index: 1;
-         width: 586px;
-         margin: auto;
-         left: -30px;
-    }
-     .stock_img_t{
-        width: 650px;
-        max-width: 650px;
-    }
-     #stock {
-         max-width: 98%;
-         padding: 50px 20px;
-         height: initial;
-    }
-     .stock_img_c {
-         top: 100px;
-         height: 341px;
-         background-size: contain;
-        /* width: 319px;
-         */
-         left: 0;
-         background-size: 600px 314px;
-    }
-     .stock_img_b {
-         position: absolute;
-         top: 380px!important;
-         z-index: 9;
-        /* left: 302px!important;
-         */
-    }
-     .graph_start .stock_img_b {
-        top: 231px!important;
-    }
-     .stock_graph {
-         left: 239px;
-         top: initial;
-         bottom: 140px;
-    }
-     .stock_container {
-         width: 100%;
-    }
-     #proof {
-         padding: 20px 0 0;
-    }
-     .proof_adv {
-         margin-top: 55px;
-    }
-     .proof_adv_block {
-         width: 32%;
-         margin-right: 1%;
-         margin-bottom: 20px;
-    }
-     .proof_adv_block p {
-         line-height: 20px;
-         font-size: 14px;
-         margin-bottom: 10px;
-    }
-     .proof_adv_block span {
-         line-height: 24px;
-         font-size: 15px;
-    }
-     .proof_adv_img {
-         margin-bottom: 5px;
-    }
-     #chance ul li:before {
-         left: 0;
-    }
-     #chance ul li {
-         padding-left: 20px;
-    }
-     .copy {
-         margin-right: 30vw;
-    }
-     #time {
-         padding: 30px 0;
-    }
-     #tabs_container video {
-         display: none;
-    }
-     #tabs_container .showscale video {
-         display: block;
-    }
-     h3 span:after, h2 span:after{
-        display:none;
-    }
-     .btn_container {
-         padding-top: 20px;
-         margin-right: 0;
-    }
-     .share_btn {
-         margin-right: 0;
-    }
-     .second_page header {
-         height: 605px;
-    }
-     .footer_menu a {
-         margin-right: 25px;
-    }
-     .second_page .footer_container {
-         padding: 20px 0 20px;
-    }
-     .second_page .menu_top ul li a {
-         color: rgba(255, 255, 255, 0.9);
-         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
+  }
+  .stock_img_b {
+    position: absolute;
+    z-index: 9;
+    /* left: 302px!important;
+     */
+  }
+  .graph_start .stock_img_b {
+  }
+  .stock_graph {
+    left: 239px;
+    top: initial;
+    bottom: 140px;
+  }
+  .stock_container {
+    width: 100%;
+  }
+  #proof {
+    padding: 20px 0 0;
+  }
+  .proof_adv {
+    margin-top: 55px;
+  }
+  .proof_adv_block {
+    width: 32%;
+    margin-right: 1%;
+    margin-bottom: 20px;
+  }
+  .proof_adv_block p {
+    line-height: 20px;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  .proof_adv_block span {
+    line-height: 24px;
+    font-size: 15px;
+  }
+  .proof_adv_img {
+    margin-bottom: 5px;
+  }
+  #chance ul li:before {
+    left: 0;
+  }
+  #chance ul li {
+    padding-left: 20px;
+  }
+  .copy {
+    margin-right: 30vw;
+  }
+  #time {
+    padding: 30px 0;
+  }
+  #tabs_container video {
+    display: none;
+  }
+  #tabs_container .showscale video {
+    display: block;
+  }
+  h3 span:after, h2 span:after {
+    display: none;
+  }
+  .btn_container {
+    padding-top: 20px;
+    margin-right: 0;
+  }
+  .share_btn {
+    margin-right: 0;
+  }
+  .second_page #second_header, .second_page #second_header .container {
+    height: 605px;
+    min-height: 605px;
+  }
+  .footer_menu a {
+    margin-right: 25px;
+  }
+  .second_page .footer_container {
+    padding: 20px 0 20px;
+  }
+  .second_page .menu_top ul li a {
+    color: rgba(255, 255, 255, 0.9);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
- @media (max-width: 768px) {
-     .menu_top ul li {
-         margin-right: 20px;
+
+@media (max-width: 768px) {
+  .menu_top ul li {
+    margin-right: 20px;
+  }
+  .header_video {
+    background: url(../images/lending/icon-play.png) no-repeat 40px 50%, #0855ac;
+  }
+  #tabs li > p {
+    line-height: 20px;
+    font-size: 17px;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+  #tabs li {
+    margin-bottom: 25px;
+  }
+  #tabs li a small {
+    padding-top: 0;
+    width: 82%;
+  }
+  #tabs li a span {
+    width: 30px;
+    height: 30px;
+    line-height: 28px;
+    font-size: 20px;
+  }
+  #tabs li a {
+    padding: 15px 10px 15px 10px;
+  }
+  #tabs li a {
+    line-height: 20px;
+    font-size: 15px;
+  }
+  #tabs ul {
+    width: 45%;
+    margin-right: 1%;
+  }
+  #tabs_container {
+    width: 53%;
+    height: 100vw !important;
+  }
+  .proof_container p br {
+    display: none
+  }
+  .proof_video {
+    position: relative;
+    width: 500px;
+    top: 0;
+    margin: auto;
+  }
+  .proof_adv {
+    margin-top: 0;
+  }
+  #chance ul li span br, #time p br, #time h3 br {
+    display: none;
+  }
+  #chance ul li span {
+    line-height: 23px;
+  }
+  #chance ul {
+    width: 47%;
+    margin-right: 4%;
+  }
+  #chance ul:last-child {
+    margin-right: 0;
+  }
+  .drawer {
+    width: 100%;
+    margin-bottom: 10px;
+    margin-right: 0;
+  }
+  #chance ul li {
+    margin-bottom: 20px;
+  }
+  #chance {
+    padding-top: 30px;
+  }
+  .stock_img_t {
+    width: 499px;
+    max-width: 499px;
+  }
+  .stock_img {
+    position: relative;
+    top: 0;
+    z-index: 1;
+    width: 450px;
+    margin: auto;
+    left: -20px;
+  }
+  .stock_img_c {
+    top: auto;
+    bottom: 52px;
+    height: 261px;
+    background-size: 499px 261px;
+  }
+  .as-graph{
+    &.progress{
+      bottom: 146px;
+      left: -27px;
     }
-     .header_video {
-         background: url(../images/lending/icon-play.png) no-repeat 40px 50%, #0855ac;
-    }
-     #tabs li > p {
-         line-height: 20px;
-         font-size: 17px;
-         padding-left: 0;
-         margin-bottom: 0;
-    }
-     #tabs li {
-         margin-bottom: 25px;
-    }
-     #tabs li a small {
-         padding-top: 0;
-         width: 82%;
-    }
-     #tabs li a span {
-         width: 30px;
-         height: 30px;
-         line-height: 28px;
-         font-size: 20px;
-    }
-     #tabs li a {
-         padding: 15px 10px 15px 10px;
-    }
-     #tabs li a {
-         line-height: 20px;
-         font-size: 15px;
-    }
-     #tabs ul {
-         width: 45%;
-         margin-right: 1%;
-    }
-     #tabs_container {
-         width: 53%;
-         height: 100vw!important;
-    }
-     .proof_container p br{
-        display:none
-    }
-     .proof_video {
-         position: relative;
-         width: 500px;
-         top: 0;
-         margin: auto;
-    }
-     .proof_adv {
-         margin-top: 0;
-    }
-     #chance ul li span br, #time p br, #time h3 br{
-         display:none;
-    }
-     #chance ul li span {
-         line-height: 23px;
-    }
-     #chance ul {
-         width: 47%;
-         margin-right: 4%;
-    }
-     #chance ul:last-child {
-         margin-right: 0;
-    }
-     .drawer {
-         width: 100%;
-         margin-bottom: 10px;
-         margin-right: 0;
-    }
-     #chance ul li {
-         margin-bottom: 20px;
-    }
-     #chance {
-         padding-top: 30px;
-    }
-     .stock_img_t {
-         width: 499px;
-         max-width: 499px;
-    }
-     .stock_img {
-         position: relative;
-         top: 0;
-         z-index: 1;
-         width: 450px;
-         margin: auto;
-         left: -20px;
-    }
-     .stock_img_c {
-         top: 76px;
-         height: 261px;
-         background-size: 499px 261px;
-    }
-     .graph_start .stock_img_b {
-         top: 190px!important;
-    }
-     .stock_graph {
-         left: 164px;
-         top: initial;
-         bottom: 84px;
-    }
-     .proof_adv_block {
-         width: 49%;
-         margin-right: 1%;
-         margin-bottom: 20px;
-         text-align: center;
-    }
-     .proof_adv_block:nth-child(3n) {
-         margin-right: 1%;
-    }
-     .proof_adv_block:nth-child(2n) {
-         margin-right: 0;
-    }
-     .proof_adv_img {
-         margin: auto;
-         margin-bottom: 5px;
-    }
-     .stock_img_b {
-         top: 321px!important;
-    }
-     .blue_btn {
-         line-height: 45px;
-    }
-     .header_video {
-         height: 45px;
-         line-height: 43px;
-    }
-     .header_bottom img {
-         padding-right: 7px;
-         margin-top: 4px;
-         width: 50px;
-    }
-     .header_bottom {
-         height: 90px;
-         border-radius: 15px;
-         width: 98%;
-         padding: 15px 15px;
-         margin: auto;
-         margin-top: -15px;
-         overflow: hidden;
-         max-width: 539px;
-    }
-     .header_bottom p {
-         width: 168px;
-         line-height: 16px;
-         font-size: 13px;
-         padding-top: 6px;
-    }
-     .header_bottom img {
-         padding-right: 7px;
-         margin-top: 4px;
-         width: 50px;
-    }
-     .header_bottom p:first-child {
-         width: 170px;
-    }
-     .header_bottom p:last-child {
-         width: 170px;
-    }
-     #works {
-         padding-top: 35px;
-    }
-     h2 {
-         line-height: 30px;
-         font-size: 30px;
-    }
-     #stock {
-         margin: 0px auto 50px;
-    }
-     .header_bottom p br{
-        display:none;
-    }
-     .blue_btn {
-         line-height: 45px;
-         height: 45px;
-    }
-     #faq {
-         margin: -30px auto 0;
-    }
-     #chance {
-         padding-top: 30px;
-         height: initial;
-         padding-bottom: 50px;
-         background-size: cover;
-         background-position-x: 0px;
-    }
-     #time .blue_btn {
-         height: 55px;
-         line-height: 55px;
-    }
-     .footer_menu {
-         display: none;
-    }
-     .second_page .logo_container {
-         margin-right:0;
-    }
-     .share_btn {
-         display: none;
-    }
+  }
+
+  .graph_start .stock_img_b {
+  }
+  .stock_graph {
+    left: 164px;
+    top: initial;
+    bottom: 84px;
+  }
+  .proof_adv_block {
+    width: 49%;
+    margin-right: 1%;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .proof_adv_block:nth-child(3n) {
+    margin-right: 1%;
+  }
+  .proof_adv_block:nth-child(2n) {
+    margin-right: 0;
+  }
+  .proof_adv_img {
+    margin: auto;
+    margin-bottom: 5px;
+  }
+  .stock_img_b {
+  }
+  .blue_btn {
+    line-height: 45px;
+  }
+  .header_video {
+    height: 45px;
+    line-height: 43px;
+  }
+  .header_bottom img {
+    padding-right: 7px;
+    margin-top: 4px;
+    width: 50px;
+  }
+  .header_bottom {
+    height: 90px;
+    border-radius: 15px;
+    width: 98%;
+    padding: 15px 15px;
+    margin: auto;
+    margin-top: -15px;
+    overflow: hidden;
+    max-width: 539px;
+  }
+  .header_bottom p {
+    width: 168px;
+    line-height: 16px;
+    font-size: 13px;
+    padding-top: 6px;
+  }
+  .header_bottom img {
+    padding-right: 7px;
+    margin-top: 4px;
+    width: 50px;
+  }
+  .header_bottom p:first-child {
+    width: 170px;
+  }
+  .header_bottom p:last-child {
+    width: 170px;
+  }
+  #works {
+    padding-top: 35px;
+  }
+  h2 {
+    line-height: 30px;
+    font-size: 30px;
+  }
+  #stock {
+    margin: 0px auto 50px;
+  }
+  .header_bottom p br {
+    display: none;
+  }
+  .blue_btn {
+    line-height: 45px;
+    height: 45px;
+  }
+  #faq {
+    margin: -30px auto 0;
+  }
+  #chance {
+    padding-top: 30px;
+    height: initial;
+    padding-bottom: 50px;
+    background-size: cover;
+    background-position-x: 0px;
+  }
+  #time .blue_btn {
+    height: 55px;
+    line-height: 55px;
+  }
+  .footer_menu {
+    display: none;
+  }
+  .second_page .logo_container {
+    margin-right: 0;
+  }
+  .share_btn {
+    display: none;
+  }
 }
- @media (max-width: 550px) {
-     .proof_video {
-         width: 380px;
-    }
-     #tabs ul {
-         width: 100%;
-         margin-right: 0;
-         max-width: 380px;
-         display: block;
-    }
-     #tabs li a:after{
-        display:none;
-    }
-     #tabs_container {
-         width: 100%;
-         height: 185vw!important;
-         max-width: 380px;
-         margin: auto;
-         float: none;
-         display: block;
-    }
-     .proof_adv_block span br{
-        display:none;
-    }
-     .proof_adv_block p br{
-        display:none;
-    }
-     h2 br, .header_container h1 br, .header_container > p br{
-        display:none;
-    }
-     h2 {
-         line-height: 30px;
-         font-size: 25px;
-         margin-bottom: 25px!important;
-    }
-     #chance h2 {
-         margin-bottom: 37px!important;
-    }
-     .header_img {
-         display: none;
-    }
-     .header_container h5:after{
-        display:none;
-    }
-     .header_container h5 {
-         background: #028cd4;
-         display: initial;
-         padding: 1px 3px;
-    }
-     .header_container h1 {
-         line-height: 30px;
-         font-size: 30px;
-         margin-bottom: 15px;
-    }
-     .header_container > p {
-         margin-bottom: 10px;
-    }
-     .blue_btn {
-         line-height: 46px;
-         height: 45px;
-         width: 200px;
-         letter-spacing: 0px;
-         font-size: 15px;
-    }
-     .header_video {
-         height: 45px;
-         line-height: 45px;
-         width: 150px;
-         background: url(../images/lending/icon-play.png) no-repeat 18px 50%, #0855ac;
-    }
-     #works .coll_2 p {
-         line-height: 22px;
-         font-size: 15px;
-    }
-     .coll_2 {
-         width: 100%;
-         margin-right: 0;
-    }
-     .proof_adv_block p {
-         letter-spacing: 0;
-    }
-     #chance ul {
-         width: 100%;
-         margin-right: 0;
-         margin-top: 0;
-    }
-     #chance p {
-         margin-bottom: 40px;
-    }
-     #chance p br{
-         display:none;
-    }
-     h3 {
-         line-height: 30px;
-         font-size: 25px;
-    }
-     .copy {
-         margin-right: 0;
-    }
-     .footer_container {
-         padding: 30px 0 50px;
-    }
-     #stock .blue_btn {
-         height: 45px;
-         line-height: 46px;
-    }
-     .stock_img {
-         width: 334px;
-         margin: auto;
-         left: -20px;
-    }
-     .stock_img_c {
-         top: 78px;
-         height: 175px;
-         background-size: 335px 175px;
-    }
-     .graph_start .stock_img_b {
-         top: 141px!important;
-    }
-     .stock_graph {
-         left: 121px;
-         top: initial;
-         bottom: 43px;
-         width: 125px;
-         height: 81px;
-         background-size: contain;
-         padding: 10px;
-    }
-     .stock_graph big {
-         line-height: 16px;
-         font-size: 16px;
-         padding-left: 7px;
-    }
-     .stock_graph big small {
-         font-size: 12px;
-         display: initial;
-    }
-     .stock_graph small, .stock_graph span {
-         font-size: 10px;
-    }
-     .stock_img_t {
-         width: 370px;
-         max-width: 370px;
-    }
-     .stock_img_b {
-         top: 238px!important;
-    }
-     .menu_top {
-         display: none;
-    }
-     .header_bottom {
-         width: 100%;
-         margin-top: -10px;
-         max-width: 100%;
-         border-radius: 0;
-         padding: 15px 15px 5px;
-         height: initial;
-    }
-     .header_bottom img {
-         padding-right: 7px;
-         margin-top: -2px;
-         width: 50px;
-    }
-     .header_bottom p {
-         width: 168px;
-         line-height: 20px;
-         font-size: 16px;
-         padding-top: 10px;
-         width: 100%!important;
-    }
-     .reveal-modal {
-         padding: 45px 25px 20px;
-         max-width: 98%;
-         height: initial;
-    }
-     .reveal-modal .blue_btn {
-         float: none;
-    }
-     .reveal-modal form span.modal_comment {
-         margin-bottom: 20px;
-         line-height: 23px;
-         text-align: center;
-         margin-left: 0;
-         float: none;
-         width: 100%;
-         padding-top: 10px;
-    }
-     .ui-buttonset .ui-button {
-         margin-bottom: 8px;
-    }
-     .proof_video video{
-        height:initial!important;
-    }
-     .accordion-header {
-         height: initial!important;
-    }
-     .mobile-menu {
-         font-size: 20px;
-         text-decoration: none;
-         color: #fff;
-         text-transform: uppercase;
-         text-align: center;
-         display: block;
-         padding-top: 0;
-         position: absolute;
-         height: 35px;
-         width: 35px;
-         right: 10px;
-         top: 20px;
-         -webkit-transition: all .2s linear;
-         -o-transition: all .2s linear;
-         transition: all .2s linear;
-    }
-     .mobile-menu:before {
-         position: absolute;
-         width: 30px;
-         height: 3px;
-         content: '';
-         background: #fff;
-         box-shadow: 0 8px 0 #fff, 0 16px 0 #fff;
-         right: 0;
-         left: 0;
-         margin: auto;
-         top: 8px;
-    }
-     .f-nav .mobile-menu{
-         top: 0;
-         -webkit-transition: all .2s linear;
-         -o-transition: all .2s linear;
-         transition: all .2s linear;
-    }
-     .f-nav .mobile-menu:before {
-         height: 4px;
-         background: #000;
-         box-shadow: 0 8px 0 #000, 0 16px 0 #000;
-    }
-     .f-nav .menu_top ul li a {
-         color: #ffffff;
-    }
-     .menu_top{
-         width: 131px;
-         background: #0d47a1;
-         overflow: hidden;
-         padding: 10px;
-         top: 55px;
-         position: absolute;
-         right: 10px;
-         box-shadow: 0px 0px 1px #c4c4c4;
-    }
-     .menu_top ul li{
-         width: 100%;
-    }
-     .menu_top ul li a{
-    }
-     .logo_container {
-         padding-top: 32px;
-    }
-     .second_page .mobile-menu:before {
-         background: #000;
-         box-shadow: 0 8px 0 #000, 0 16px 0 #000;
-         height: 4px;
-    }
-     .second_page header .sh_table {
-         width: 450px;
-         max-width: 100%;
-    }
-     .sh_sell {
-         max-width: 100%;
-    }
-     .second_page .sh_sell input[type="text"] {
-         width: 180px;
-    }
-     .second_page header {
-         height: 620px;
-    }
-     .modal_comment br{
-        display:none;
-    }
-     #buying.reveal-modal {
-         top: 10px;
-    }
-     #buying.reveal-modal input[type="text"] {
-         margin-bottom: 10px;
-    }
-     #buying.reveal-modal h4 {
-         margin-bottom: 20px;
-    }
-     .reveal-modal form span.modal_comment {
-         padding-top: 0;
-    }
+
+@media (max-width: 550px) {
+  .proof_video {
+    width: 380px;
+  }
+  #tabs ul {
+    width: 100%;
+    margin-right: 0;
+    max-width: 380px;
+    display: block;
+  }
+  #tabs li a:after {
+    display: none;
+  }
+  #tabs_container {
+    width: 100%;
+    height: 185vw !important;
+    max-width: 380px;
+    margin: auto;
+    float: none;
+    display: block;
+  }
+  .proof_adv_block span br {
+    display: none;
+  }
+  .proof_adv_block p br {
+    display: none;
+  }
+  h2 br, .header_container h1 br, .header_container > p br {
+    display: none;
+  }
+  h2 {
+    line-height: 30px;
+    font-size: 25px;
+    margin-bottom: 25px !important;
+  }
+  #chance h2 {
+    margin-bottom: 37px !important;
+  }
+  .header_img {
+    display: none;
+  }
+  .header_container h5:after {
+    display: none;
+  }
+  .header_container h5 {
+    background: #028cd4;
+    display: initial;
+    padding: 1px 3px;
+  }
+  .header_container h1 {
+    line-height: 30px;
+    font-size: 30px;
+    margin-bottom: 15px;
+  }
+  .header_container > p {
+    margin-bottom: 10px;
+  }
+  .blue_btn {
+    line-height: 46px;
+    height: 45px;
+    width: 200px;
+    letter-spacing: 0px;
+    font-size: 15px;
+  }
+  .header_video {
+    height: 45px;
+    line-height: 45px;
+    width: 150px;
+    background: url(../images/lending/icon-play.png) no-repeat 18px 50%, #0855ac;
+  }
+  #works .coll_2 p {
+    line-height: 22px;
+    font-size: 15px;
+  }
+  .coll_2 {
+    width: 100%;
+    margin-right: 0;
+  }
+  .proof_adv_block p {
+    letter-spacing: 0;
+  }
+  #chance ul {
+    width: 100%;
+    margin-right: 0;
+    margin-top: 0;
+  }
+  #chance p {
+    margin-bottom: 40px;
+  }
+  #chance p br {
+    display: none;
+  }
+  h3 {
+    line-height: 30px;
+    font-size: 25px;
+  }
+  .copy {
+    margin-right: 0;
+  }
+  .footer_container {
+    padding: 30px 0 50px;
+  }
+  #stock .blue_btn {
+    height: 45px;
+    line-height: 46px;
+  }
+  .stock_img {
+    width: 334px;
+    margin: auto;
+    left: -20px;
+  }
+  .stock_img_c {
+    top: 78px;
+    height: 175px;
+    background-size: 335px 175px;
+  }
+  .as-graph{
+    &.progress{
+      bottom: 100px;
+      left: -27px;
+    }
+  }
+  .graph_start .stock_img_b {
+  }
+  .stock_graph {
+    left: 121px;
+    top: initial;
+    bottom: 43px;
+    width: 125px;
+    height: 81px;
+    background-size: contain;
+    padding: 10px;
+  }
+  .stock_graph big {
+    line-height: 16px;
+    font-size: 16px;
+    padding-left: 7px;
+  }
+  .stock_graph big small {
+    font-size: 12px;
+    display: initial;
+  }
+  .stock_graph small, .stock_graph span {
+    font-size: 10px;
+  }
+  .stock_img_t {
+    width: 370px;
+    max-width: 370px;
+  }
+  .stock_img_b {
+  }
+  .menu_top {
+    display: none;
+  }
+  .header_bottom {
+    width: 100%;
+    margin-top: -10px;
+    max-width: 100%;
+    border-radius: 0;
+    padding: 15px 15px 5px;
+    height: initial;
+  }
+  .header_bottom img {
+    padding-right: 7px;
+    margin-top: -2px;
+    width: 50px;
+  }
+  .header_bottom p {
+    width: 168px;
+    line-height: 20px;
+    font-size: 16px;
+    padding-top: 10px;
+    width: 100% !important;
+  }
+  .reveal-modal {
+    padding: 45px 25px 20px;
+    max-width: 98%;
+    height: initial;
+  }
+  .reveal-modal .blue_btn {
+    float: none;
+  }
+  .reveal-modal form span.modal_comment {
+    margin-bottom: 20px;
+    line-height: 23px;
+    text-align: center;
+    margin-left: 0;
+    float: none;
+    width: 100%;
+    padding-top: 10px;
+  }
+  .ui-buttonset .ui-button {
+    margin-bottom: 8px;
+  }
+  .proof_video video {
+    height: initial !important;
+  }
+  .accordion-header {
+    height: initial !important;
+  }
+  .mobile-menu {
+    font-size: 20px;
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+    display: block;
+    padding-top: 0;
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    right: 10px;
+    top: 20px;
+    -webkit-transition: all .2s linear;
+    -o-transition: all .2s linear;
+    transition: all .2s linear;
+  }
+  .mobile-menu:before {
+    position: absolute;
+    width: 30px;
+    height: 3px;
+    content: '';
+    background: #fff;
+    box-shadow: 0 8px 0 #fff, 0 16px 0 #fff;
+    right: 0;
+    left: 0;
+    margin: auto;
+    top: 8px;
+  }
+  .f-nav .mobile-menu {
+    top: 0;
+    -webkit-transition: all .2s linear;
+    -o-transition: all .2s linear;
+    transition: all .2s linear;
+  }
+  .f-nav .mobile-menu:before {
+    height: 4px;
+    background: #000;
+    box-shadow: 0 8px 0 #000, 0 16px 0 #000;
+  }
+  .f-nav .menu_top ul li a {
+    color: #ffffff;
+  }
+  .menu_top {
+    width: 131px;
+    background: #0d47a1;
+    overflow: hidden;
+    padding: 10px;
+    top: 55px;
+    position: absolute;
+    right: 10px;
+    box-shadow: 0px 0px 1px #c4c4c4;
+  }
+  .menu_top ul li {
+    width: 100%;
+  }
+  .menu_top ul li a {
+  }
+  .logo_container {
+    padding-top: 32px;
+  }
+  .second_page .mobile-menu:before {
+    background: #000;
+    box-shadow: 0 8px 0 #000, 0 16px 0 #000;
+    height: 4px;
+  }
+  .second_page #second_header .sh_table {
+    width: 450px;
+    max-width: 100%;
+  }
+  .sh_sell {
+    max-width: 100%;
+  }
+  .second_page .sh_sell input[type="text"] {
+    width: 180px;
+  }
+  .second_page #second_header, .second_page #second_header .container {
+    height: 620px;
+    min-height: 620px;
+  }
+  .modal_comment br {
+    display: none;
+  }
+  #buying.reveal-modal {
+    top: 10px;
+  }
+  #buying.reveal-modal input[type="text"] {
+    margin-bottom: 10px;
+  }
+  #buying.reveal-modal h4 {
+    margin-bottom: 20px;
+  }
+  .reveal-modal form span.modal_comment {
+    padding-top: 0;
+  }
 }
- @media (max-width: 400px) {
-     .proof_video {
-         width: 100%;
+
+@media (max-width: 400px) {
+  .proof_video {
+    width: 100%;
+  }
+  .proof_adv_block {
+    width: 48%;
+  }
+  .header_box p {
+    width: 98px;
+  }
+  .header_container > p {
+    font-family: Soleil;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 23px;
+    font-size: 15px;
+  }
+  .header_video {
+    width: 120px;
+    background: url(../images/lending/icon-play.png) no-repeat 10px 50%, #0855ac;
+    font-size: 15px;
+  }
+  .blue_btn {
+    width: 170px;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  #stock {
+    padding: 50px 10px;
+  }
+  #stock p {
+    font-size: 15px;
+    line-height: 22px;
+  }
+  #stock p {
+    font-size: 15px;
+    line-height: 22px;
+  }
+  .proof_adv_block span {
+    line-height: 22px;
+    font-size: 15px;
+  }
+  #chance ul li span {
+    line-height: 22px;
+    font-size: 15px;
+  }
+  .accordion-header .faq_head {
+    line-height: 22px;
+    font-size: 15px;
+  }
+  .accordion-content {
+    padding-top: 12px;
+  }
+  #time .blue_btn {
+    width: 300px;
+  }
+  .stock_img_t {
+    width: 295px;
+    max-width: 295px;
+  }
+  .stock_img {
+    width: 266px;
+    margin: auto;
+    left: -13px;
+  }
+  .stock_img_c {
+    top: auto;
+    bottom: 32px;
+    height: 139px;
+    background-size: 266px 139px;
+  }
+
+  .as-graph{
+    &.progress{
+      bottom: 80px;
+      left: -16px;
+      height: 1px;
     }
-     .proof_adv_block {
-         width: 48%;
+  }
+  .progress {
+    .progress-bar{
+      &.active{
+        &:after{
+          width: 6px!important;
+          height: 6px!important;
+          top: -3px!important;
+          right: -3px!important;
+        }
+      }
     }
-     .header_box p {
-         width: 98px;
-    }
-     .header_container > p {
-         font-family: Soleil;
-         font-style: normal;
-         font-weight: normal;
-         line-height: 23px;
-         font-size: 15px;
-    }
-     .header_video {
-         width: 120px;
-         background: url(../images/lending/icon-play.png) no-repeat 10px 50%, #0855ac;
-         font-size: 15px;
-    }
-     .blue_btn {
-         width: 170px;
-         font-size: 14px;
-         margin-right: 10px;
-    }
-     #stock {
-         padding: 50px 10px;
-    }
-     #stock p {
-         font-size: 15px;
-         line-height: 22px;
-    }
-     #stock p {
-         font-size: 15px;
-         line-height: 22px;
-    }
-     .proof_adv_block span {
-         line-height: 22px;
-         font-size: 15px;
-    }
-     #chance ul li span {
-         line-height: 22px;
-         font-size: 15px;
-    }
-     .accordion-header .faq_head {
-         line-height: 22px;
-         font-size: 15px;
-    }
-     .accordion-content {
-         padding-top: 12px;
-    }
-     #time .blue_btn {
-         width: 300px;
-    }
-     .stock_img_t {
-         width: 295px;
-         max-width: 295px;
-    }
-     .stock_img {
-         width: 266px;
-         margin: auto;
-         left: -13px;
-    }
-     .stock_img_c {
-         top: 76px;
-         height: 139px;
-         background-size: 266px 139px;
-    }
-     .graph_start .stock_img_b {
-         top: 122px!important;
-    }
-     .stock_graph {
-         left: 91px;
-         top: initial;
-         bottom: 26px;
-         width: 110px;
-         height: 70px;
-         background-size: contain;
-         padding: 10px;
-         padding-top: 7px;
-    }
-     .stock_graph small, .stock_graph span {
-         font-size: 9px;
-         letter-spacing: 0.5px;
-    }
-     .stock_img_b {
-         top: 200px!important;
-    }
-     .copy {
-         margin-right: 0;
-         text-align: center;
-         width: 100%;
-         margin-bottom: 15px;
-    }
-     .social {
-         float: none;
-         margin-top: 0;
-         margin: 15px auto;
-         width: 121px;
-         overflow: hidden;
-    }
-     .footer_container {
-         padding: 15px 0 10px;
-         overflow: hidden;
-    }
-     .sh_size, .sh_number {
-         width: 135px;
-    }
-     .second_page header .blue_btn {
-         height: 40px;
-         line-height: 40px;
-         letter-spacing: 0.875px;
-         width: 135px;
-    }
-     .second_page .sh_sell input[type="text"] {
-         width: 150px;
-         height: 41px;
-    }
-     .second_page .coll_owner {
-         margin-left: 0;
-         width: 85px;
-    }
-     .coll_numb {
-         margin-right: 15px;
-    }
+  }
+  .graph_start .stock_img_b {
+  }
+  .stock_graph {
+    left: 91px;
+    top: initial;
+    bottom: 26px;
+    width: 110px;
+    height: 70px;
+    background-size: contain;
+    padding: 10px;
+    padding-top: 7px;
+  }
+  .stock_graph small, .stock_graph span {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+  }
+  .stock_img_b {
+  }
+  .copy {
+    margin-right: 0;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  .social {
+    float: none;
+    margin: 15px auto;
+    width: 121px;
+    overflow: hidden;
+  }
+  .footer_container {
+    padding: 15px 0 10px;
+    overflow: hidden;
+  }
+  .sh_size, .sh_number {
+    width: 135px;
+  }
+  .second_page #second_header .blue_btn {
+    height: 40px;
+    line-height: 40px;
+    letter-spacing: 0.875px;
+    width: 135px;
+  }
+  .second_page .sh_sell input[type="text"] {
+    width: 150px;
+    height: 41px;
+  }
+  .second_page .coll_owner {
+    margin-left: 0;
+    width: 85px;
+  }
+  .coll_numb {
+    margin-right: 15px;
+  }
 }
  

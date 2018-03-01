@@ -165,14 +165,16 @@ Blockchain.prototype.getCurrentAccountInfo = function () {
 
     return new Promise(function (resolve, reject) {
         Promise.all([balancePromise, authorizedPromise, userProductsPromise, checkIsParticipant]).then(function (data) {
-
             let resolv = {};
             if(Object.keys(data[3]).length > 0) {
                 if(data[3].status === 200 && data[3].data.message === "user is register"){
                     resolv.isParticipant = true;
                     resolv.userEmail = data[3].data.userEmail;
                     resolv.userName  = data[3].data.userName;
-
+                }else{
+                    resolv.isParticipant = false;
+                    resolv.userEmail     = "";
+                    resolv.userName      = ""
                 }
             }
 
@@ -367,7 +369,7 @@ Blockchain.prototype.getOwnerProductInfo = function (ownerAddress) {
 
 Blockchain.prototype.buyProduct = function (size, delivery, value, userName, userEmail) {
     return new Promise(function (resolve, reject) {
-        this.contractInstance.createProduct(size, delivery, userName, userEmail, {value: value, gas: 1000000}, function (err, res) {
+        this.contractInstance.createProduct(size, delivery, userName, userEmail, {value: web3.toWei(value), gas: 1000000}, function (err, res) {
             err ? reject(err) : resolve(res);
         });
     }.bind(this));

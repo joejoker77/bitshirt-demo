@@ -6,26 +6,22 @@ import TransactionsStorage from '../utils/transactions-storage';
 import TransactionsContainer from './transactions-container';
 import * as transactionTypes from "../utils/transaction-types";
 import Header from './header';
-import HeaderAccount from './header-account';
-import HeaderBalance from './header-balance';
 import MetaMaskAuthorizeWarning from './warnings/metamask-authorize-warning';
 import BecomeMemberWarning from './warnings/become-member-warning';
 import LowBalanceWarning from './warnings/low-balance-warning';
-import img from '../images/resize.jpeg';
 import axios from "axios/index";
 import Utils from "../utils/utils";
 import PutSaleForm from './put-sale-form';
 import FormMember from './member-form';
 import Form from './buy-form';
 import History from './history';
-import {DropdownButton} from 'react-bootstrap';
 import $ from "jquery";
 import SharePageForm from './share-page-form';
-import {FacebookShareButton,GooglePlusShareButton,LinkedinShareButton,TwitterShareButton,
-    TelegramShareButton,WhatsappShareButton,PinterestShareButton,RedditShareButton,TumblrShareButton,EmailShareButton
-} from 'react-share';
-import {FacebookIcon,TwitterIcon,GooglePlusIcon,LinkedinIcon,PinterestIcon,TelegramIcon,WhatsappIcon,
-    RedditIcon,TumblrIcon,EmailIcon} from 'react-share';
+import Footer from './footer';
+
+import SmallTshirt from '../images/lending/small-tshirt-wo-shadows-bg.png';
+import Web3 from "web3";
+
 
 const customStyles = {
     overlay : {
@@ -153,24 +149,6 @@ export class App extends Component {
 
                             })
                         ;break;
-                    case 'BecomeMember':
-                        this.blockchain.getOwnerProductInfo(this.state.userAddress)
-                            .then(function (data) {
-                                requestData.action    = "Become member";
-                                requestData.user      = data;
-                                requestData.productId = $this.props.match.params.number;
-                                $.ajax({
-                                    method: "POST",
-                                    url: 'http://bitshirt.co/sendmail.php',
-                                    data: requestData,
-                                    success: function () {
-                                        window.location.href = '/';
-                                    },
-                                    error: function (error) {
-                                        console.log(error);
-                                    }
-                                });
-                         });break;
                 }
             }
             this.updateData();
@@ -180,6 +158,23 @@ export class App extends Component {
     componentWillUnmount() {
         this.transactionsStorage.stopChecker();
     }
+
+    componentDidMount(){
+
+        let $body = $('body');
+
+        if($body.length > 0){
+            $body.addClass('second-page');
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 5) {
+                    $body.addClass("f-nav");
+                } else {
+                    $body.removeClass("f-nav");
+                }
+            });
+        }
+    }
+
     pingApi() {
         return new Promise(function (resolve, reject) {
             axios.get('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
@@ -193,85 +188,125 @@ export class App extends Component {
         });
     }
     updateData() {
+        if(this.blockchain.address && this.blockchain.address !=="") {
+            this.blockchain.checkProduct(this.props.match.params.number).then(function (isProduct) {
+                this.setState({isProduct: isProduct});
+            }.bind(this));
 
-        this.blockchain.checkProduct(this.props.match.params.number).then(function (isProduct) {
-            this.setState({isProduct: isProduct});
-        }.bind(this));
+            this.blockchain.getContractBalance().then(function (balance) {
+                this.setState({balance: balance});
+            }.bind(this));
 
-        this.blockchain.getContractBalance().then(function (balance) {
-            this.setState({balance: balance});
-        }.bind(this));
-
-        this.blockchain.getCurrentPersonalAccountInfo()
-            .then(function (data) {
-                this.setState({
-                    isUser              : data.isUser,
-                    isParticipant       : data.isParticipant,
-                    userBalance         : data.userBalance,
-                    userEmail           : data.userEmail,
-                    userIndex           : data.userIndex,
-                    userName            : Utils.capitalizeFirstLetter(data.userName),
-                    userAddress         : data.userAddress,
-                    currentAccountLoaded: true,
-                });
-            }.bind(this))
-            .catch(function (error) {
-                console.error(error);
-            });
-
-        this.blockchain.getCurrentPersonalProductInfo(this.props.match.params.number)
-            .then(function (data) {
-                this.setState({
-                    productIndex: data.productIndex,
-                    ownerAddress: data.ownerAddress,
-                    size        : data.size,
-                    price       : data.price,
-                    delivery    : data.delivery,
-                    inSale      : data.inSale
-                });
-
-                this.pingApi().then(function (data) {
-                    let usdPrice = +parseFloat(data[0].price_usd * this.state.price).toFixed(2);
+            this.blockchain.getCurrentPersonalAccountInfo()
+                .then(function (data) {
                     this.setState({
-                        priceInUsd: usdPrice
+                        isUser              : data.isUser,
+                        isParticipant       : data.isParticipant,
+                        userBalance         : data.userBalance,
+                        userEmail           : data.userEmail,
+                        userIndex           : data.userIndex,
+                        userName            : Utils.capitalizeFirstLetter(data.userName),
+                        userAddress         : data.userAddress,
+                        currentAccountLoaded: true,
                     });
-                }.bind(this));
+                }.bind(this))
+                .catch(function (error) {
+                    console.error(error);
+                });
 
+            this.blockchain.getCurrentPersonalProductInfo(this.props.match.params.number)
+                .then(function (data) {
+                    this.setState({
+                        productIndex: data.productIndex,
+                        ownerAddress: data.ownerAddress,
+                        size        : data.size,
+                        price       : data.price,
+                        delivery    : data.delivery,
+                        inSale      : data.inSale
+                    });
 
-
-                if(this.state.ownerAddress !== this.state.userAddress) {
-                    this.blockchain.getOwnerProductInfo(this.state.ownerAddress)
-                        .then(function (data) {
-                            this.setState({
-                                userGuestIndex: this.state.userIndex,
-                                userGuestName : this.state.userName,
-                                userGuestEmail: this.state.userEmail,
-                                userIndex     : data.userIndex,
-                                userName      : data.userName,
-                                userEmail     : data.userEmail
-                            });
-                        }.bind(this))
-                        .catch(function (error) {
-                            console.log(error);
+                    this.pingApi().then(function (data) {
+                        let usdPrice = +parseFloat(data[0].price_usd * this.state.price).toFixed(2);
+                        this.setState({
+                            priceInUsd: usdPrice
                         });
-                }
-            }.bind(this))
-            .catch(function (error) {
-                console.error(error);
-            });
+                    }.bind(this));
 
-        this.blockchain.getHistory(this.props.match.params.number)
-            .then(function (data){
-                this.setState({historyProduct: data});
-            }.bind(this))
-            .catch(function (error) {
+                    if(this.state.ownerAddress !== this.state.userAddress) {
+                        this.blockchain.getOwnerProductInfo(this.state.ownerAddress)
+                            .then(function (data) {
+                                this.setState({
+                                    userGuestIndex: this.state.userIndex,
+                                    userGuestName : this.state.userName,
+                                    userGuestEmail: this.state.userEmail,
+                                    userIndex     : data.userIndex,
+                                    userName      : data.userName,
+                                    userEmail     : data.userEmail
+                                });
+                            }.bind(this))
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                }.bind(this))
+                .catch(function (error) {
+                    console.error(error);
+                });
+
+            this.blockchain.getHistory(this.props.match.params.number)
+                .then(function (data){
+                    this.setState({historyProduct: data});
+                }.bind(this))
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            this.blockchain.getProductCount().then(function (productsCount) {
+                this.setState({productsCount: productsCount});
+            }.bind(this));
+            this.updateTransactions();
+        }else{
+            this.testInfura().then(function (data) {
+                $this.setState({
+                    startPrice          : data.startPrice,
+                    productsCount       : data.productsCount,
+                    startPriceInUsd     : data.startPriceInUsd,
+                    endPriceInUsd       : data.endPriceInUsd,
+                    currentAccountLoaded: true,
+                    isWarning           : true,
+                    isParticipant       : false,
+                    userName            : '',
+                    userEmail           : ''
+                });
+            }).catch(function (error) {
                 console.log(error);
-            });
+            })
+        }
+    }
 
-        this.blockchain.getProductCount().then(function (productsCount) {
-            this.setState({productsCount: productsCount});
-        }.bind(this));
-        this.updateTransactions();
+    testInfura(){
+        let $this = this;
+        return new Promise(function (resolve, reject) {
+            let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
+                ContractAddr = "0xc1cf7f5344b2223bf2ef065ee281ad874e025085",
+                fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
+                productId    = web3.eth.getStorageAt(ContractAddr, 7);
+
+            $this.pingApi().then(function (data2) {
+                let web3          = new Web3(),
+                    minPrice      = web3.fromWei(parseInt(fixPrice, 16)),
+                    productCount  = parseInt(productId, 16),
+                    priceInUsd    = (data2[0].price_usd * (minPrice * productCount)).toFixed(2),
+                    maxPriceInUsd = (data2[0].price_usd * (minPrice * 1000)).toFixed(2);
+
+                resolve({
+                    startPrice      : minPrice * productCount,
+                    productsCount   : productCount,
+                    startPriceInUsd : priceInUsd,
+                    endPriceInUsd   : maxPriceInUsd
+                });
+            });
+        });
     }
 
     handleOpenModal () {
@@ -283,8 +318,6 @@ export class App extends Component {
     }
 
     handleBuyProduct(data) {
-
-        console.log(this.state);
 
         this.handleCloseModal();
         let delivery = data.get("delivery_flat") ? data.get("delivery_address") + ' flat/office: ' + data.get("delivery_flat") :
@@ -310,18 +343,40 @@ export class App extends Component {
             });
     }
     handleBecomeMember(data) {
+
         let userName  = data.get('username'),
             userEmail = data.get('email');
 
         this.handleCloseModal();
         this.blockchain.becomeMember(userName, userEmail)
             .then(function (data) {
-                if(data.status === 200 && data.data.status === "success"){
+                if(data.status === 200 && data.data.status === "success") {
+                    let requestData = {};
+                    this.blockchain.getOwnerProductInfo(this.state.userAddress)
+                        .then(function (data) {
+                            requestData.action    = "Become member";
+                            requestData.user      = data;
+                            requestData.productId = $this.props.match.params.number;
+                            $.ajax({
+                                method: "POST",
+                                url: 'http://bitshirt.co/sendmail.php',
+                                data: requestData,
+                                success: function () {
+                                    window.location.href = '/';
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+                        });
                     this.setState({
                         isParticipant: true,
+                        isWarning    : false,
+                        newUser      : true,
                         userName     : userName,
                         userEmail    : userEmail
                     });
+                    this.updateData();
                 }
             }.bind(this))
             .catch(function (error) {
@@ -396,39 +451,49 @@ export class App extends Component {
     }
 
     renderWarnings() {
-        if (!this.state.currentAccountLoaded) {return null;}
-        if (!this.state.userAddress) {
-            return <MetaMaskAuthorizeWarning/>;
-        } else if (this.state.userBalance < this.state.price) {
+        if(this.state.userAddress === "") {
+            return <MetaMaskAuthorizeWarning />;
+        }else if(this.state.userBalance < this.state.startPrice){
             return <LowBalanceWarning />;
-        } else if (this.state.userAddress && !this.state.isParticipant) {
+        }else if(!this.state.currentAccountLoaded){
             return <BecomeMemberWarning onOpenModal={this.handleOpenModal} />;
         }
     }
 
     renderPrise() {
         if (!this.state.inSale) {
-            if(this.state.userAddress !== this.state.ownerAddress){
+            if(this.state.userAddress !== this.state.ownerAddress) {
                 return <p className="current-price">
-                    This T-shirt was bought for:&nbsp;
-                    {this.state.price} <b>Eth</b> (~{this.state.priceInUsd} <b>$</b>)
+                    <span className="sh_bought">THIS T-SHIRT WAS BOUGHT FOR:</span>
+                    <span className="sh_price">{this.state.price} ETH</span>
                 </p>
             }else{
                 return <p className="current-price">
-                    You bought this t-shirt for:&nbsp;
-                    {this.state.price} <b>Eth</b> (~{this.state.priceInUsd} <b>$</b>)
+                    <span className="sh_bought">YOUR BOUGHT THIS T-SHIRT FOR:</span>
+                    <span className="sh_price">{this.state.price} ETH</span>
                 </p>
             }
         } else {
-            return <p className="current-price">
-                This t-shirt is for sale for:&nbsp;
-                {this.state.price} <b>Eth</b> (~{this.state.priceInUsd} <b>$</b>)
-            </p>
+            if(this.state.userAddress !== this.state.ownerAddress) {
+                return (<div>
+                    <span className="sh_moment">AT THE MOMENT THE OWNER IS<br />SELLING A T-SHIRT:</span>
+                    <div className="sh_buy">
+                        <span>
+                            <small>SELLING PRICE:</small>
+                            <big>{this.state.price} ETH</big>
+                        </span>
+                        <a className="blue_btn" onClick={this.handleOpenModal}>BUY T-SHIRT</a>
+                    </div>
+                </div>);
+            }else{
+                return <p className="current-price">
+                    <span className="sh_bought">THIS T-SHIRT IS NOT SALE!</span>
+                </p>
+            }
         }
     }
 
     renderPutSaleActions() {
-
         if(this.state.historyProduct.length === 0){
             return null;
         }
@@ -449,15 +514,10 @@ export class App extends Component {
             if(this.state.userAddress !== this.state.ownerAddress && this.state.isParticipant) {
                 return <div>
                     <History historyData={this.state.historyProduct} />
-                    <button
-                        style={{float: "right"}}
-                        className="btn btn-primary btn-lg"
-                        onClick={this.handleOpenModal}
-                    >Order now!</button>
                 </div>
             }else if(this.state.userAddress !== this.state.ownerAddress && !this.state.isParticipant){
                 return <div>
-                    <div className='danger'>You must become a member!</div>
+                    <div className='danger sh_sell'>You must become a member!</div>
                     <History historyData={this.state.historyProduct} />
                 </div>
             }else{
@@ -489,7 +549,7 @@ export class App extends Component {
                 </div>
             }else{
                 return <div className="form-share-page">
-                    <SharePageForm onFormMember={this.sendMessageSharePage}/>
+                    <SharePageForm onFormMember={this.sendMessageSharePage} />
                 </div>
             }
         }
@@ -498,181 +558,67 @@ export class App extends Component {
     render() {
         if (!this.state.isProduct) {
             return (
-                <div className="app">
-                    <Header>
-                        <HeaderAccount address={this.state.userAddress} balance={this.state.userBalance} />
-                        <HeaderBalance balance={this.state.balance} />
-                    </Header>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-12">Error: 404 Page not found!</div>
+                <div className="app second_page">
+                    <Header
+                        secondPage={true}
+                        size={this.state.size}
+                        userName={this.state.userName}
+                        number={this.props.match.params.number}
+                    />
+                    <div id="second_header">
+                        <div className="container">
+                            <div className="header_container">
+                                <div className="col-md-12">Error: 404 Page not found!</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             );
         } else {
             return (
-                <div className="app">
-                    <Header>
-                        <HeaderAccount address={this.state.userAddress} balance={this.state.userBalance} />
-                        <HeaderBalance balance={this.state.balance} />
-                    </Header>
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-md-12">
-                                {this.renderWarnings()}
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-12">
-                                <TransactionsContainer
-                                    transactions={this.state.transactions}
-                                    onHideTransactions={this.handleHideTransactions} />
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-md-4">
-                                <img src={img} width="100%" height="auto"/>
-                            </div>
-                            <div className="col-md-8">
-                                <div className="app-title">
-                                    <h1>
-                                        {Utils.capitalizeFirstLetter(this.state.userName)}'s t-shirt Size: {this.state.size}
-                                        <div className="social">
-                                            <DropdownButton key={1} title={""} id={`dropdown-basic-${1}`} noCaret pullRight >
-                                                <div className="facebook share-button">
-                                                    <div className="Demo__some-network">
-                                                        <FacebookShareButton
-                                                            url={"http://bitshirt.co/t-shirt/" + this.props.match.params.number}
-                                                            quote={Utils.capitalizeFirstLetter(this.state.userName) + 's t-shirt Size: ' + this.state.size}
-                                                            className="Demo__some-network__share-button">
-                                                            <FacebookIcon  size={32} round />
-                                                        </FacebookShareButton>
-                                                    </div>
-                                                </div>
-                                                <div className="twitter share-button">
-                                                    <div className="Demo__some-network">
-                                                        <TwitterShareButton
-                                                            url={"/t-shirt/" + this.props.match.params.number}
-                                                            title={Utils.capitalizeFirstLetter(this.state.userName) + 's t-shirt Size: ' + this.state.size}
-                                                            className="Demo__some-network__share-button">
-                                                            <TwitterIcon size={32} round />
-                                                        </TwitterShareButton>
-                                                    </div>
-                                                </div>
-                                                <div className="telegram share-button">
-                                                    <div className="Demo__some-network">
-                                                        <TelegramShareButton
-                                                            url={"/t-shirt/" + this.props.match.params.number}
-                                                            title={Utils.capitalizeFirstLetter(this.state.userName) + 's t-shirt Size: ' + this.state.size}
-                                                            className="Demo__some-network__share-button">
-                                                            <TelegramIcon size={32} round />
-                                                        </TelegramShareButton>
-                                                    </div>
-                                                </div>
-                                                <div className="whatsaap share-button">
-                                                    <div className="Demo__some-network">
-                                                        <WhatsappShareButton
-                                                            url={"/t-shirt/" + this.props.match.params.number}
-                                                            title={Utils.capitalizeFirstLetter(this.state.userName) + 's t-shirt Size: ' + this.state.size}
-                                                            separator=":: "
-                                                            className="Demo__some-network__share-button">
-                                                            <WhatsappIcon size={32} round />
-                                                        </WhatsappShareButton>
-                                                    </div>
-                                                </div>
-                                                <div className="google-plus share-button">
-                                                    <div className="Demo__some-network">
-                                                        <GooglePlusShareButton
-                                                            url={"http://bitshirt.co/t-shirt/" + this.props.match.params.number}
-                                                            className="Demo__some-network__share-button">
-                                                            <GooglePlusIcon size={32} round />
-                                                        </GooglePlusShareButton>
-                                                    </div>
-                                                </div>
-                                                <div className="linkedin share-button">
-                                                    <div className="Demo__some-network">
-                                                        <LinkedinShareButton
-                                                            url={"http://bitshirt.co/t-shirt/" + this.props.match.params.number}
-                                                            title={Utils.capitalizeFirstLetter(this.state.userName) + 's t-shirt Size: ' + this.state.size}
-                                                            windowWidth={750}
-                                                            windowHeight={600}
-                                                            className="Demo__some-network__share-button">
-                                                            <LinkedinIcon size={32} round />
-                                                        </LinkedinShareButton>
-                                                    </div>
-                                                </div>
-                                                <div className="pinterest share-button">
-                                                    <div className="Demo__some-network">
-                                                        <PinterestShareButton
-                                                            url={String(window.location)}
-                                                            media={`${String(window.location)}/${<img src={img} width="100%" height="auto"/>}`}
-                                                            windowWidth={1000}
-                                                            windowHeight={730}
-                                                            className="Demo__some-network__share-button">
-                                                            <PinterestIcon size={32} round />
-                                                        </PinterestShareButton>
-                                                    </div>
-                                                </div>
-                                                <div className="reddit share-button">
-                                                    <div className="Demo__some-network">
-                                                        <RedditShareButton
-                                                            url={"http://bitshirt.co/t-shirt/" + this.props.match.params.number}
-                                                            title={Utils.capitalizeFirstLetter(this.state.userName) + 's t-shirt Size: ' + this.state.size}
-                                                            windowWidth={660}
-                                                            windowHeight={460}
-                                                            className="Demo__some-network__share-button">
-                                                            <RedditIcon size={32} round />
-                                                        </RedditShareButton>
-                                                    </div>
-                                                </div>
-                                                <div className="tumblr share-button">
-                                                    <div className="Demo__some-network">
-                                                        <TumblrShareButton
-                                                            url={"http://bitshirt.co/t-shirt/" + this.props.match.params.number}
-                                                            title={Utils.capitalizeFirstLetter(this.state.userName) + 's t-shirt Size: ' + this.state.size}
-                                                            windowWidth={660}
-                                                            windowHeight={460}
-                                                            className="Demo__some-network__share-button">
-                                                            <TumblrIcon size={32} round />
-                                                        </TumblrShareButton>
-                                                    </div>
-                                                </div>
-                                                <div className="email share-button">
-                                                    <div className="Demo__some-network">
-                                                        <EmailShareButton
-                                                            url={"http://bitshirt.co/sendmail.php"}
-                                                            subject={"Share page: " +
-                                                            Utils.capitalizeFirstLetter(this.state.userName) +
-                                                            's t-shirt Size: ' + this.state.size
-                                                            }
-                                                            className="Demo__some-network__share-button"
-                                                            onClick={this.handleSharePage}
-                                                        >
-                                                            <EmailIcon size={32} round />
-                                                        </EmailShareButton>
-                                                    </div>
-                                                </div>
-                                            </DropdownButton>
-                                        </div>
-                                    </h1>
-                                </div>
-                                <div className="app-desc">
-                                    <p>The product is genuine</p>
-                                    <h2># {this.props.match.params.number}</h2>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-12">{this.renderPrise()}</div>
-                                </div>
+                <div className="app second_page">
+                    <Header
+                        secondPage={true}
+                        size={this.state.size}
+                        userName={this.state.userName}
+                        number={this.props.match.params.number}
+                    />
+                    <div id="second_header">
+                        <div className="container">
+                            <div className="header_container">
+                                <h1>{Utils.capitalizeFirstLetter(this.state.userName)}'s T-SHIRT</h1>
+                                <p className="sh_pretext">This product is genuine</p>
+                                <span className="sh_number">
+                                    <big>{this.props.match.params.number}</big>
+                                    <small>UNIQUE<br />NUMBER</small>
+                                </span>
+                                <span className="sh_size">
+                                    <big style={{textTransform:'uppercase'}}>{this.state.size}</big>
+                                    <small>T-SHIRT<br />SIZE</small>
+                                </span>
+                                {this.renderPrise()}
                                 {this.renderPutSaleActions()}
                             </div>
+                            <div className="header_img">
+                                <img src={SmallTshirt} alt="" />
+                            </div>
                         </div>
-                        <ReactModal id={1} key={1}
-                            isOpen={this.state.showModal} style={customStyles}>
-                            <button className="close-modal" onClick={this.handleCloseModal}>+</button>
-                            {this.renderForm()}
-                        </ReactModal>
+                        <div className="header_border" />
                     </div>
+                    <Footer />
+                    {this.state.isWarning || this.state.transactions.length > 0 ? <div className="window-message">
+                        {this.state.isWarning ? <div className="message" >
+                            {this.renderWarnings()}
+                        </div> : null }
+                        {this.state.transactions.length > 0 ? <div className="message" >
+                            <TransactionsContainer transactions={this.state.transactions} onHideTransactions={this.handleHideTransactions} />
+                        </div> : null }
+                    </div> : null }
+                    <ReactModal id={1} key={1}
+                                isOpen={this.state.showModal} style={customStyles}>
+                        <button className="close-modal" onClick={this.handleCloseModal}>+</button>
+                        {this.renderForm()}
+                    </ReactModal>
                 </div>
             );
         }

@@ -4,7 +4,13 @@ import Product from './product';
 
 export function ProductsList(props) {
     return props.products.map(function (value, index) {
-        return <Product key={index} productId={value}/>
+        return (<div className="panel panel-info" style={{marginRight: "10px"}}>
+            <div className="panel-body">
+                <div className="alert alert-info">
+                    <Product key={index} productId={value}/>
+                </div>
+            </div>
+        </div>);
     });
 }
 ProductsList.propTypes = {

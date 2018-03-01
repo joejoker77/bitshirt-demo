@@ -6,11 +6,9 @@ class Product extends Component {
         super(props);
     }
     render() {
-        return <div className="panel-body">
-            <a href={"http://bitshirt.co/t-shirt/" + this.props.productId} target="_self">
-                T-Shirt # {this.props.productId}
-            </a>
-        </div>
+        return <a href={"http://bitshirt.co/t-shirt/" + this.props.productId} target="_self">
+            T-Shirt # {this.props.productId}
+        </a>
     };
 }
 Product.propTypes = {

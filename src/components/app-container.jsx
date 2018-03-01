@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Web3 from 'web3';
-import App from './app';
 import AppPersonal from './app-personal';
 import Header from './header';
 import Disconnected from './disconnected';
@@ -12,7 +11,8 @@ export class AppContainer extends Component {
         super(props);
         this.state = {
             isConnecting: true,
-            isConnected: false
+            isConnected: false,
+            version: "MetaMask"
         };
     }
     componentWillMount() {
@@ -29,12 +29,11 @@ export class AppContainer extends Component {
             .then(this.checkNetwork)
             .then(function (networkId) {
                 this.setState({
-                    isConnected: networkId == 3,
+                    isConnected: networkId === '3',
                     isConnecting: false
                 });
             }.bind(this))
             .catch(function (error) {
-                console.log(error);
                 this.setState({
                     isConnected: false,
                     isConnecting: false
@@ -55,8 +54,6 @@ export class AppContainer extends Component {
             window.web3 = new Web3(web3.currentProvider);
             window.web3.eth.defaultAccount = defaultAccount;
             return Promise.resolve();
-        } else {
-            Promise.reject();
         }
     }
     checkNetwork() {
@@ -73,7 +70,6 @@ export class AppContainer extends Component {
                 <Router>
                     <Switch>
                         <Route exact path='/' component={Home} />
-                        <Route exact path='/app' component={App}/>
                         <Route exact path='/t-shirt/:number' component={AppPersonal}/>
                     </Switch>
                 </Router>
@@ -81,7 +77,7 @@ export class AppContainer extends Component {
         } else {
             return (
                 <div className="app-container">
-                    <Header version={this.state.version} />
+                    <Header secondPage={false} size="M" userName="" version={this.state.version} />
                     <Disconnected version={this.state.version} />
                 </div>
             );

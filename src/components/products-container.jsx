@@ -18,15 +18,13 @@ export class ProductsContainer extends Component {
     }
 
     render() {
-        if (this.props.products.length == 0) {
+        if (this.props.products.length === 0) {
             return null;
         }
         return (
-            <div className="row transactions-container">
+            <div className="message-container products-container">
                 <h4>Your Owner: </h4>
-                <div className="panel panel-info">
-                    <ProductsList products={this.props.products}/>
-                </div>
+                <ProductsList products={this.props.products} />
             </div>
         );
     }

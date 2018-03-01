@@ -111,7 +111,7 @@ class PutSaleForm extends Component {
     render() {
         const { res, invalid, displayErrors } = this.state;
         return (
-            <div>
+            <div className="sh_sell">
                 <form
                     onSubmit={this.handleSubmit}
                     noValidate
@@ -125,7 +125,7 @@ class PutSaleForm extends Component {
                             isNumericString = {true}
                             decimalScale    = {4}
                             allowNegative   = {false}
-                            placeholder     = "Type the selling price"
+                            placeholder     = "Selling price"
                             id              = "price"
                             name            = "price"
                             data-parse      = "number"
@@ -135,7 +135,7 @@ class PutSaleForm extends Component {
                             }} />
                         {this.renderField()}
                     </div>
-                    <button className="btn btn-primary btn-large">Sell</button>
+                    <button className="blue_btn">SELL T-SHIRT</button>
                 </form>
                 <div className="res-block">
                     {invalid && (

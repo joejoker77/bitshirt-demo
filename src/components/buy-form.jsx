@@ -32,32 +32,52 @@ class ShakingError extends Component {
 class BuyForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {address: ''};
+        this.state = {
+            address: '',
+            checked: ''
+        };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onChange = (address) => this.setState({ address })
     }
 
+    _checkState(event){
+        let radioId = event.target.parentElement.getAttribute('for'),
+            radioEl = window.document.getElementById(radioId);
+
+        console.log(radioEl.defaultValue);
+
+        this.setState({checked: radioId, sizeValue: radioEl.defaultValue});
+    }
+
     handleSubmit(event) {
+
         event.preventDefault();
+
         geocodeByAddress(this.state.address)
             .then(results => getLatLng(results[0]))
             .then(latLng => console.log('Success', latLng))
             .catch(error => console.error('Error', error));
+
         if (!event.target.checkValidity()) {
             this.setState({
-                invalid: true,
+                invalid      : true,
                 displayErrors: true,
+                sizeValue    : ''
             });
             return;
         }
+
         const form = event.target;
         const data = new FormData(form);
+
         for (let name of data.keys()) {
-            const input = form.elements[name];
-            const parserName = input.dataset.parse;
-            if (parserName) {
-                const parsedValue = inputParsers[parserName](data.get(name));
-                data.set(name, parsedValue);
+            if(typeof form.elements.name !== 'undefined'){
+                const input = form.elements[name];
+                const parserName = input.dataset.parse;
+                if (parserName) {
+                    const parsedValue = inputParsers[parserName](data.get(name));
+                    data.set(name, parsedValue);
+                }
             }
         }
         function stringifyFormData(fd) {
@@ -84,45 +104,178 @@ class BuyForm extends Component {
         if(!this.props.hiddenInput){
             return (
                 <div>
-                    <form onSubmit={this.handleSubmit} noValidate className={displayErrors ? 'displayErrors' : ''} >
-                        <div className="form-group">
-                            <label htmlFor="size">Change size:</label>
-                            <select className="form-control" id="size" name="size">
-                                <option value="S" >S</option>
-                                <option value="M">M</option>
-                                <option value="L">L</option>
-                                <option value="XL">XL</option>
-                                <option value="2XL">2XL</option>
-                                <option value="4XL">4XL</option>
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="PlacesAutocomplete__root">
-                                Delivery address&nbsp;
-                                <span style={{fontSize: "12px"}}>
-                                    (You must select an address from the list)
-                                </span>
-                            </label>
-                            <PlacesAutocomplete classNames={'form-control'} inputProps={inputProps} />
-                            <input id="delivery_address" name="delivery_address" type="hidden" value={this.state.address} required />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="delivery_flat">
-                                Enter the number of the apartment or office (Optional)
-                            </label>
+                    <h4>BUYING A T-SHIRT</h4>
+                    <form onSubmit={this.handleSubmit} noValidate className={displayErrors ? 'displayErrors' : ''} id="contact_form" >
+                        <label>SELECT SIZE</label>
+                        <div id="group1" className="ui-buttonset">
                             <input
-                                className="form-control"
-                                type={'number'}
-                                min={0}
-                                max={9999}
-                                name="delivery_flat"
-                                id="delivery_flat" />
-                        </div>
+                                type="radio" name="size" id="radio1"
+                                checked={this.state.checked.toString() === "radio1"}
+                                className="ui-helper-hidden-accessible"
+                                defaultValue="xs"
+                            />
+                            <label
+                                htmlFor="radio1"
+                                role="button"
+                                aria-disabled="false"
+                                className={this.state.checked.toString() === "radio1" ?
+                                    "ui-button ui-widget ui-state-default ui-button-text-only ui-state-active" :
+                                    "ui-button ui-widget ui-state-default ui-button-text-only"
+                                }
+                                onClick={(event) => this._checkState(event)}
+                            >
+                                <span className="ui-button-text">xs</span>
+                            </label>
 
-                        <div className="form-group" style={{textAlign:"center"}}>
-                            <button className="form-control btn btn-primary btn-lg">Send data!</button>
+                            <input
+                                type="radio" name="size" id="radio2"
+                                checked={this.state.checked.toString() === "radio2"}
+                                className="ui-helper-hidden-accessible"
+                                defaultValue="s"
+                            />
+                            <label
+                                htmlFor="radio2"
+                                role="button"
+                                aria-disabled="false"
+                                className={this.state.checked.toString() === "radio2" ?
+                                    "ui-button ui-widget ui-state-default ui-button-text-only ui-state-active" :
+                                    "ui-button ui-widget ui-state-default ui-button-text-only"
+                                }
+                                onClick={(event) => this._checkState(event)}
+                            >
+                                <span className="ui-button-text">s</span>
+                            </label>
+
+                            <input
+                                type="radio" name="size" id="radio3"
+                                checked={this.state.checked.toString() === "radio3"}
+                                className="ui-helper-hidden-accessible"
+                                defaultValue="m"
+                            />
+                            <label
+                                htmlFor="radio3"
+                                role="button"
+                                aria-disabled="false"
+                                className={this.state.checked.toString() === "radio3" ?
+                                    "ui-button ui-widget ui-state-default ui-button-text-only ui-state-active" :
+                                    "ui-button ui-widget ui-state-default ui-button-text-only"
+                                }
+                                onClick={(event) => this._checkState(event)}
+                            >
+                                <span className="ui-button-text">m</span>
+                            </label>
+
+                            <input
+                                type="radio" name="size" id="radio4"
+                                checked={this.state.checked.toString() === "radio4"}
+                                className="ui-helper-hidden-accessible"
+                                defaultValue="l"
+                            />
+                            <label
+                                htmlFor="radio4"
+                                role="button"
+                                aria-disabled="false"
+                                className={this.state.checked.toString() === "radio4" ?
+                                    "ui-button ui-widget ui-state-default ui-button-text-only ui-state-active" :
+                                    "ui-button ui-widget ui-state-default ui-button-text-only"
+                                }
+                                onClick={(event) => this._checkState(event)}
+                            >
+                                <span className="ui-button-text">l</span>
+                            </label>
+
+                            <input
+                                type="radio" name="size" id="radio5"
+                                checked={this.state.checked.toString() === "radio5"}
+                                className="ui-helper-hidden-accessible"
+                                defaultValue="xl"
+                            />
+                            <label
+                                htmlFor="radio5"
+                                role="button"
+                                aria-disabled="false"
+                                className={this.state.checked.toString() === "radio5" ?
+                                    "ui-button ui-widget ui-state-default ui-button-text-only ui-state-active" :
+                                    "ui-button ui-widget ui-state-default ui-button-text-only"
+                                }
+                                onClick={(event) => this._checkState(event)}
+                            >
+                                <span className="ui-button-text">xl</span>
+                            </label>
+
+                            <input
+                                type="radio" name="size" id="radio6"
+                                checked={this.state.checked.toString() === "radio6"}
+                                className="ui-helper-hidden-accessible"
+                                defaultValue="2xl"
+                            />
+                            <label
+                                htmlFor="radio6"
+                                role="button"
+                                aria-disabled="false"
+                                className={this.state.checked.toString() === "radio6" ?
+                                    "ui-button ui-widget ui-state-default ui-button-text-only ui-state-active" :
+                                    "ui-button ui-widget ui-state-default ui-button-text-only"
+                                }
+                                onClick={(event) => this._checkState(event)}
+                            >
+                                <span className="ui-button-text">2xl</span>
+                            </label>
+
+                            <input
+                                type="radio" name="size" id="radio7"
+                                checked={this.state.checked.toString() === "radio7"}
+                                className="ui-helper-hidden-accessible"
+                                defaultValue="3xl"
+                            />
+                            <label
+                                htmlFor="radio7"
+                                role="button"
+                                aria-disabled="false"
+                                className={this.state.checked.toString() === "radio7" ?
+                                    "ui-button ui-widget ui-state-default ui-button-text-only ui-state-active" :
+                                    "ui-button ui-widget ui-state-default ui-button-text-only"
+                                }
+                                onClick={(event) => this._checkState(event)}
+                            >
+                                <span className="ui-button-text">3xl</span>
+                            </label>
+
+                            <input
+                                type="radio" name="size" id="radio8"
+                                checked={this.state.checked.toString() === "radio8"}
+                                className="ui-helper-hidden-accessible"
+                                defaultValue="4xl"
+                            />
+                            <label
+                                htmlFor="radio8"
+                                role="button"
+                                aria-disabled="false"
+                                className={this.state.checked.toString() === "radio8" ?
+                                    "ui-button ui-widget ui-state-default ui-button-text-only ui-state-active" :
+                                    "ui-button ui-widget ui-state-default ui-button-text-only"
+                                }
+                                onClick={(event) => this._checkState(event)}
+                            >
+                                <span className="ui-button-text">4xl</span>
+                            </label>
+                            <input type='hidden' name='sizeValue' value={this.state.sizeValue} />
                         </div>
+                        <label htmlFor="PlacesAutocomplete__root">DELIVERY ADDRESS</label>
+                        <PlacesAutocomplete className={'form-control'} inputProps={inputProps} />
+                        <input id="delivery_address" name="delivery_address" type="hidden" value={this.state.address} required />
+
+                        <label htmlFor="delivery_flat">ENTER THE NUMBER OF THE APARTMENT</label>
+                        <input
+                            className="form-control"
+                            type={'number'}
+                            min={0}
+                            max={9999}
+                            name="delivery_flat"
+                            id="delivery_flat"
+                        />
+                        <button className="blue_btn" type="submit">Send data!</button>
+                        <span className="modal_comment">You pay {this.props.price} ETH for #{this.props.poductId}/1000 T-Shirt</span>
                     </form>
 
                     <div className="res-block">
@@ -198,7 +351,8 @@ BuyForm.propTypes = {
     onBuyProduct: PropTypes.func.isRequired,
     hiddenInput : PropTypes.bool,
     size        : PropTypes.string,
-    poductId    : PropTypes.string
+    productId   : PropTypes.string,
+    price       : PropTypes.string
 };
 export default BuyForm;
 

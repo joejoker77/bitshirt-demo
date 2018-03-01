@@ -1,7 +1,7 @@
 /*	--------------------------------------------------
 	Reveal Modals
 	-------------------------------------------------- */
-		
+		.ReactModal__Overlay.ReactModal__Overlay--after-open{z-index: 999}
 	.reveal-modal-bg {
 		position: fixed;
 		height: 100%;
@@ -15,21 +15,22 @@
 		}
 	
 	.reveal-modal {
-		visibility: hidden;
-		top: 100px;
-		position: fixed;
-		z-index: 999999;
-		left: 0;
+		position: absolute;
+		z-index: 10;
+		left: 50%;
 		right: 0;
-		top: 50px;
+		top: -500px;
 		bottom: 0;
-		margin: 0 auto;
+		margin-left: -248px;
+		min-height: 1px;
 		width: 496px;
-		height: 596px;
+		display: table;
 		border-radius: 20px;
 		background-color: #ffffff;
 		box-shadow: 0 2px 24px 0 rgba(22, 100, 135, 0.16);
-		padding:45px 25px;
+		padding: 45px 25px;
+		outline: none;
+		transition: all 0.5s ease-in-out;
 		}
 	#maps1.reveal-modal, #maps2.reveal-modal, #maps3.reveal-modal {
 		max-width: 650px;

@@ -18,7 +18,7 @@ a:active,a:focus {
 }
 #tabs li {margin-bottom: 48px;margin-left: -19px;}
 #tabs li:first-child {margin-bottom: 20px;margin-top: 20px;}
-#tabs li > p {font-family: Museo Sans Cyrl;font-style: normal;font-weight: bold;line-height: 48px;font-size: 22px;letter-spacing: -0.5px;color: #33404D;padding-left: 19px;}
+#tabs li > p {font-family: 'MuseoSansCyrl', sans-serif;font-style: normal;font-weight: bold;line-height: 48px;font-size: 22px;letter-spacing: -0.5px;color: #33404D;padding-left: 19px;}
 
 #tabs li a {
 	display: block;
@@ -73,7 +73,7 @@ a:active,a:focus {
 }
 
 #tabs_container > div {
-	top: 70px;
+	top: 70px!important;
 	width: 364px;
 	left:  0;
 	right: 0;

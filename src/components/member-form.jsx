@@ -52,7 +52,6 @@ class MyForm extends Component {
         for (let name of data.keys()) {
             const input = form.elements[name];
             const parserName = input.dataset.parse;
-            //console.log('parser name is', parserName);
             if (parserName) {
                 const parsedValue = inputParsers[parserName](data.get(name));
                 data.set(name, parsedValue);
@@ -79,28 +78,23 @@ class MyForm extends Component {
         const { res, invalid, displayErrors } = this.state;
         return (
             <div>
+                <h4>REGISTRATION</h4>
                 <form
                     onSubmit={this.handleSubmit}
                     noValidate
                     className={displayErrors ? 'displayErrors' : ''}
                 >
-                    <div className="form-group">
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            id="username"
-                            name="username"
-                            type="text"
-                            data-parse="uppercase"
-                            className="form-control"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="email">Email:</label>
-                        <input className="form-control" id="email" name="email" type="email" required />
-                    </div>
-                    <div className="form-group" style={{textAlign:"center"}} >
-                        <button className="form-control btn btn-primary btn-lg">Send data!</button>
-                    </div>
+                    <label htmlFor="username">USERNAME:</label>
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        data-parse="uppercase"
+                        className="form-control"
+                    />
+                    <label htmlFor="email">EMAIL:</label>
+                    <input className="form-control" id="email" name="email" type="email" required />
+                    <button className="blue_btn">Send data!</button>
                 </form>
 
                 <div className="res-block">

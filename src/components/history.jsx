@@ -21,11 +21,6 @@ class History extends Component {
     componentWillMount() {
         this.formatHistory();
     }
-    // componentWillUpdate() {
-    //     if(this.state.history.length === 0){
-    //         this.formatHistory();
-    //     }
-    // }
     formatHistory() {
         let objectHistory = this.props.historyData,
             $this         = this;
@@ -37,26 +32,44 @@ class History extends Component {
             })
     }
     render() {
-        return(<div className="ownership-history">
-            <h4>Ownership history</h4>
-            <table className="table strip">
-                <thead>
-                    <tr>
-                        <th>Owner</th>
-                        <th>Date of purchase</th>
-                        <th>Cost</th>
-                    </tr>
-                </thead>
-                <tbody>
+        return(<div className="sh_table">
+            <span className="sh_table_name">OWNERSHIP HISTORY:</span>
+            <span className="sh_coll coll_numb">
+                <big>#</big>
                 {Array.prototype.map.call(this.state.history, function (val, index) {
-                    return (<tr key={index}>{
-                        Array.prototype.map.call(val, function (value, indx) {
-                            return(<td key={indx}>{value}</td>)
-                        })
-                    }</tr>)
+                    return (<small key={index}>{index + 1}</small>)
                 })}
-                </tbody>
-            </table>
+            </span>
+            <span className="sh_coll coll_owner">
+                <big>Owner</big>
+                {Array.prototype.map.call(this.state.history, function (val, index) {
+                    return (<small key={index}>{
+                        Array.prototype.map.call(val, function (value, indx) {
+                            return( indx === 0 ? <td key={indx}>{value}</td> : null)
+                        })
+                    }</small>)
+                })}
+            </span>
+            <span className="sh_coll coll_date">
+                <big>Date of purshare</big>
+                {Array.prototype.map.call(this.state.history, function (val, index) {
+                    return (<small key={index}>{
+                        Array.prototype.map.call(val, function (value, indx) {
+                            return( indx === 1 ? <td key={indx}>{value}</td> : null)
+                        })
+                    }</small>)
+                })}
+            </span>
+            <span className="sh_coll coll_cost">
+                <big>Cost</big>
+                {Array.prototype.map.call(this.state.history, function (val, index) {
+                    return (<small key={index}>{
+                        Array.prototype.map.call(val, function (value, indx) {
+                            return( indx === 2 ? <td key={indx}>{value}</td> : null)
+                        })
+                    }</small>)
+                })}
+            </span>
         </div>)
     }
 }

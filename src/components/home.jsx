@@ -1,55 +1,111 @@
 import React, {Component} from 'react';
-import { Player } from 'video-react';
+import ReactModal from 'react-modal';
+import _ from 'lodash';
+import Web3 from "web3";
+import axios from "axios/index";
 import $ from 'jquery';
 
-import Gallery1 from '../images/lending/gallery/1.jpg';
-import Gallery2 from '../images/lending/gallery/2.jpg';
-import Gallery3 from '../images/lending/gallery/3.jpg';
-import Gallery4 from '../images/lending/gallery/4.jpg';
-import Gallery5 from '../images/lending/gallery/5.jpg';
-import Gallery6 from '../images/lending/gallery/6.jpg';
-import Gallery7 from '../images/lending/gallery/7.jpg';
-import Gallery8 from '../images/lending/gallery/8.jpg';
-
-import Bullet from '../images/lending/bullet.png';
-import Icon1 from '../images/lending/icon1.png';
-import Icon2 from '../images/lending/icon2.png';
-import Icon3 from '../images/lending/icon3.png';
-import Logo from '../images/lending/logo.png';
-import LogoFix from '../images/lending/logo_fix.png';
-import Proof1 from '../images/lending/proof1.svg';
-import Proof2 from '../images/lending/proof2.svg';
-import Proof3 from '../images/lending/proof3.svg';
-import Proof4 from '../images/lending/proof4.svg';
-import Proof5 from '../images/lending/proof5.svg';
-import Proof6 from '../images/lending/proof6.svg';
-import Proof7 from '../images/lending/proof7.svg';
-import Proof8 from '../images/lending/proof8.svg';
 import SmallTshirtBg from '../images/lending/small-tshirt-bg.png';
-import Soc1 from '../images/lending/soc1.png';
-import Soc2 from '../images/lending/soc2.png';
-import Soc3 from '../images/lending/soc3.png';
 import Table from '../images/lending/table.png';
+
+import Header from './header';
+import Form from './buy-form'
+import FormMember from './member-form';
+import MetaMaskAuthorizeWarning from './warnings/metamask-authorize-warning';
+import BecomeMemberWarning from './warnings/become-member-warning';
+import LowBalanceWarning from './warnings/low-balance-warning';
+import Footer from './footer';
+import PreContent from './pre-content';
+import StaticContent from './static-content';
+import ProductsContainer from './products-container';
+import NewUserContainer from './new-user-message';
 
 import '../utils/tabulous.js';
 import '../utils/woco.accordion.min.js';
 import '../utils/lightbox-plus-jquery.min.js';
 import '../utils/jquery.appear.js';
 
+
 import '../styles/style.scss';
+import * as transactionTypes from "../utils/transaction-types";
+import TransactionsStorage from "../utils/transactions-storage";
+import TransactionsContainer from './transactions-container';
+import Blockchain from "../utils/blockchain";
+import ProgressBar from 'react-bootstrap/lib/ProgressBar';
 
 export class Home extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            productsCount       : '',
+            startPrice          : 0,
+            startPriceInUsd     : '',
+            endPriceInUsd       : '',
+            showModal           : false,
+            modalIsOpen         : false,
+            currentAccountLoaded: false,
+            userAddress         : "",
+            isWarning           : false,
+            transactions        : [],
+            products            : [],
+            newUser             : false
+        };
+        this.initBlockchain();
+        _.bindAll(this, [
+            'handleOpenModal',
+            'handleCloseModal',
+            'handleBuyProduct',
+            'handleBecomeMember',
+            'handleHideTransactions',
+            'handleHideNewUser'
+        ]);
     }
 
-    _playPause(event){
+    componentWillMount(){
+        this.transactionsStorage.startChecker(function (type) {
 
+            if(typeof type !== 'undefined') {
+
+                let productCount = this.state.productsCount,
+                    requestData  = {},
+                    $this        = this;
+
+                switch (type){
+                    case 'BuyProduct':
+                        requestData.action    = "Buy new product";
+                        requestData.productId = productCount+1;
+                        this.blockchain.getOwnerProductInfo($this.state.userAddress).then(function (data) {
+                            requestData.user = data;
+                            $this.blockchain.getCurrentPersonalProductInfo(productCount+1).then(function (data2) {
+                                requestData.product = data2;
+                                $.ajax({
+                                    method: "POST",
+                                    url: 'http://bitshirt.co/sendmail.php',
+                                    data: requestData,
+                                    success: function () {
+                                        window.location.href = '/t-shirt/' + (productCount+1);
+                                        },
+                                    error: function (error) {
+                                        console.log(error);
+                                    }
+                                });
+                            });
+                        });break;
+                }
+            }
+
+            this.updateData();
+        }.bind(this));
+        this.updateData();
+    }
+
+    initBlockchain(){
+        this.blockchain          = new Blockchain();
+        this.transactionsStorage = new TransactionsStorage(this.blockchain);
     }
 
     componentDidMount() {
-
         let wow = new WOW(
             {
                 boxClass:     'wow',
@@ -57,15 +113,15 @@ export class Home extends Component {
                 offset:       0,
                 mobile:       true,
                 live:         true,
-                callback:     function(box) {
-                },
+                callback:     function(box) {},
                 scrollContainer: null
             }),
             $accordion = $(".accordion"),
             $tabs      = $("#tabs"),
             $body      = $("body"),
             touch      = $('#touch-menu'),
-            menu       = $('.menu_top');
+            menu       = $('.menu_top'),
+            $this      = this;
 
         wow.init();
 
@@ -98,9 +154,20 @@ export class Home extends Component {
                 }
             });
         }
+
         $('#stock .blue_btn').appear(function () {
+
             $("#stock").addClass("graph_start");
+
+            let width  = $("#stock.graph_start .stock_img_t").width();
+            $("#stock.graph_start .stock_img_c").width((width / 100) * $this.state.productsCount);
+            $('#stock.graph_start .progress-bar.active').css({width: ($this.state.productsCount) + '%', background: "transparent" });
+            $('#stock.graph_start .stock_graph').css({
+                opacity: '1',
+                transform: "scale(1, 1) rotate(27.6deg)"
+            });
         });
+
         $('.works_container').appear(function () {
             $(".works_container").addClass("start");
         });
@@ -120,6 +187,11 @@ export class Home extends Component {
             return false;
         });
 
+        $(".time_container a").click(function (d) {
+            d.preventDefault();
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+        });
+
         $(touch).click(function(e) {
             e.preventDefault();
             menu.slideToggle();
@@ -133,7 +205,70 @@ export class Home extends Component {
     }
 
     componentWillUnmount() {
+        this.transactionsStorage.stopChecker();
+    }
 
+    updateData(){
+
+        if(this.blockchain.address && this.blockchain.address !=="") {
+
+            this.blockchain.getProductCount().then(function (productsCount) {
+                this.setState({productsCount: productsCount});
+            }.bind(this));
+
+            this.blockchain.getContractBalance().then(function (balance) {
+                this.setState({balance: balance});
+            }.bind(this));
+
+            this.blockchain.getCurrentAccountInfo().then(function (data) {
+                this.setState({
+                    userAddress         : data.address,
+                    userBalance         : data.balance,
+                    isUser              : data.isUser,
+                    isParticipant       : data.isParticipant,
+                    userName            : data.userName,
+                    userEmail           : data.userEmail,
+                    currentAccountLoaded: data.isParticipant,
+                    isWarning           : !data.isParticipant,
+                    products            : data.products
+                });
+            }.bind(this)).catch(function (error) {
+                console.error(error);
+            });
+
+            this.blockchain.getStartPrice().then(function (startPrice) {
+                let $this = this;
+                this.pingApi().then(function (data) {
+                    let usdPrice    = +parseFloat(web3.fromWei(data[0].price_usd * startPrice)).toFixed(2);
+                    let usdEndPrice = data[0].price_usd;
+                    $this.setState({
+                        startPrice     : web3.fromWei(startPrice),
+                        startPriceInUsd: usdPrice,
+                        endPriceInUsd  : usdEndPrice
+                    });
+                });
+            }.bind(this)).catch(function (error) {
+                console.log(error);
+            });
+        }else{
+            let $this = this;
+            this.testInfura().then(function (data) {
+                $this.setState({
+                    startPrice          : data.startPrice,
+                    productsCount       : data.productsCount,
+                    startPriceInUsd     : data.startPriceInUsd,
+                    endPriceInUsd       : data.endPriceInUsd,
+                    currentAccountLoaded: false,
+                    isWarning           : true,
+                    isParticipant       : false,
+                    userName            : '',
+                    userEmail           : ''
+                });
+            }).catch(function (error) {
+                console.log(error);
+            })
+        }
+        this.updateTransactions();
     }
 
     pingApi() {
@@ -149,41 +284,158 @@ export class Home extends Component {
         });
     }
 
+    testInfura() {
+        let $this = this;
+        return new Promise(function (resolve, reject) {
+            let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
+                ContractAddr = "0xc1cf7f5344b2223bf2ef065ee281ad874e025085",
+                fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
+                productId    = web3.eth.getStorageAt(ContractAddr, 7);
+
+            $this.pingApi().then(function (data2) {
+                let web3          = new Web3(),
+                    minPrice      = web3.fromWei(parseInt(fixPrice, 16)),
+                    productCount  = parseInt(productId, 16),
+                    priceInUsd    = (data2[0].price_usd * (minPrice * productCount)).toFixed(2),
+                    maxPriceInUsd = (data2[0].price_usd * (minPrice * 100)).toFixed(2);
+
+                resolve({
+                    startPrice      : parseFloat((productCount * parseFloat(minPrice)).toFixed(9)),
+                    productsCount   : productCount,
+                    startPriceInUsd : priceInUsd,
+                    endPriceInUsd   : maxPriceInUsd
+                });
+            });
+        });
+    }
+
+    handleHideTransactions() {
+        this.transactionsStorage.hidePendingTransactions();
+        this.updateTransactions();
+    }
+
+    updateTransactions() {
+        this.setState({transactions: this.transactionsStorage.getPendingTransactions()});
+    }
+
+    handleBuyProduct(data) {
+        this.handleCloseModal();
+        let delivery = data.get('delivery_flat') ?
+            data.get('delivery_address') + ' ' + 'house/office: ' + data.get('delivery_flat') :
+            data.get('delivery_address');
+        this.blockchain.buyProduct(data.get('sizeValue'), delivery, this.state.startPrice, this.state.userName, this.state.userEmail)
+            .then(function (txHash) {
+                const tx = {
+                    transactionHash: txHash,
+                    type: transactionTypes.TYPE_BUY_PRODUCT
+                };
+                this.transactionsStorage.addTransaction(tx);
+                this.updateData();
+            }.bind(this))
+            .catch(function (error) {
+                console.error(error);
+            });
+    }
+
+    handleOpenModal () {
+        this.setState({showModal: true});
+    }
+
+    handleCloseModal () {
+        this.setState({showModal: false});
+    }
+
+    handleHideNewUser(){
+        this.setState({newUser: false});
+    }
+
+    handleBecomeMember(data) {
+
+        let userName  = data.get('username'),
+            userEmail = data.get('email');
+
+        this.handleCloseModal();
+        this.blockchain.becomeMember(userName, userEmail)
+            .then(function (data) {
+                if(data.status === 200 && data.data.status === "success") {
+
+                    let requestData = {};
+                    this.blockchain.getOwnerProductInfo(this.state.userAddress)
+                        .then(function (data) {
+                            requestData.action    = "Become member";
+                            requestData.user      = data;
+                            requestData.productId = $this.props.match.params.number;
+                            $.ajax({
+                                method: "POST",
+                                url: 'http://bitshirt.co/sendmail.php',
+                                data: requestData,
+                                success: function () {},
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+                        });
+
+                    this.setState({
+                        isParticipant: true,
+                        isWarning    : false,
+                        newUser      : true,
+                        userName     : userName,
+                        userEmail    : userEmail
+                    });
+                    this.updateData();
+                }
+            }.bind(this))
+            .catch(function (error) {
+                console.error(error);
+            });
+    }
+
+    renderForm(){
+        if(this.state.userAddress === "") {
+            return <div className="form-alert">
+                <h4>Attention!</h4>
+                <h5>You are not logged in the system!</h5>
+                <p>In order to make purchases you must be authorized!</p>
+                <p>Authorization:</p>
+                <ol>
+                    <li>Install the plugin for your MetaMask browser;</li>
+                    <li>Unlock one of your wallets;</li>
+                    <li>Update the application page;</li>
+                    <li>Complete a simple registration;</li>
+                </ol>
+            </div>;
+        }else if(this.state.isParticipant) {
+            return <div className='form-buy-product'>
+                <Form
+                    onBuyProduct={this.handleBuyProduct}
+                    price={this.state.startPrice}
+                    poductId={this.state.productsCount + 1}
+                />
+            </div>;
+        }else if(!this.state.currentAccountLoaded){
+            return <div className='form-member'>
+                <FormMember onFormMember={this.handleBecomeMember} />
+            </div>;
+        }
+    }
+
+    renderWarnings() {
+        if(this.state.userAddress === "") {
+            return <MetaMaskAuthorizeWarning />;
+        }else if(this.state.userBalance < this.state.startPrice){
+            return <LowBalanceWarning />;
+        }else if(!this.state.currentAccountLoaded){
+            return <BecomeMemberWarning onOpenModal={this.handleOpenModal} />;
+        }
+    }
+
     render() {
         return (
             <div className="app">
-                <div className="top_container">
-                    <div className="container">
-                        <div className="logo_container">
-                            <a href=""><img className="logo" src={Logo} alt=""/>
-                                <img className="logo_fix" src={LogoFix} alt=""/>
-                            </a>
-                        </div>
-                        <div className="menu_container">
-                            <a id="touch-menu" className="mobile-menu">&nbsp;</a>
-                            <nav className="menu_top">
-                                <ul>
-                                    <li><a href="#header">Watch video</a></li>
-                                    <li><a href="#works">About</a></li>
-                                    <li><a href="#proof">Features</a></li>
-                                    <li><a href="#faq">FAQ</a></li>
-                                    <li>
-                                        <a className="example-image-link" href={Gallery1} data-lightbox="example-set">Gallery</a>
-                                        <a className="example-image-link hide" href={Gallery2} data-lightbox="example-set">&nbsp;</a>
-                                        <a className="example-image-link hide" href={Gallery3} data-lightbox="example-set">&nbsp;</a>
-                                        <a className="example-image-link hide" href={Gallery4} data-lightbox="example-set">&nbsp;</a>
-                                        <a className="example-image-link hide" href={Gallery5} data-lightbox="example-set">&nbsp;</a>
-                                        <a className="example-image-link hide" href={Gallery6} data-lightbox="example-set">&nbsp;</a>
-                                        <a className="example-image-link hide" href={Gallery7} data-lightbox="example-set">&nbsp;</a>
-                                        <a className="example-image-link hide" href={Gallery8} data-lightbox="example-set">&nbsp;</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-                <span id="behavior"></span>
-                <header id="header">
+                <Header size="M" />
+                <span id="behavior" className="hide" />
+                <div id="header">
                     <div className="container">
                         <div className="header_container">
                             <h1><span>BITSHIRT</span> is the first ever <br/>crypto project with a real<br/> product</h1>
@@ -192,385 +444,70 @@ export class Home extends Component {
                                 ever crypto project with a real product: a limited collection of <br/>
                                 amazing T-shirts that are impossible to fake up.</p>
                             <div className="header_box">
-                                <p><span>0.55 <small>ETH</small></span> Current price</p>
-                                <p><span>1 <small>ETH</small></span> Final price</p>
-                                <p><span>450</span> T-shirt left</p>
+                                <p><span>{this.state.userAddress && this.state.userAddress !== "" ? this.state.startPrice : this.state.startPrice + 0.1} <small>ETH</small></span> Current price</p>
+                                <p><span>{1} <small>ETH</small></span> Final price</p>
+                                <p><span>{100 - (this.state.productsCount)}</span> T-shirt left</p>
                             </div>
-                            <a href="#" data-reveal-id="buy" className="blue_btn">Buy now for 0.55 ETH</a>
+                            <a onClick={this.handleOpenModal} className="blue_btn">
+                                <span>Buy now for {this.state.userAddress && this.state.userAddress !== "" ? this.state.startPrice : this.state.startPrice + 0.1} ETH</span>
+                            </a>
                             <a href="#" className="header_video">Watch video</a>
                         </div>
                         <div className="header_img">
                             <img src={SmallTshirtBg} alt=""/>
                         </div>
                     </div>
-                </header>
-                <div className="header_bottom">
-                    <p>
-                        <img src={Icon1} alt=""/>
-                        Limited collection:<br/>
-                        1,000 pcs only
-                    </p>
-                    <p>
-                        <img src={Icon2} alt=""/>
-                        The first T-shirt for 0.01 ETH,<br/>
-                        the last one for 1 ETH
-                    </p>
-                    <p>
-                        <img src={Icon3} alt=""/>
-                        Counterfeit-proof<br/>
-                        due to the Blockchain
-                    </p>
                 </div>
-                <section id="works">
-                    <div className="container">
-                        <div className="works_container">
-                            <h2 className="wow fadeInUp" data-wow-delay="0.3s"><span>What</span> is it and <span>how</span> it works?</h2>
-                            <div className="collum">
-                                <div className="coll_2 wow fadeInUp" data-wow-delay="0.3s">
-                                    <p>98% of present-day crypto projects launch without having a real product behind them. The give promises they can’t keep.</p>
-                                    <p>We do vice versa. We created a truly revolutionary product employing all the good things the Blockchain technology offers.</p>
-                                </div>
-                                <div className="coll_2 wow fadeInUp" data-wow-delay="0.3s">
-                                    <p>One stylish minimalistic Bitshirt will turn the fashion industry upside down. We guarantee that the number of T-shirts is limited and their price will rise with every purchase. </p>
-                                    <p>A T-shirt can’t be faked up and our unique distribution model ensures you get what’s yours.</p>
-                                </div>
-                            </div>
-                            <div id="tabs">
-                                <ul>
-                                    <li>
-                                        <p>The model is simple as can be:</p>
-                                    </li>
-                                    <li className="wow fadeInUp" data-wow-delay="0.3s">
-                                        <a href="#tabs-1" className="tabulous_active" onClick={(event) => this._playPause(event)} data-play="1" title="">
-                                            <span>1</span>
-                                            <small>You place an order — We save the date into the Blockchain and no one can edit it even the authors. </small>
-                                        </a>
-                                    </li>
-                                    <li className="wow fadeInUp" data-wow-delay="0.3s">
-                                        <a href="#tabs-2" onClick={(event) => this._playPause(event)} data-play="2" title="">
-                                            <span>2</span>
-                                            <small>You get a T-shirt with a unique QR code that you can use to check if it’s genuine.</small>
-                                        </a>
-                                    </li>
-                                    <li className="wow fadeInUp" data-wow-delay="0.3s">
-                                        <a href="#tabs-3" onClick={(event) => this._playPause(event)} data-play="3" title="">
-                                            <span>3</span>
-                                            <small>You can sell the T-shirt whenever you want and the right of possession will go over to the buyer according to our smart contract. However, the Blockchain will store the information forever and remember that you were the first to own the T-shirt.</small>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <div id="tabs_container">
-                                    <div id="tabs-1" className="showscale">
-                                        <span className="tab_video">
-                                            <Player
-                                                id="video1"
-                                                playsInline
-                                                poster=""
-                                                src="../media/display_animate_01.mp4"
-                                                playsinline
-                                                webkit-playsinline
-                                                loop={true}
-                                                autoPlay={true}
-                                            />
-                                        </span>
-                                    </div>
-                                    <div id="tabs-2">
-                                        <span className="tab_video">
-                                           <Player
-                                               id="video2"
-                                               playsInline
-                                               poster=""
-                                               src="../media/display_animate_02.mp4"
-                                               playsinline
-                                               webkit-playsinline
-                                               loop={true}
-                                               autoPlay={true}
-                                           />
-                                        </span>
-                                    </div>
-                                    <div id="tabs-3">
-                                        <span className="tab_video">
-                                           <Player
-                                               id="video3"
-                                               playsInline
-                                               poster=""
-                                               src="../media/display_animate_03.mp4"
-                                               playsinline
-                                               webkit-playsinline
-                                               loop={true}
-                                               autoPlay={true}
-                                           />
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <PreContent />
                 <section id="stock">
                     <div className="container">
                         <div className="stock_container">
                             <h2>Less in stock, higher price</h2>
                             <p>We created a limited collection of T-shirt that will never be restocked. It means that that the price will go unbelievably high when the T-shirts are sold out. </p>
-                            <p>With every T-shirt sold its price increases by $1. Just imagine, you buy a T-shirt for $3 and within a month it takes a jump and costs $1000. Sounds juicy, right?</p>
-                            <a href="#" className="blue_btn">Buy now for 0.55 ETH</a>
+                            <p>With every T-shirt sold its price increases by $1. Just imagine, you buy a T-shirt for $3 and within a month it takes a jump and costs $100. Sounds juicy, right?</p>
+                            <a onClick={this.handleOpenModal} className="blue_btn">Buy now for {this.state.userAddress && this.state.userAddress !== "" ? this.state.startPrice : this.state.startPrice + 0.1} ETH</a>
                         </div>
                         <div className="stock_img">
-                            <img className="stock_img_t" src={Table} alt=""/>
-                            <img className="stock_img_b" src={Bullet} alt=""/>
-                            <div className="stock_img_c">&nbsp;</div>
-                            <div className="stock_graph wow bounceIn" data-wow-delay="3s">
-                                <big>0.55 <small>ETH</small></big>
-                                <small>Current price</small>
-                                <span>450 T-SHIRT LEFT</span>
+                            <div className="graph-wrapper" style={{display: 'table', position:'relative'}}>
+                                <ProgressBar
+                                    className="as-graph"
+                                    active
+                                    now={0}
+                                    min={0}
+                                    max={100}
+                                    label={
+                                        <div className="stock_graph">
+                                            <big>{this.state.userAddress && this.state.userAddress !== "" ? this.state.startPrice : this.state.startPrice + 0.1} <small>ETH</small></big>
+                                            <small>Current price</small>
+                                            <span>{100 - this.state.productsCount} T-SHIRT LEFT</span>
+                                        </div>
+                                    } />
+                                <img className="stock_img_t" src={Table} alt=""/>
+                                <div className="stock_img_c" />
                             </div>
                         </div>
                     </div>
                 </section>
-                <section id="proof">
-                    <div className="container">
-                        <div className="proof_container">
-                            <h2><span>100% counterfeit-proof </span><br/>
-                                is the future of the fashion<br/>
-                                industry
-                            </h2>
-                            <p>Blockchain technology secures every purchase and sale<br/>
-                                at all stages. A unique QR code on every single T-shirt <br/>
-                                out of 1,000 opens up the information about all <br/>
-                                previous owners.
-                            </p>
-                            <p>A product like this can’t be faked up, replicated to a<br/>
-                                million copies or be a subject in other widespread <br/>
-                                scams.
-                            </p>
-                        </div>
-                        <div className="proof_video">
-                            <Player
-                                id="video4"
-                                playsInline
-                                poster=""
-                                src="../media/iphone.mp4"
-                                playsinline
-                                webkit-playsinline
-                                loop={true}
-                                autoPlay={true}
-                            />
-                        </div>
-                        <div className="proof_adv">
-                            <div className="proof_adv_block wow fadeInUp" data-wow-delay="0.1s">
-                                <div className="proof_adv_img">
-                                    <img src={Proof1} alt=""/>
-                                </div>
-                                <p>BITSHIRT it’s <br/>a perfect gift</p>
-                                <span>It is not just a unique thing to<br/>
-                                    give, it’s going to<br/>
-                                    bring profit to the owner.
-                                </span>
-                            </div>
-                            <div className="proof_adv_block wow fadeInUp" data-wow-delay="0.2s">
-                                <div className="proof_adv_img">
-                                    <img src={Proof2} alt=""/>
-                                </div>
-                                <p>Revolutionary <br/>and catchy</p>
-                                <span>A takeover in the world of<br/>
-                                    fashion will start from the<br/>
-                                    Bitshirt.
-                                </span>
-                            </div>
-                            <div className="proof_adv_block wow fadeInUp" data-wow-delay="0.3s">
-                                <div className="proof_adv_img">
-                                    <img src={Proof3} alt=""/>
-                                </div>
-                                <p>
-                                    Premium quality cotton<br/>
-                                    produced in Nicaragua
-                                </p>
-                                <span>Simple design combined with<br/>
-                                    high quality material.
-                                </span>
-                            </div>
-                            <div className="proof_adv_block wow fadeInUp" data-wow-delay="0.1s">
-                                <div className="proof_adv_img">
-                                    <img src={Proof4} alt=""/>
-                                </div>
-                                <p>Any size</p>
-                                <span>There are items from S to 4XL.</span>
-                            </div>
-                            <div className="proof_adv_block wow fadeInUp" data-wow-delay="0.2s">
-                                <div className="proof_adv_img">
-                                    <img src={Proof5} alt=""/>
-                                </div>
-                                <p>Sound liquidity</p>
-                                <span>
-                                    Limitedness will cause<br/>
-                                    excitement around collection<br/>
-                                    and will drive up the price.
-                                </span>
-                            </div>
-                            <div className="proof_adv_block wow fadeInUp" data-wow-delay="0.3s">
-                                <div className="proof_adv_img">
-                                    <img src={Proof6} alt=""/>
-                                </div>
-                                <p>Quantity control</p>
-                                <span>
-                                    You always know how many <br/>
-                                    T-shirts are there due to the<br/>
-                                    Blockchain technology.
-                                </span>
-                            </div>
-                            <div className="proof_adv_block wow fadeInUp" data-wow-delay="0.1s">
-                                <div className="proof_adv_img">
-                                    <img src={Proof7} alt=""/>
-                                </div>
-                                <p>Universal</p>
-                                <span>
-                                    A unisex-styled T-shirt will fit<br/>
-                                    men and women of all ages,<br/>
-                                    which is perfect for reselling.
-                                </span>
-                            </div>
-                            <div className="proof_adv_block wow fadeInUp" data-wow-delay="0.2s">
-                                <div className="proof_adv_img">
-                                    <img src={Proof8} alt=""/>
-                                </div>
-                                <p>International delivery</p>
-                                <span>
-                                    We deliver our product<br/>
-                                    worldwide in two days from<br/>
-                                    the day of purchase.
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section id="chance">
-                    <div className="container">
-                        <div className="chance_container wow fadeIn" data-wow-delay="0.2s">
-                            <h2>You <span>won’t miss the chance</span><br/>
-                                to buy one of our T-shirts if<br/>
-                                you’re among these people
-                            </h2>
-                            <p>
-                                We did a nice job combining the world of new technology with a<br/>
-                                material possession. The result is going to gain a great number of<br/>
-                                supporters from people who...
-                            </p>
-                            <ul>
-                                <li><span>made a fortune with cryptocurrency</span></li>
-                                <li>
-                                    <span>
-                                        are trying to find a perfect present for a<br/>
-                                        person who can buy anything himself
-                                    </span>
-                                </li>
-                                <li><span>want to invest in a highly liquid product</span></li>
-                                <li><span>live in the crypto world and know a lot<br/> about the Blockchain</span></li>
-                            </ul>
-                            <ul>
-                                <li><span>wants to make an impact</span></li>
-                                <li><span>can see promising start-ups and know their<br/> potential</span></li>
-                                <li><span>follow fashion trends</span></li>
-                                <li><span>value exclusive things</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-                <section id="faq">
-                    <div className="container">
-                        <div className="faq_container">
-                            <h2>FAQ</h2>
-                            <div className="accordion">
-                                <span className="faq_head">What if several people buy one and the same T-shirt simultaneously?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                                <span className="faq_head">How can I resell my T-shirt?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                                <span className="faq_head">What if somebody replicates it in China and starts selling it cheap?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                                <span className="faq_head">Why haven’t major fashion brands done it yet?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                                <span className="faq_head">What if I don’t like the T-shirt I bought or it comes imperfect?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                                <span className="faq_head">Where can you deliver my T-shirt?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section id="time">
-                    <div className="container">
-                        <div className="time_container wow fadeInUp">
-                            <h3>It’s time to <span>turn the fashion industry</span> and<br/> both real and crypto worlds</h3>
-                            <p>
-                                We created the first product of the future. World market leaders and developing<br/>
-                                companies will soon take up the initiative and adopt our idea. By that time Bitshirts will<br/>
-                                cost as much as bars of gold. Be among the first to start shift profitability vector in the<br/>
-                                world of fashion. Choose your size and style right now, while others ponder!
-                            </p>
-                            <a href="#" className="blue_btn">I want one right now!</a>
-                        </div>
-                    </div>
-                </section>
-                <footer>
-                    <div className="container">
-                        <div className="footer_container">
-                            <div className="copy">© 2018 Bitshirt.co. All rights reserved.</div>
-                            <div className="footer_menu"><a href="#">Watch video</a>
-                                <a href="#">Gallery</a>
-                            </div>
-                            <div className="social">
-                                <a href="#">
-                                    <img src={Soc1} alt="" />
-                                </a>
-                                <a href="#">
-                                    <img src={Soc2} alt="" />
-                                </a>
-                                <a href="#">
-                                    <img src={Soc3} alt="" />
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-                <div id="buy" className="reveal-modal">
-                    <h4>BUYING A T-SHIRT</h4>
-                    <form id="contact_form">
-                        <label>SELECT SIZE</label>
-                        <div id="group1">
-                            <input type="radio" name="radio" id="radio1"/>
-                            <label htmlFor="radio1">XS</label>
-
-                            <input type="radio" name="radio" id="radio2"/>
-                            <label htmlFor="radio2">S</label>
-
-                            <input type="radio" name="radio" id="radio3"/>
-                            <label htmlFor="radio3">m</label>
-
-                            <input type="radio" name="radio" id="radio4"/>
-                            <label htmlFor="radio4">l</label>
-
-                            <input type="radio" name="radio" id="radio5"/>
-                            <label htmlFor="radio5">xl</label>
-
-                            <input type="radio" name="radio" id="radio6"/>
-                            <label htmlFor="radio6">2xl</label>
-
-                            <input type="radio" name="radio" id="radio7"/>
-                            <label htmlFor="radio7">3xl</label>
-
-                            <input type="radio" name="radio" id="radio8"/>
-                            <label htmlFor="radio8">4xl</label>
-                        </div>
-                        <label>E-MAIL</label>
-                        <input type="text" value="" required placeholder="Your e-mail" />
-                        <label>NAME</label>
-                        <input type="text" value="" required placeholder="Your name" />
-                        <label>DELIVERY ADDESS</label>
-                        <input type="text" value="" required placeholder="Your address" />
-                        <button className="blue_btn" type="submit">Pay 0.10 ETH</button>
-                        <span className="modal_comment">You pay 0.10 ETH for #100/1000 T-Shirt</span>
-                    </form>
-                    <a className="close-reveal-modal"></a>
-                </div>
+                <StaticContent />
+                <Footer />
+                {this.state.isWarning || this.state.products.length > 0 || this.state.newUser || this.state.transactions.length > 0 ? <div className="window-message">
+                    {this.state.isWarning ? <div className="message" >
+                        {this.renderWarnings()}
+                    </div> : null }
+                    {this.state.newUser ? <div className="message" >
+                        <NewUserContainer userName={this.state.userName} userEmail={this.state.userEmail} onHideNewUser={this.handleHideNewUser} />
+                    </div> : null }
+                    {this.state.transactions.length > 0 ? <div className="message" >
+                        <TransactionsContainer transactions={this.state.transactions} onHideTransactions={this.handleHideTransactions} />
+                    </div> : null }
+                    {this.state.products.length > 0 ? <div className="message">
+                        <ProductsContainer products={this.state.products} />
+                    </div> : null }
+                </div> : null }
+                <ReactModal isOpen={this.state.showModal} id="buy" className="reveal-modal" >
+                    {this.renderForm()}
+                    <a className="close-reveal-modal" onClick={this.handleCloseModal} />
+                </ReactModal>
             </div>);
     }
 }

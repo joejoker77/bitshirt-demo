@@ -1,17 +1,8 @@
 @import "mixins";
-
+@include font-face(Soleil, '../fonts/soleilsemiboldtypeface');
 @include font-face(Soleil, '../fonts/soleiltypeface');
 @include font-face(MuseoSansCyrl, '../fonts/museosansregular');
-
-@import "video/video-react";
-
-@import "animate";
-@import "jquery-ui";
-@import "lightbox.min";
-@import "responsive";
-@import "reveal";
-@import "tabulous";
-@import "woco-accordion.min";
+@include font-face(MuseoSansCyrl, '../fonts/museosansblack');
 
 * {
   -webkit-appearance: none;
@@ -79,7 +70,9 @@ h2 span:after {
   z-index: -1;
   left: 0;
 }
-
+#root{
+  overflow-x: hidden;
+}
 .start h2 span:after {
   width: 100%;
   transition: all 1.2s linear;
@@ -139,11 +132,9 @@ p {
   display: none;
 }
 
-#touch-menu{display: none;}
-
-header {
+#header {
   height: 768px;
-  left: 0px;
+  left: 0;
   top: -1px;
   background-image: linear-gradient(299deg, #0072c3, #191e80);
 }
@@ -161,10 +152,9 @@ header {
 
 .f-nav .top_container {
   background: #fff;
-  padding-bottom: 5px;
   height: 75px;
   padding: 10px 0;
-  box-shadow: 0px 0px 5px #b5b5b5;
+  box-shadow: 0 0 5px #b5b5b5;
 }
 
 .container {
@@ -173,6 +163,7 @@ header {
   margin: 0 auto;
   position: relative;
   height: 100%;
+  padding: 0;
 }
 
 .logo_container {
@@ -243,7 +234,7 @@ header {
   width: 120px;
   height: 44px;
   background: #00AAE9;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), 0px 2px 20px rgba(77, 204, 250, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 2px 20px rgba(77, 204, 250, 0.2);
   border-radius: 26px;
   display: block;
   line-height: 44px;
@@ -309,8 +300,6 @@ header {
 .header_container h5 {
   font-family: Soleil, sans-serif;
   font-style: normal;
-  /* font-weight: 600;
-   */
   line-height: 27px;
   font-size: 16px;
   text-transform: uppercase;
@@ -388,8 +377,6 @@ header {
 }
 
 .header_box p:first-child span {
-  /* font-weight: bold;
-   */
   color: #51D0FF;
 }
 
@@ -451,6 +438,10 @@ header {
   -webkit-animation: mymove 3s infinite;
   animation: mymove 3s infinite;
 }
+.blue_btn:hover{
+  text-decoration: none;
+  color: white;
+}
 
 @-webkit-keyframes mymove {
   from {
@@ -488,8 +479,10 @@ header {
   padding-left: 20px;
 }
 
-.header_video:hover {
+.header_video:hover, .header_video:active, .header_video:focus, .header_video:visited {
   border: 1px solid rgba(255, 255, 255, 0.8);
+  color: white;
+  text-decoration: none;
 }
 
 .header_img {
@@ -501,15 +494,14 @@ header {
 .header_bottom {
   height: 128px;
   background: #FFFFFF;
-  box-shadow: 0px 2px 8px rgba(32, 118, 157, 0.1);
+  box-shadow: 0 2px 8px rgba(32, 118, 157, 0.1);
   border-radius: 20px;
   z-index: 99;
   position: relative;
   width: 100%;
   padding: 32px 15px;
   max-width: 1020px;
-  margin: auto;
-  margin-top: -54px;
+  margin: -54px auto 0;
 }
 
 .header_bottom p {
@@ -643,10 +635,7 @@ header {
   width: 165px;
   height: 84px;
   background: url(../images/lending/graph.png) no-repeat;
-  position: absolute;
-  left: 426px;
   z-index: 8;
-  top: 292px;
   padding: 12px 25px 10px 26px;
   text-align: center;
 }
@@ -655,7 +644,7 @@ header {
   display: block;
   font-weight: bold;
   line-height: 25px;
-  font-size: 25px;
+  font-size: 22px;
   text-align: center;
   color: rgba(51, 64, 77, 0.9);
   padding-left: 10px;
@@ -708,11 +697,9 @@ form > label {
 }
 
 .reveal-modal .blue_btn {
-  margin: auto;
+  margin: 5px auto 10px;
   line-height: 25px;
   display: block;
-  margin-top: 5px;
-  margin-bottom: 10px;
   float: left;
   width: 265px;
 }
@@ -737,7 +724,10 @@ form > label {
   margin-bottom: 22px;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="phone"] {
   height: 48px;
   background: #FFFFFF;
   border: 1px solid rgba(51, 64, 77, 0.1);
@@ -814,7 +804,7 @@ input[type="text"] {
 }
 
 .proof_adv_block:nth-child(3n) {
-  margin-right: 0px;
+  margin-right: 0;
 }
 
 .proof_adv_block:nth-child(7) {
@@ -953,7 +943,21 @@ footer {
   margin-top: -4px;
 }
 
-.social a {
+.social a{
+  width: 32px;
+  height: 32px;
+  background: rgba(51, 64, 77, 0.3);
+  display: block;
+  border-radius: 50%;
+  float: left;
+  margin-right: 12px;
+  position: relative;
+  &:hover{
+    background: rgba(51, 64, 77, 0.5);
+  }
+}
+
+.social .share-button {
   width: 32px;
   height: 32px;
   background: rgba(51, 64, 77, 0.3);
@@ -964,12 +968,12 @@ footer {
   position: relative;
 }
 
-.social a:hover {
+.social .share-button:hover {
   background: rgba(51, 64, 77, 0.5);
 }
 
-.social a:last-child {
-  margin-right: 0px;
+.social .share-button:last-child {
+  margin-right: 0;
 }
 
 .social img {
@@ -1080,8 +1084,8 @@ footer {
   color: #1F404D;
   padding-left: 5px;
   display: block;
-  width: 60px;
   float: left;
+  margin-right: 10px;
 }
 
 .sh_size small {
@@ -1161,7 +1165,7 @@ footer {
 }
 
 .sh_coll:last-child {
-  float: right;
+  float: left;
   text-align: right;
 }
 
@@ -1184,15 +1188,11 @@ footer {
   margin-right: 30px;
 }
 
-.coll_owner {
-  width: 80px;
-}
-
 .coll_date {
-  width: 115px;
+  width: 130px;
 }
 
-.second_page header {
+.second_page #second_header {
   background: #FAFBFC;
   position: relative;
 }
@@ -1240,13 +1240,15 @@ footer {
   margin-top: 30px;
 }
 
-.second_page .sh_sell input[type="text"] {
+.second_page .sh_sell input[type="text"],
+.second_page .sh_sell input[type="number"],
+.second_page .sh_sell input[type="email"] {
   float: left;
   margin-right: 14px;
   width: 250px;
 }
 
-.second_page header .blue_btn {
+.second_page #second_header .blue_btn {
   height: 48px;
   line-height: 47px;
   font-size: 15px;
@@ -1256,8 +1258,8 @@ footer {
   margin-right: 0;
 }
 
-.second_page header .sh_table {
-  width: 450px;
+.second_page #second_header .sh_table {
+  min-width: 500px;
 }
 
 .second_page .sh_number {
@@ -1283,8 +1285,8 @@ footer {
 }
 
 .second_page .coll_owner {
-  margin-left: 20px;
-  width: 110px;
+  margin-right: 20px;
+  min-width: 165px;
 }
 
 .share_btn {
@@ -1383,6 +1385,31 @@ footer {
 #buying.reveal-modal form span.modal_comment {
   width: 100%;
   text-align: center;
-  margin: 0;
-  margin-bottom: 25px;
+  margin: 0 0 25px;
 }
+.ReactModal__Overlay{
+  &.ReactModal__Overlay--after-open{
+    background: rgba(0,0,0,.75)!important;
+  }
+}
+
+.as-graph.progress{
+  position: absolute;
+  bottom: 325px;
+  z-index: 9999999;
+  width: 100%;
+  left: -58px;
+  transform: rotate(-27.6deg);
+  height: 3px;
+  background: transparent;
+}
+.progress{
+  overflow: visible;
+}
+@import "reveal";
+@import "tabulous";
+@import "jquery-ui";
+@import "woco-accordion.min";
+@import "animate";
+@import "lightbox.min";
+@import "responsive";
