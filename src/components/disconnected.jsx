@@ -11,8 +11,6 @@ import Header from './header';
 import Footer from './footer';
 import PreContent from './pre-content';
 import StaticContent from './static-content';
-import ProductsContainer from './products-container';
-import NewUserContainer from './new-user-message';
 
 import '../utils/tabulous.js';
 import '../utils/woco.accordion.min.js';
@@ -39,16 +37,14 @@ class Disconnected extends Component{
             'handleCloseModal'
         ]);
     }
-    componentWillMount(){
-        this.init();
-    }
     componentWillUpdate(){
-        if(this.state.productsCount === 0){
-            this.init();
+        if(this.state.startPrice === 0) {
+            this.updateData();
         }
     }
 
     componentDidMount() {
+        this.updateData();
         let wow = new WOW(
             {
                 boxClass:     'wow',
@@ -160,42 +156,48 @@ class Disconnected extends Component{
         });
     }
 
-    init(){
+    updateData(){
         let $this = this;
-        this.testInfura()
-            .then(function (data) {
-                $this.setState({
-                    startPrice     : data.startPrice,
-                    productsCount  : data.productsCount,
-                    startPriceInUsd: data.startPriceInUsd,
-                    endPriceInUsd  : data.endPriceInUsd
-                });
-        })
+        this.testInfura().then(function (data) {
+            $this.setState({
+                startPrice     : data.startPrice,
+                productsCount  : data.productsCount,
+                startPriceInUsd: data.startPriceInUsd,
+                endPriceInUsd  : data.endPriceInUsd
+            });
+        }).catch(function (error) {
+            // console.log(error);
+        });
     }
 
     testInfura(){
         let $this = this;
-        return new Promise(function (resolve, reject) {
-            let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
-                ContractAddr = "0xc1cf7f5344b2223bf2ef065ee281ad874e025085",
-                fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
-                productId    = web3.eth.getStorageAt(ContractAddr, 7);
+        if(this.state.startPrice === 0){
+            return new Promise(function (resolve, reject) {
+                let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
+                    ContractAddr = "0xc1cf7f5344b2223bf2ef065ee281ad874e025085",
+                    fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
+                    productId    = web3.eth.getStorageAt(ContractAddr, 7);
 
-            $this.pingApi().then(function (data2) {
-                let web3          = new Web3(),
-                    minPrice      = web3.fromWei(parseInt(fixPrice, 16)),
-                    productCount  = parseInt(productId, 16),
-                    priceInUsd    = (data2[0].price_usd * (minPrice * productCount)).toFixed(2),
-                    maxPriceInUsd = (data2[0].price_usd * (minPrice * 100)).toFixed(2);
+                $this.pingApi().then(function (data2) {
+                    let web3          = new Web3(),
+                        minPrice      = parseFloat(web3.fromWei(parseInt(fixPrice, 16))),
+                        productCount  = parseInt(productId, 16),
+                        priceInUsd    = (data2[0].price_usd * (minPrice * productCount)).toFixed(2),
+                        maxPriceInUsd = (data2[0].price_usd * (minPrice * 100)).toFixed(2);
 
-                resolve({
-                    startPrice      : parseFloat((productCount * parseFloat(minPrice)).toFixed(9)),
-                    productsCount   : productCount,
-                    startPriceInUsd : priceInUsd,
-                    endPriceInUsd   : maxPriceInUsd
+                    resolve({
+                        startPrice      : productCount > 0 ? parseFloat((productCount * minPrice).toFixed(9)) + minPrice : minPrice,
+                        productsCount   : productCount,
+                        startPriceInUsd : priceInUsd,
+                        endPriceInUsd   : maxPriceInUsd
+                    });
                 });
             });
-        });
+        }else{
+            return this.state;
+        }
+
     }
 
     handleOpenModal () {
@@ -220,12 +222,12 @@ class Disconnected extends Component{
                                 ever crypto project with a real product: a limited collection of <br/>
                                 amazing T-shirts that are impossible to fake up.</p>
                             <div className="header_box">
-                                <p><span>{this.state.startPrice + 0.1} <small>ETH</small></span> Current price</p>
+                                <p><span>{this.state.startPrice} <small>ETH</small></span> Current price</p>
                                 <p><span>{1} <small>ETH</small></span> Final price</p>
                                 <p><span>{100 - (this.state.productsCount)}</span> T-shirt left</p>
                             </div>
                             <a onClick={this.handleOpenModal} className="blue_btn">
-                                <span>Buy now for {this.state.startPrice + 0.1} ETH</span>
+                                <span>Buy now for {this.state.startPrice} ETH</span>
                             </a>
                             <a href="#" className="header_video">Watch video</a>
                         </div>
@@ -241,7 +243,7 @@ class Disconnected extends Component{
                             <h2>Less in stock, higher price</h2>
                             <p>We created a limited collection of T-shirt that will never be restocked. It means that that the price will go unbelievably high when the T-shirts are sold out. </p>
                             <p>With every T-shirt sold its price increases by $1. Just imagine, you buy a T-shirt for $3 and within a month it takes a jump and costs $100. Sounds juicy, right?</p>
-                            <a onClick={this.handleOpenModal} className="blue_btn">Buy now for {this.state.startPrice + 0.1} ETH</a>
+                            <a onClick={this.handleOpenModal} className="blue_btn">Buy now for {this.state.startPrice} ETH</a>
                         </div>
                         <div className="stock_img">
                             <div className="graph-wrapper" style={{display: 'table', position:'relative'}}>
@@ -253,7 +255,7 @@ class Disconnected extends Component{
                                     max={100}
                                     label={
                                         <div className="stock_graph">
-                                            <big>{this.state.startPrice + 0.1} <small>ETH</small></big>
+                                            <big>{this.state.startPrice} <small>ETH</small></big>
                                             <small>Current price</small>
                                             <span>{100 - this.state.productsCount} T-SHIRT LEFT</span>
                                         </div>

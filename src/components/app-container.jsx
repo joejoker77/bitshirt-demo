@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Web3 from 'web3';
 import AppPersonal from './app-personal';
-import Header from './header';
 import Disconnected from './disconnected';
 import Home from './home';
 
@@ -15,8 +14,8 @@ export class AppContainer extends Component {
             version: "MetaMask"
         };
     }
-    componentWillMount() {
-        this.initMetaMaskVersion(this.state.version);
+    componentDidMount() {
+        this.initMetaMaskVersion();
     }
     componentWillUpdate(nextProps, nextState) {
         if(!this.state.isConnected && this.state.isConnecting){
@@ -24,43 +23,37 @@ export class AppContainer extends Component {
         }
     }
     initMetaMaskVersion() {
-        this.onPageLoadAsync()
-            .then(this.initializeWeb3)
-            .then(this.checkNetwork)
-            .then(function (networkId) {
-                this.setState({
-                    isConnected: networkId === '3',
-                    isConnecting: false
-                });
-            }.bind(this))
-            .catch(function (error) {
-                this.setState({
-                    isConnected: false,
-                    isConnecting: false
-                });
-            }.bind(this));
-    }
-    onPageLoadAsync() {
-        if (document.readyState === 'complete') {
-            return Promise.resolve();
-        }
-        return new Promise(function (resolve, reject) {
-            window.onload = resolve;
+        let $this = this;
+        this.initializeWeb3();
+        this.checkNetwork().then(function (networkId) {
+            $this.setState({
+                isConnected: networkId.toString() === '3',
+                isConnecting: false
+            });
+        }).catch(function (error) {
+            $this.setState({
+                isConnected: false,
+                isConnecting: false
+            });
         });
     }
+
     initializeWeb3() {
         if (typeof web3 !== 'undefined') {
             const defaultAccount = web3.eth.defaultAccount;
             window.web3 = new Web3(web3.currentProvider);
             window.web3.eth.defaultAccount = defaultAccount;
-            return Promise.resolve();
         }
     }
     checkNetwork() {
         return new Promise(function (resolve, reject) {
-            web3.version.getNetwork(function (err, netId) {
-                err ? reject(err) : resolve(netId);
-            });
+            if(typeof web3 === 'undefined'){
+                reject({message: 'variable web3 is not defined'});
+            }else {
+                web3.version.getNetwork(function (err, netId) {
+                    err ? reject(err) : resolve(netId);
+                });
+            }
         });
     }
     render() {
@@ -76,10 +69,11 @@ export class AppContainer extends Component {
             );
         } else {
             return (
-                <div className="app-container">
-                    <Header secondPage={false} size="M" userName="" version={this.state.version} />
-                    <Disconnected version={this.state.version} />
-                </div>
+                <Router>
+                    <Switch>
+                        <Route exact path='/' component={Disconnected} />
+                    </Switch>
+                </Router>
             );
         }
     }
