@@ -189,4 +189,7 @@ span.sh_coll > small,span.sh_coll > big{
   z-index: 99999999;
   margin-top: -20px;
 }
+.ui-buttonset{
+  input[type=radio]{display: none;}
+}
 
