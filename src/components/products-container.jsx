@@ -22,16 +22,17 @@ export class ProductsContainer extends Component {
             return null;
         }
         return (
-            <div className="message-container products-container">
-                <h4>Your Owner: </h4>
-                <ProductsList products={this.props.products} />
+            <div className="message-container info">
+                <p>You are owner of following t-shirts: <ProductsList products={this.props.products} /></p>
+                <button className="close-alert" onClick={this.props.onCloseAlert}>+</button>
             </div>
         );
     }
 }
 
 ProductsContainer.propTypes = {
-    products: PropTypes.array.isRequired
+    products: PropTypes.array.isRequired,
+    onCloseAlert: PropTypes.func.isRequired
 };
 
 export default ProductsContainer;

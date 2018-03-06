@@ -16,30 +16,23 @@ export class BecomeMemberWarning extends Component {
 
     render() {
         return (
-            <div className="message-container warnings">
-                <h4>Warning: </h4>
-                <div className="panel panel-warning">
-                    <div className="panel-body">
-                        <div className="alert alert-warning">
-                            <p style={{margin: "0 15px"}}>You are not a member yet. You can not make a purchase.</p>
-                        </div>
-                    </div>
-                </div>
-                <button
-                    className="btn btn-warning btn-xs authorize-btn"
-                    onClick={this.handleClick}
-                    style={{
-                        marginTop: "10px",
-                        float: "right"
-                    }}
-                >Become a member</button>
+            <div className="message-container warning">
+                <p>
+                    You are not a member yet. You can not make a purchase.
+                    <button
+                        className="btn btn-warning btn-xs authorize-btn"
+                        onClick={this.handleClick}
+                    >Become a member</button>
+                </p>
+                <button className="close-alert" onClick={this.props.onCloseAlert}>+</button>
             </div>
         );
     }
 }
 
 BecomeMemberWarning.propTypes = {
-    onOpenModal: PropTypes.func.isRequired
+    onOpenModal: PropTypes.func.isRequired,
+    onCloseAlert: PropTypes.func.isRequired
 };
 
 export default BecomeMemberWarning;

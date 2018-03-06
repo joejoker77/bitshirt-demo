@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
 import Icon1 from '../images/lending/icon1.png';
 import Icon2 from '../images/lending/icon2.png';
 import Icon3 from '../images/lending/icon3.png';
 
 export class PreContent extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     _playPause(event){
-        console.log(event);
+        let videoBlockId = 'video' + event.target.parentElement.dataset.play,
+            video        = document.getElementById(videoBlockId);
+        video.play();
     }
 
     render() {
@@ -21,12 +18,12 @@ export class PreContent extends Component {
                     <p>
                         <img src={Icon1} alt=""/>
                         Limited collection:<br/>
-                        1,000 pcs only
+                        100 pcs only
                     </p>
                     <p>
                         <img src={Icon2} alt=""/>
-                        The first T-shirt for 0.01 ETH,<br/>
-                        the last one for 1 ETH
+                        The first T-shirt for 0.1 ETH,<br/>
+                        the last one for 10 ETH
                     </p>
                     <p>
                         <img src={Icon3} alt=""/>
@@ -75,44 +72,17 @@ export class PreContent extends Component {
                                 <div id="tabs_container">
                                     <div id="tabs-1" className="showscale">
                                         <span className="tab_video">
-                                            <video
-                                                width="368px"
-                                                id="video1"
-                                                autoPlay="autoplay"
-                                                muted=""
-                                                playsInline=""
-                                                loop="loop"
-                                            >
-                                                <source src="../media/display_animate_01.mp4" type="video/mp4;" />
-                                            </video>
+                                            <video width="368px" id="video1" autoPlay={true} muted={true} playsInline={true} loop={true} src="../media/display_animate_01.mp4" />
                                         </span>
                                     </div>
                                     <div id="tabs-2">
                                         <span className="tab_video">
-                                           <video
-                                               width="368px"
-                                               id="video2"
-                                               autoPlay="autoplay"
-                                               muted=""
-                                               playsInline=""
-                                               loop="loop"
-                                           >
-                                                <source src="../media/display_animate_02.mp4" type="video/mp4;" />
-                                            </video>
+                                           <video width="368px" id="video2" autoPlay={true} muted={true} playsInline={true} loop={true} src="../media/display_animate_02.mp4" />
                                         </span>
                                     </div>
                                     <div id="tabs-3">
                                         <span className="tab_video">
-                                            <video
-                                                width="368px"
-                                                id="video3"
-                                                autoPlay="autoplay"
-                                                muted=""
-                                                playsInline=""
-                                                loop="loop"
-                                            >
-                                                <source src="../media/display_animate_03.mp4" type="video/mp4;" />
-                                            </video>
+                                            <video width="368px" id="video3" autoPlay={true} muted={true} playsInline={true} loop={true} src="../media/display_animate_03.mp4" />
                                         </span>
                                     </div>
                                 </div>

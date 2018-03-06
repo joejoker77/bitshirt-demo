@@ -7,8 +7,7 @@ a:active,a:focus {
 
 #tabs {
 	width: 100%;
-	margin: 0 auto;
-	margin-top: 64px;
+	margin: 64px auto 0;
 }
 #tabs ul{
     width: 462px;
@@ -25,16 +24,15 @@ a:active,a:focus {
 	text-decoration: none;
 	background: #ffffff;
 	border-radius: 16px;
-	font-family: Soleil;
+	font-family: Soleil, sans-serif;
 	font-style: normal;
 	font-weight: normal;
 	line-height: 28px;
 	font-size: 16px;
 	color: #035674;
 	padding: 25px 30px 25px 10px;
-	/* overflow: hidden; */
 	position:relative;
-	box-shadow: 0px 2px 8px rgba(32, 118, 157, 0.1);
+	box-shadow: 0 2px 8px rgba(32, 118, 157, 0.1);
 }
 
 #tabs li a:after {
@@ -48,7 +46,7 @@ a:active,a:focus {
 }
 
 
-#tabs li a span {width: 64px;height: 64px;background: rgba(96, 198, 236, 0.05);display: inline-block;font-family: Soleil;font-style: normal;font-weight: 800;font-size: 32px;text-align: center;text-transform: uppercase;color: rgba(51, 64, 77, 0.2);border-radius: 50%;line-height: 60px;margin-right: 7px;vertical-align: top;}
+#tabs li a span {width: 64px;height: 64px;background: rgba(96, 198, 236, 0.05);display: inline-block;font-family: Soleil, sans-serif;font-style: normal;font-weight: 800;font-size: 32px;text-align: center;text-transform: uppercase;color: rgba(51, 64, 77, 0.2);border-radius: 50%;line-height: 60px;margin-right: 7px;vertical-align: top;}
 
 #tabs li a small {
 	width: 365px;
@@ -75,11 +73,10 @@ a:active,a:focus {
 #tabs_container > div {
 	top: 70px!important;
 	width: 364px;
-	left:  0;
+	left: 0;
 	right: 0;
 	margin: auto;
 	overflow: hidden;
-	height: 100%;
 }
 
 .transition {
@@ -111,7 +108,6 @@ a:active,a:focus {
 	-ms-transform: scale(0.9);
 	transform: scale(0.9);
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-	filter: alpha(opacity=0);
 	filter: alpha(opacity=0);
 	opacity: 0;
 }

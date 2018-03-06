@@ -51,7 +51,7 @@ class History extends Component {
                 })}
             </span>
             <span className="sh_coll coll_date">
-                <big>Date of purshare</big>
+                <big>Date of purchase</big>
                 {Array.prototype.map.call(this.state.history, function (val, index) {
                     return (<small key={index}>{
                         Array.prototype.map.call(val, function (value, indx) {

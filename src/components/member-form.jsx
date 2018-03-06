@@ -78,13 +78,15 @@ class MyForm extends Component {
         const { res, invalid, displayErrors } = this.state;
         return (
             <div>
-                <h4>REGISTRATION</h4>
+                <h4>SIGN UP</h4>
                 <form
                     onSubmit={this.handleSubmit}
                     noValidate
                     className={displayErrors ? 'displayErrors' : ''}
                 >
-                    <label htmlFor="username">USERNAME:</label>
+                    <label htmlFor="user_address">WALLET ADDRESS</label>
+                    <input type="text" value={this.props.userAddress} disabled={true} readOnly={true} style={{background: "#eaeaea"}} />
+                    <label htmlFor="username">NAME:</label>
                     <input
                         id="username"
                         name="username"
@@ -94,7 +96,7 @@ class MyForm extends Component {
                     />
                     <label htmlFor="email">EMAIL:</label>
                     <input className="form-control" id="email" name="email" type="email" required />
-                    <button className="blue_btn">Send data!</button>
+                    <button className="blue_btn">Sign Up!</button>
                 </form>
 
                 <div className="res-block">
@@ -113,7 +115,8 @@ class MyForm extends Component {
     }
 }
 MyForm.propTypes = {
-    onFormMember: PropTypes.func.isRequired
+    onFormMember: PropTypes.func.isRequired,
+    userAddress : PropTypes.string.isRequired
 };
 export default MyForm;
 

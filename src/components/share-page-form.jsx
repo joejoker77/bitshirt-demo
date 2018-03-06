@@ -82,13 +82,9 @@ class MyForm extends Component {
         return (
             <div>
                 <form onSubmit={this.handleSubmit} noValidate className={displayErrors ? 'displayErrors' : ''} >
-                    <div className="form-group">
-                        <label htmlFor="email">Email:</label>
-                        <input className="form-control" id="email" name="email" type="email" required />
-                    </div>
-                    <div className="form-group" style={{textAlign:"center"}} >
-                        <button className="form-control btn btn-primary btn-lg">Send data!</button>
-                    </div>
+                    <label htmlFor="email">Email:</label>
+                    <input className="form-control" id="email" name="email" type="email" required />
+                    <button className="blue_btn">Send data!</button>
                 </form>
 
                 <div className="res-block">

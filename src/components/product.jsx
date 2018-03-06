@@ -6,7 +6,7 @@ class Product extends Component {
         super(props);
     }
     render() {
-        return <a href={"http://bitshirt.co/t-shirt/" + this.props.productId} target="_self">
+        return <a href={"http://bitshirt.co/t-shirt/" + this.props.productId} className="product-link" target="_self">
             T-Shirt # {this.props.productId}
         </a>
     };

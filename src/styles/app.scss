@@ -114,7 +114,7 @@ a.hide-pending-transaction:hover{
         box-shadow: 0 2px 2px 0 rgba(71,71,71,0.3);
       }
       width: 0;
-      transition: width 2s ease-in-out;
+      transition: width 3s ease-in-out;
       position: relative;
       .stock_graph{
         opacity: 0;
@@ -128,53 +128,96 @@ a.hide-pending-transaction:hover{
         transform: scale(0, 0) rotate(27.6deg);
         visibility: visible;
         margin-left: -112px;
-        transition: all 2s ease-in-out;
+        transition: all 3s ease-in-out;
       }
     }
   }
 }
 .window-message {
-  position: fixed;
+  position: absolute;
   width: 100%;
   left: 0;
-  bottom: 0;
-  z-index: 99;
-  background: #FFFFFF;
-  padding: 15px;
-  box-shadow: 0 -2px 2px 0 rgba(71,71,71,.15);
+  top: 0;
+  z-index: 999;
+  background: transparent;
+  text-align: center;
+  overflow: hidden;
   .message{
     float:left;
     width: 100%;
     margin-bottom: 5px;
+    position: relative;
     &:last-of-type{
       margin-bottom: 0;
     }
   }
   .message-container{
-    h4{
-      float:left;
-      margin-right: 15px;
-      text-transform: uppercase;
-      margin-top: 12px;
-      min-width: 120px;
-      text-align: right;
+    &.warning{
+      background: #e2b747;
+      p{
+        color: white;
+      }
+      .close-alert{
+        color: white;
+      }
     }
-    &.products-container{
-      .panel{
-        .panel-body{
-          a{
-            display: block;
-            padding: 4px 15px;
-          }
+    &.success{
+      background: forestgreen;
+      p{
+        color: white;
+      }
+      .close-alert{
+        color: white;
+      }
+    }
+    &.danger{
+      background: red;
+      p{
+        color: white;
+      }
+      .close-alert{
+        color: white;
+      }
+    }
+    &.info{
+      background: white;
+      .product-link,.transaction-link{
+        color: white;
+        margin: 0 5px;
+        background: #337ab7;
+        padding: 0 15px;
+        display: inline-block;
+        text-decoration: none;
+        height: 26px;
+        position: relative;
+        top: 1px;
+        &:hover{
+          opacity: .75;
         }
       }
     }
-    .panel{
+    p{
+      margin-bottom: 0;
+      padding: 6px 40px 6px 12px;
+    }
+    .btn-warning{
+      margin: -8px 0 0 15px;
+    }
+    .close-alert{
+      position: absolute;
+      right: 10px;
+      top: 6px;
+      display: block;
+      padding: 0;
       margin: 0;
-      float:left;
-      .panel-body{
-        padding: 5px;
-      }
+      line-height: 0.57;
+      font-size: 45px;
+      font-weight: 100;
+      font-family: Roboto, sans-serif;
+      border: 0;
+      background: transparent;
+      transform: rotate(45deg);
+      cursor: pointer;
     }
   }
   .alert{
@@ -191,5 +234,9 @@ span.sh_coll > small,span.sh_coll > big{
 }
 .ui-buttonset{
   input[type=radio]{display: none;}
+}
+.clearfix{
+  clear: both!important;
+  float: none!important;
 }
 

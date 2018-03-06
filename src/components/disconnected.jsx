@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactModal from 'react-modal';
+import {isMobile} from 'react-device-detect';
 import _ from 'lodash';
 import Web3 from "web3";
 import axios from "axios/index";
@@ -20,6 +21,7 @@ import '../utils/jquery.appear.js';
 import '../styles/style.scss';
 import ProgressBar from 'react-bootstrap/lib/ProgressBar';
 import $ from "jquery";
+import PropTypes from "prop-types";
 
 class Disconnected extends Component{
 
@@ -30,11 +32,13 @@ class Disconnected extends Component{
             startPrice          : 0,
             startPriceInUsd     : 0,
             endPriceInUsd       : 0,
-            showModal           : false
+            showModal           : false,
+            showAlert           : true
         };
         _.bindAll(this, [
             'handleOpenModal',
-            'handleCloseModal'
+            'handleCloseModal',
+            'handleCloseAlert'
         ]);
     }
     componentWillUpdate(){
@@ -175,7 +179,7 @@ class Disconnected extends Component{
         if(this.state.startPrice === 0){
             return new Promise(function (resolve, reject) {
                 let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
-                    ContractAddr = "0xc1cf7f5344b2223bf2ef065ee281ad874e025085",
+                    ContractAddr = "0x3ad27356e958d2b8532ff7d42e342e8bffde227e",
                     fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
                     productId    = web3.eth.getStorageAt(ContractAddr, 7);
 
@@ -187,7 +191,7 @@ class Disconnected extends Component{
                         maxPriceInUsd = (data2[0].price_usd * (minPrice * 100)).toFixed(2);
 
                     resolve({
-                        startPrice      : productCount > 0 ? parseFloat((productCount * minPrice).toFixed(9)) + minPrice : minPrice,
+                        startPrice      : productCount > 0 ? parseFloat(((productCount * minPrice) + minPrice).toFixed(9)) : minPrice,
                         productsCount   : productCount,
                         startPriceInUsd : priceInUsd,
                         endPriceInUsd   : maxPriceInUsd
@@ -197,7 +201,6 @@ class Disconnected extends Component{
         }else{
             return this.state;
         }
-
     }
 
     handleOpenModal () {
@@ -207,12 +210,17 @@ class Disconnected extends Component{
     handleCloseModal () {
         this.setState({showModal: false});
     }
+    handleCloseAlert(){
+        this.setState({showAlert: false});
+    }
 
     render(){
         return (
             <div className="app">
-                <Header size="M" />
-                <span id="behavior" className="hide" />
+                <Header size="M" shareHandler={function () {
+                    return null;
+                }} />
+                <span id="behavior" />
                 <div id="header">
                     <div className="container">
                         <div className="header_container">
@@ -222,7 +230,14 @@ class Disconnected extends Component{
                                 ever crypto project with a real product: a limited collection of <br/>
                                 amazing T-shirts that are impossible to fake up.</p>
                             <div className="header_box">
-                                <p><span>{this.state.startPrice} <small>ETH</small></span> Current price</p>
+                                <p>
+                                    <span>
+                                        {this.state.startPrice}&nbsp;<small>ETH</small>
+                                    </span>
+                                    <span>
+                                        ~ <small>$</small>&nbsp;{this.state.startPriceInUsd}
+                                    </span>Current price
+                                </p>
                                 <p><span>{1} <small>ETH</small></span> Final price</p>
                                 <p><span>{100 - (this.state.productsCount)}</span> T-shirt left</p>
                             </div>
@@ -268,40 +283,29 @@ class Disconnected extends Component{
                 </section>
                 <StaticContent />
                 <Footer />
-                <div className="window-message">
+                {this.state.showAlert ? <div className="window-message">
                     <div className="message">
-                        <div className="message-container warnings">
-                            <h4>Error: </h4>
-                            <div className="panel panel-danger">
-                                <div className="panel-body">
-                                    <div className="alert alert-danger">
-                                        <p style={{margin: "0 15px"}}>There is no connection to the MetaMask plugin. Install the plugin for your MetaMask browser and refresh the page.</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="message-container danger">
+                            <p>
+                                {this.props.otherNetwork ?
+                                    'Network not supported. Please use the Main Network' :
+                                    'There is no connection to the MetaMask plugin. Install the plugin for your MetaMask browser and refresh the page.'}
+                            </p>
                             <button
-                                className="btn btn-warning btn-xs authorize-btn"
-                                onClick={(event) => window.location.reload(true)}
-                                style={{
-                                    marginTop: "10px",
-                                    float: "right"
-                                }}
-                            >Refresh page (After install MetaMask plugin only)</button>
+                                className="close-alert"
+                                onClick={this.handleCloseAlert}
+                            >+</button>
                         </div>
                     </div>
-                </div>
+                </div> : null}
                 <ReactModal isOpen={this.state.showModal} id="buy" className="reveal-modal" >
                     <div className="form-alert">
-                        <h4>Attention!</h4>
-                        <h5>You are not logged in the system!</h5>
-                        <p>In order to make purchases you must be authorized!</p>
-                        <p>Authorization:</p>
-                        <ol>
-                            <li>Install the plugin for your MetaMask browser;</li>
-                            <li>Unlock one of your wallets;</li>
-                            <li>Update the application page;</li>
-                            <li>Complete a simple registration;</li>
-                        </ol>
+                        <p style={{textAlign: 'center'}}>
+                            {!isMobile ?
+                                this.props.otherNetwork ?
+                                    "Network not supported. Please use the Main Network" :
+                                    "There is no connection to the MetaMask plugin. Install the plugin for your MetaMask browser and refresh the page." :
+                                "You can only purchase t-shirt on a desktop browser like Chrome, Firefox or Opera"}</p>
                     </div>
                     <a className="close-reveal-modal" onClick={this.handleCloseModal} />
                 </ReactModal>
@@ -309,4 +313,7 @@ class Disconnected extends Component{
         );
     }
 }
+Disconnected.propTypes = {
+    otherNetwork: PropTypes.bool.isRequired
+};
 export default Disconnected;

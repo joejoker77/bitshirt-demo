@@ -4,28 +4,28 @@ import PropTypes from 'prop-types';
 import * as types from '../utils/transaction-types';
 
 export function Transaction(props) {
-    let txName = '';
+    let txMessage = '';
     switch (props.type) {
         case types.TYPE_BUY_PRODUCT:
-            txName = 'Buy a product transaction';
+            txMessage = 'After TX confirmation you will become owner of T-shirt';
             break;
         case types.TYPE_BECOME_MEMBER:
-            txName = 'Create user account';
+            txMessage = '';
             break;
         case types.TYPE_PUT_IN_SALE:
-            txName = 'Put up for sale';
+            txMessage = 'After TX confirmation T-shirt will be available for purchase';
             break;
         case types.TYPE_CHANGE_OWNER:
-            txName = 'Change owner product';
+            txMessage = 'After TX confirmation you will become new owner of T-shirt';
             break;
     }
 
-    return (<p style={{whiteSpace: "no-wrap", margin: '0'}}>{txName} - <a
-        href={"https://ropsten.etherscan.io/tx/" + props.address}
-        target="_blank"
-        style={{color: '#0072c3', textDecoration: "underline"}}
-        className="hide-pending-transaction"
-    >{props.address}</a></p>);
+    return (<p style={{whiteSpace: "no-wrap", margin: '0'}}>
+        {txMessage}
+        <a href={"https://ropsten.etherscan.io/tx/" + props.address} target="_blank" className="transaction-link">
+            Check status
+            </a>
+    </p>);
 }
 
 Transaction.propTypes = {

@@ -145,7 +145,7 @@ export class Header extends Component {
                                             subject={"Share page: " +
                                             Utils.capitalizeFirstLetter(this.props.userName) + 's t-shirt Size: ' + this.props.size}
                                             className="Demo__some-network__share-button"
-                                            onClick={this.handleSharePage}
+                                            onClick={this.props.shareHandler}
                                         >
                                             <EmailIcon size={32} round />
                                         </EmailShareButton>
@@ -180,9 +180,10 @@ export class Header extends Component {
     }
 }
 Header.propTypes = {
-    secondPage: PropTypes.bool,
-    size      : PropTypes.string,
-    userName  : PropTypes.string,
-    number    : PropTypes.number
+    secondPage  : PropTypes.bool,
+    size        : PropTypes.string,
+    userName    : PropTypes.string,
+    number      : PropTypes.number,
+    shareHandler: PropTypes.func.isRequired
 };
 export default Header;

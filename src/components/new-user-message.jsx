@@ -17,23 +17,10 @@ export class NewUserMessage extends Component {
 
     render() {
         return (
-            <div className="message-container">
-                <h4>Message: </h4>
-                <div className="panel panel-success">
-                    <div className="panel-body">
-                        <div className="alert alert-success">
-                            <p style={{margin: "0 15px"}}>You have successfully become a member of the system.</p>
-                        </div>
-                    </div>
-                </div>
-                <button
-                    className="btn btn-success btn-xs authorize-btn"
-                    onClick={this.handleClick}
-                    style={{
-                        marginTop: "10px",
-                        float: "right"
-                    }}
-                >Close</button>
+            <div className="message-container success">
+                <p>Thank you! You have successfully registered.</p>
+                <button className="close-alert" onClick={this.handleClick}
+                >+</button>
             </div>
         );
     }

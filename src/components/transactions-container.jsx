@@ -22,21 +22,9 @@ export class TransactionsContainer extends Component {
             return null;
         }
         return (
-            <div className="message-container transactions">
-                <h4>Pending transaction: </h4>
-                <div className="panel panel-info">
-                    <div className="panel-body">
-                        <TransactionsList transactions={this.props.transactions} />
-                    </div>
-                </div>
-                <button
-                    className="btn btn-warning btn-xs authorize-btn"
-                    onClick={this.handleHideTransactionsClick}
-                    style={{
-                        marginTop: "10px",
-                        float: "right"
-                    }}
-                >Hide Pending Transaction</button>
+            <div className="message-container info">
+                <TransactionsList transactions={this.props.transactions} />
+                <button className="close-alert" onClick={this.handleHideTransactionsClick}>+</button>
             </div>
         );
     }

@@ -1,19 +1,22 @@
-import React from 'react';
+import React, {Component} from 'react';
+import PropTypes from "prop-types";
 
-export function MetaMaskAuthorizeWarning(props) {
-  return (
-      <div className="message-container warnings">
-          <h4>Warning: </h4>
-          <div className="panel panel-warning">
-              <div className="panel-body">
-                  <div className="alert alert-warning">
-                      <p style={{margin: "0 15px"}}>
-                          You are not authorized. Unlock your account in MetaMask and restart the page to be able to sign transactions.
-                      </p>
-                  </div>
-              </div>
-          </div>
-      </div>
-  );
+class MetaMaskAuthorizeWarning extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            isHide: false
+        }
+    }
+    render(){
+        if(this.state.isHide){return null}
+        return <div className="message-container warning">
+            <p>You are not authorized. Unlock your account in MetaMask and restart the page to be able to sign transactions.</p>
+            <button className="close-alert" onClick={this.props.onCloseAlert}>+</button>
+        </div>;
+    }
 }
+MetaMaskAuthorizeWarning.propTypes = {
+    onCloseAlert: PropTypes.func.isRequired
+};
 export default MetaMaskAuthorizeWarning;

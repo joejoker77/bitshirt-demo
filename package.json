@@ -13,31 +13,23 @@
     "dev": "webpack-dev-server --hot --inline"
   },
   "dependencies": {
-    "abi-decoder": "^1.0.9",
     "axios": "^0.16.2",
     "bignumber.js": "^4.0.4",
-    "chart.js": "^2.7.1",
     "eth-sig-util": "^1.4.2",
-    "ethereumjs-tx": "^1.3.3",
     "file-loader": "^1.1.6",
     "jquery": "^3.2.1",
     "prop-types": "^15.5.10",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.5",
-    "react-chartjs": "^1.2.0",
+    "react-device-detect": "^0.1.0",
     "react-dom": "^16.0.0",
-    "react-fabricjs": "^0.1.6",
     "react-modal": "^3.1.10",
     "react-number-format": "^3.1.3",
     "react-places-autocomplete": "^6.0.2",
     "react-router-dom": "^4.2.2",
-    "react-select": "^1.2.1",
     "react-share": "^2.0.0",
-    "redux": "^3.7.2",
     "url-loader": "^0.6.2",
-    "video-react": "^0.9.4",
-    "web3": "0.20.1",
-    "web3-provider-engine": "^13.6.0"
+    "web3": "0.20.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

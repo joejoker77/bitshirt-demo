@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-import Utils from "../utils/utils";
-
 
 import Proof1 from '../images/lending/proof1.png';
 import Proof2 from '../images/lending/proof2.png';
@@ -40,16 +38,15 @@ export class StaticContent extends Component {
                         </div>
                         <div className="proof_video">
                             <video
-                                id='video4'
-                                className="video-react-video"
-                                preload="auto"
-                                loop={true}
-                                autoPlay={true}
                                 width="100%"
-                                height="450"
-                            >
-                                <source src="../media/iphone.mp4" type="video/mp4" />
-                            </video>
+                                height={450}
+                                id="video4"
+                                className="video-react-video"
+                                preload={true}
+                                autoPlay={true}
+                                muted={true}
+                                playsInline={true}
+                                loop={true} src="../media/iphone.mp4" />
                         </div>
                         <div className="proof_adv">
                             <div className="proof_adv_block wow fadeInUp" data-wow-delay="0.1s">
@@ -176,17 +173,17 @@ export class StaticContent extends Component {
                             <h2>FAQ</h2>
                             <div className="accordion">
                                 <span className="faq_head">What if several people buy one and the same T-shirt simultaneously?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                                <div>It’s impossible to buy one and the same T-shirt. The payment made first is considered the purchase. All the others get their money back.</div>
                                 <span className="faq_head">How can I resell my T-shirt?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                                <div>In order to do that the owner needs to sign up to Metamask platform. He will receive a URL and will be granted access to manage his T-shirt in the Blockchain.</div>
                                 <span className="faq_head">What if somebody replicates it in China and starts selling it cheap?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                                <div>it is impossible due to unique QR-codes. All operations with every T-shirt will be saved into the Blockchain.</div>
                                 <span className="faq_head">Why haven’t major fashion brands done it yet?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                                <div>Large companies are not easy to adopt new technologies and integrate them into their efficient process. Our success is going to be the first step on the way to the new era in the fashion industry.</div>
                                 <span className="faq_head">What if I don’t like the T-shirt I bought or it comes imperfect?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                                <div>You can return your T-shirt within 30 days after the purchase.</div>
                                 <span className="faq_head">Where can you deliver my T-shirt?</span>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                                <div>Anywhere. We deliver our products worldwide.</div>
                             </div>
                         </div>
                     </div>

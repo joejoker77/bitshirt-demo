@@ -54,6 +54,13 @@ export default {
     capitalizeFirstLetter: function (string) {
         return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
     },
+    capitalizeString: function (string) {
+        let words = string.split(' ');
+        words.forEach(function (x, y) {
+            words[y] = x.charAt(0).toUpperCase() + x.slice(1).toLowerCase();
+        });
+        return ((words instanceof Array) ? words.join (' ') : words);
+    },
     convertToHex: function (str,delim) {
         return str.split("").map(function(c) {
             return ("0" + c.charCodeAt(0).toString(16)).slice(-2);

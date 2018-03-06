@@ -165,6 +165,7 @@
     &.progress{
       bottom: 199px;
       left: -35px;
+      width: 654px;
     }
   }
   .stock_img_b {
@@ -349,6 +350,7 @@
     &.progress{
       bottom: 146px;
       left: -27px;
+      width: 495px;
     }
   }
 
@@ -570,26 +572,31 @@
     left: -20px;
   }
   .stock_img_c {
-    top: 78px;
+    top: auto;
+    bottom: 40px;
     height: 175px;
     background-size: 335px 175px;
   }
+  .header_box p:first-of-type{width: 120px;padding:0}
+  .header_box p:first-of-type span:first-of-type{float: none;}
+  .header_box p:first-of-type span:last-of-type{display: none;}
+  .window-message .message-container p{
+    font-size: 13px;
+    text-align: left;
+  }
   .as-graph{
     &.progress{
-      bottom: 100px;
-      left: -27px;
+      bottom: 104px;
+      left: -20px;
+      width: 370px;
     }
   }
-  .graph_start .stock_img_b {
-  }
-  .stock_graph {
-    left: 121px;
-    top: initial;
-    bottom: 43px;
+  .progress .progress-bar.active .stock_graph {
     width: 125px;
     height: 81px;
     background-size: contain;
     padding: 10px;
+    margin-left: -90px!important;
   }
   .stock_graph big {
     line-height: 16px;
@@ -626,7 +633,6 @@
     width: 50px;
   }
   .header_bottom p {
-    width: 168px;
     line-height: 20px;
     font-size: 16px;
     padding-top: 10px;
@@ -634,8 +640,9 @@
   }
   .reveal-modal {
     padding: 45px 25px 20px;
-    max-width: 98%;
+    width: 98%;
     height: initial;
+    margin-left: -49%;
   }
   .reveal-modal .blue_btn {
     float: none;
@@ -725,8 +732,9 @@
     height: 4px;
   }
   .second_page #second_header .sh_table {
-    width: 450px;
+    width: 100%;
     max-width: 100%;
+    min-width: inherit;
   }
   .sh_sell {
     max-width: 100%;
@@ -735,8 +743,9 @@
     width: 180px;
   }
   .second_page #second_header, .second_page #second_header .container {
-    height: 620px;
-    min-height: 620px;
+    height: auto;
+    min-height: auto;
+    padding-bottom: 10px;
   }
   .modal_comment br {
     display: none;
@@ -753,9 +762,31 @@
   .reveal-modal form span.modal_comment {
     padding-top: 0;
   }
+  .coll_numb, .coll_owner, .coll_date, .coll_cost{
+    width: 100%!important;
+    big{
+      text-align: left!important;
+    }
+  }
+  .second_page footer{
+    margin-top: 0!important;
+  }
+  .header_border{
+    display: none;
+  }
+  .danger{font-size: 18px;}
+  .social{
+    width: 100%;
+    text-align: center;
+    a{
+      display: inline-block;
+      float: none;
+    }
+  }
 }
 
 @media (max-width: 400px) {
+  .window-message .message-container p{font-size: 12px;}
   .proof_video {
     width: 100%;
   }
@@ -766,7 +797,7 @@
     width: 98px;
   }
   .header_container > p {
-    font-family: Soleil;
+    font-family: Soleil, sans-serif;
     font-style: normal;
     font-weight: normal;
     line-height: 23px;
@@ -832,6 +863,7 @@
       bottom: 80px;
       left: -16px;
       height: 1px;
+      width: 295px;
     }
   }
   .progress {
@@ -846,17 +878,12 @@
       }
     }
   }
-  .graph_start .stock_img_b {
-  }
-  .stock_graph {
-    left: 91px;
-    top: initial;
-    bottom: 26px;
+  .progress .progress-bar.active .stock_graph {
     width: 110px;
     height: 70px;
     background-size: contain;
-    padding: 10px;
-    padding-top: 7px;
+    padding: 7px 10px 10px;
+    display: none;
   }
   .stock_graph small, .stock_graph span {
     font-size: 9px;
@@ -869,12 +896,6 @@
     text-align: center;
     width: 100%;
     margin-bottom: 15px;
-  }
-  .social {
-    float: none;
-    margin: 15px auto;
-    width: 121px;
-    overflow: hidden;
   }
   .footer_container {
     padding: 15px 0 10px;
@@ -899,6 +920,9 @@
   }
   .coll_numb {
     margin-right: 15px;
+  }
+  .coll_numb, .coll_owner, .coll_date, .coll_cost{
+    width: 100%!important;
   }
 }
  

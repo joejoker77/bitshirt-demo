@@ -322,7 +322,7 @@ Blockchain.prototype.getHistoryProductData = function (data) {
         Promise.all(promises).then(function (answer) {
             let rateUsd = answer.pop();
             for(let j in data){
-                let userName  = Utils.capitalizeFirstLetter(Utils.hexToAscii(answer[j-1][2])) + ' ' +
+                let userName  = Utils.capitalizeString(Utils.hexToAscii(answer[j-1][2])) + ' ' +
                     Utils.formatAddressLong(data[j][0]);
                 let userData  = Utils.formatDate(data[j][1].toNumber());
                 let userPrice = web3.fromWei(data[j][2].toNumber()) + ' Eth (' +

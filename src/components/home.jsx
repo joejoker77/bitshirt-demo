@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactModal from 'react-modal';
+import {isMobile} from 'react-device-detect';
 import _ from 'lodash';
 import Web3 from "web3";
 import axios from "axios/index";
@@ -9,11 +10,9 @@ import SmallTshirtBg from '../images/lending/small-tshirt-bg.png';
 import Table from '../images/lending/table.png';
 
 import Header from './header';
-import Form from './buy-form'
+import Form from './buy-form';
 import FormMember from './member-form';
 import MetaMaskAuthorizeWarning from './warnings/metamask-authorize-warning';
-import BecomeMemberWarning from './warnings/become-member-warning';
-import LowBalanceWarning from './warnings/low-balance-warning';
 import Footer from './footer';
 import PreContent from './pre-content';
 import StaticContent from './static-content';
@@ -24,7 +23,6 @@ import '../utils/tabulous.js';
 import '../utils/woco.accordion.min.js';
 import '../utils/lightbox-plus-jquery.min.js';
 import '../utils/jquery.appear.js';
-
 
 import '../styles/style.scss';
 import * as transactionTypes from "../utils/transaction-types";
@@ -58,7 +56,8 @@ export class Home extends Component {
             'handleBuyProduct',
             'handleBecomeMember',
             'handleHideTransactions',
-            'handleHideNewUser'
+            'handleHideNewUser',
+            'handleCloseAlert'
         ]);
     }
 
@@ -158,9 +157,7 @@ export class Home extends Component {
         $('#stock .blue_btn').appear(function () {
 
             $("#stock").addClass("graph_start");
-
-            let width  = $("#stock.graph_start .stock_img_t").width();
-            $("#stock.graph_start .stock_img_c").width((width / 100) * $this.state.productsCount);
+            $("#stock.graph_start .stock_img_c").css({width: $this.state.productsCount + '%'});
             $('#stock.graph_start .progress-bar.active').css({width: ($this.state.productsCount) + '%', background: "transparent" });
             $('#stock.graph_start .stock_graph').css({
                 opacity: '1',
@@ -216,6 +213,24 @@ export class Home extends Component {
                 this.setState({productsCount: productsCount});
             }.bind(this));
 
+            this.blockchain.getStartPrice().then(function (startPrice) {
+
+                this.setState({startPrice: web3.fromWei(startPrice)});
+
+                let $this = this;
+
+                this.pingApi().then(function (data) {
+                    let usdPrice    = +parseFloat(web3.fromWei(data[0].price_usd * startPrice)).toFixed(2);
+                    let usdEndPrice = data[0].price_usd;
+                    $this.setState({
+                        startPriceInUsd: usdPrice,
+                        endPriceInUsd  : usdEndPrice
+                    });
+                });
+            }.bind(this)).catch(function (error) {
+                console.log(error);
+            });
+
             this.blockchain.getContractBalance().then(function (balance) {
                 this.setState({balance: balance});
             }.bind(this));
@@ -229,27 +244,13 @@ export class Home extends Component {
                     userName            : data.userName,
                     userEmail           : data.userEmail,
                     currentAccountLoaded: data.isParticipant,
-                    isWarning           : !data.isParticipant,
-                    products            : data.products
+                    products            : data.products,
+                    isWarning           : !data.isParticipant
                 });
             }.bind(this)).catch(function (error) {
                 console.error(error);
             });
 
-            this.blockchain.getStartPrice().then(function (startPrice) {
-                let $this = this;
-                this.pingApi().then(function (data) {
-                    let usdPrice    = +parseFloat(web3.fromWei(data[0].price_usd * startPrice)).toFixed(2);
-                    let usdEndPrice = data[0].price_usd;
-                    $this.setState({
-                        startPrice     : web3.fromWei(startPrice),
-                        startPriceInUsd: usdPrice,
-                        endPriceInUsd  : usdEndPrice
-                    });
-                });
-            }.bind(this)).catch(function (error) {
-                console.log(error);
-            });
         }else{
             let $this = this;
             this.testInfura().then(function (data) {
@@ -286,30 +287,35 @@ export class Home extends Component {
 
     testInfura() {
         let $this = this;
-        return new Promise(function (resolve, reject) {
-            let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
-                ContractAddr = "0xc1cf7f5344b2223bf2ef065ee281ad874e025085",
-                fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
-                productId    = web3.eth.getStorageAt(ContractAddr, 7);
+        if(this.state.startPrice === 0){
+            return new Promise(function (resolve, reject) {
+                let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
+                    ContractAddr = "0x3ad27356e958d2b8532ff7d42e342e8bffde227e",
+                    fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
+                    productId    = web3.eth.getStorageAt(ContractAddr, 7);
 
-            $this.pingApi().then(function (data2) {
-                let web3          = new Web3(),
-                    minPrice      = web3.fromWei(parseInt(fixPrice, 16)),
-                    productCount  = parseInt(productId, 16),
-                    priceInUsd    = (data2[0].price_usd * (minPrice * productCount)).toFixed(2),
-                    maxPriceInUsd = (data2[0].price_usd * (minPrice * 100)).toFixed(2);
+                $this.pingApi().then(function (data2) {
+                    let web3          = new Web3(),
+                        minPrice      = parseFloat(web3.fromWei(parseInt(fixPrice, 16))),
+                        productCount  = parseInt(productId, 16),
+                        priceInUsd    = (data2[0].price_usd * (minPrice * productCount)).toFixed(2),
+                        maxPriceInUsd = (data2[0].price_usd * (minPrice * 100)).toFixed(2);
 
-                resolve({
-                    startPrice      : parseFloat((productCount * parseFloat(minPrice)).toFixed(9)),
-                    productsCount   : productCount,
-                    startPriceInUsd : priceInUsd,
-                    endPriceInUsd   : maxPriceInUsd
+                    resolve({
+                        startPrice      : productCount > 0 ? parseFloat(((productCount * minPrice) + minPrice).toFixed(9)) : minPrice,
+                        productsCount   : productCount,
+                        startPriceInUsd : priceInUsd,
+                        endPriceInUsd   : maxPriceInUsd
+                    });
                 });
             });
-        });
+        }else{
+            return this.state;
+        }
     }
 
     handleHideTransactions() {
+        console.log(this.transactionsStorage);
         this.transactionsStorage.hidePendingTransactions();
         this.updateTransactions();
     }
@@ -323,6 +329,7 @@ export class Home extends Component {
         let delivery = data.get('delivery_flat') ?
             data.get('delivery_address') + ' ' + 'house/office: ' + data.get('delivery_flat') :
             data.get('delivery_address');
+
         this.blockchain.buyProduct(data.get('sizeValue'), delivery, this.state.startPrice, this.state.userName, this.state.userEmail)
             .then(function (txHash) {
                 const tx = {
@@ -331,10 +338,12 @@ export class Home extends Component {
                 };
                 this.transactionsStorage.addTransaction(tx);
                 this.updateData();
+                $("html, body").animate({ scrollTop: 0 }, "slow");
             }.bind(this))
             .catch(function (error) {
-                console.error(error);
-            });
+                console.log(error);
+                this.updateData();
+            }.bind(this));
     }
 
     handleOpenModal () {
@@ -358,27 +367,21 @@ export class Home extends Component {
         this.blockchain.becomeMember(userName, userEmail)
             .then(function (data) {
                 if(data.status === 200 && data.data.status === "success") {
-
-                    let requestData = {};
-                    this.blockchain.getOwnerProductInfo(this.state.userAddress)
-                        .then(function (data) {
-                            requestData.action    = "Become member";
-                            requestData.user      = data;
-                            requestData.productId = $this.props.match.params.number;
-                            $.ajax({
-                                method: "POST",
-                                url: 'http://bitshirt.co/sendmail.php',
-                                data: requestData,
-                                success: function () {},
-                                error: function (error) {
-                                    console.log(error);
-                                }
-                            });
-                        });
+                    let requestData = {user:{userEmail:userEmail,userName:userName},action:"Become member"};
+                    $.ajax({
+                        method: "POST",
+                        url: 'http://bitshirt.co/sendmail.php',
+                        data: requestData,
+                        success: function () {
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
 
                     this.setState({
                         isParticipant: true,
-                        isWarning    : false,
                         newUser      : true,
                         userName     : userName,
                         userEmail    : userEmail
@@ -391,19 +394,22 @@ export class Home extends Component {
             });
     }
 
+    handleCloseAlert(){
+        this.setState({isWarning: false, products: []});
+    }
+
     renderForm(){
+
+        if(isMobile){
+            return <div className="form-alert">
+                You can only purchase t-shirt on a desktop browser like Chrome, Firefox or Opera
+            </div>
+        }
+
         if(this.state.userAddress === "") {
             return <div className="form-alert">
-                <h4>Attention!</h4>
-                <h5>You are not logged in the system!</h5>
-                <p>In order to make purchases you must be authorized!</p>
-                <p>Authorization:</p>
-                <ol>
-                    <li>Install the plugin for your MetaMask browser;</li>
-                    <li>Unlock one of your wallets;</li>
-                    <li>Update the application page;</li>
-                    <li>Complete a simple registration;</li>
-                </ol>
+                <h4>You are not authorized!</h4>
+                <p>Unlock your account in MetaMask and restart the page to be able to sign transactions.</p>
             </div>;
         }else if(this.state.isParticipant) {
             return <div className='form-buy-product'>
@@ -411,29 +417,32 @@ export class Home extends Component {
                     onBuyProduct={this.handleBuyProduct}
                     price={this.state.startPrice}
                     poductId={this.state.productsCount + 1}
+                    priceInUsd={this.state.startPriceInUsd}
                 />
             </div>;
         }else if(!this.state.currentAccountLoaded){
             return <div className='form-member'>
-                <FormMember onFormMember={this.handleBecomeMember} />
+                <FormMember onFormMember={this.handleBecomeMember} userAddress={this.state.userAddress} />
             </div>;
         }
     }
 
     renderWarnings() {
         if(this.state.userAddress === "") {
-            return <MetaMaskAuthorizeWarning />;
-        }else if(this.state.userBalance < this.state.startPrice){
-            return <LowBalanceWarning />;
+            return <MetaMaskAuthorizeWarning onCloseAlert={this.handleCloseAlert} />;
         }else if(!this.state.currentAccountLoaded){
-            return <BecomeMemberWarning onOpenModal={this.handleOpenModal} />;
+            return null;
+        }else{
+            this.setState({isWarning: false})
         }
     }
 
     render() {
         return (
             <div className="app">
-                <Header size="M" />
+                <Header size="M" shareHandler={function () {
+                    return null
+                }} />
                 <span id="behavior" className="hide" />
                 <div id="header">
                     <div className="container">
@@ -444,12 +453,19 @@ export class Home extends Component {
                                 ever crypto project with a real product: a limited collection of <br/>
                                 amazing T-shirts that are impossible to fake up.</p>
                             <div className="header_box">
-                                <p><span>{this.state.userAddress && this.state.userAddress !== "" ? this.state.startPrice : this.state.startPrice + 0.1} <small>ETH</small></span> Current price</p>
-                                <p><span>{1} <small>ETH</small></span> Final price</p>
+                                <p>
+                                    <span>
+                                        {this.state.startPrice}&nbsp;<small>ETH</small>
+                                    </span>
+                                    <span>
+                                        ~ <small>$</small>&nbsp;{this.state.startPriceInUsd}
+                                    </span>Current price
+                                </p>
+                                <p><span>10 <small>ETH</small></span> Final price</p>
                                 <p><span>{100 - (this.state.productsCount)}</span> T-shirt left</p>
                             </div>
                             <a onClick={this.handleOpenModal} className="blue_btn">
-                                <span>Buy now for {this.state.userAddress && this.state.userAddress !== "" ? this.state.startPrice : this.state.startPrice + 0.1} ETH</span>
+                                <span>Buy now for {this.state.startPrice} ETH</span>
                             </a>
                             <a href="#" className="header_video">Watch video</a>
                         </div>
@@ -465,10 +481,10 @@ export class Home extends Component {
                             <h2>Less in stock, higher price</h2>
                             <p>We created a limited collection of T-shirt that will never be restocked. It means that that the price will go unbelievably high when the T-shirts are sold out. </p>
                             <p>With every T-shirt sold its price increases by $1. Just imagine, you buy a T-shirt for $3 and within a month it takes a jump and costs $100. Sounds juicy, right?</p>
-                            <a onClick={this.handleOpenModal} className="blue_btn">Buy now for {this.state.userAddress && this.state.userAddress !== "" ? this.state.startPrice : this.state.startPrice + 0.1} ETH</a>
+                            <a onClick={this.handleOpenModal} className="blue_btn">Buy now for {this.state.startPrice} ETH</a>
                         </div>
                         <div className="stock_img">
-                            <div className="graph-wrapper" style={{display: 'table', position:'relative'}}>
+                            <div className="graph-wrapper" style={{position:'relative'}}>
                                 <ProgressBar
                                     className="as-graph"
                                     active
@@ -477,7 +493,7 @@ export class Home extends Component {
                                     max={100}
                                     label={
                                         <div className="stock_graph">
-                                            <big>{this.state.userAddress && this.state.userAddress !== "" ? this.state.startPrice : this.state.startPrice + 0.1} <small>ETH</small></big>
+                                            <big>{this.state.startPrice} <small>ETH</small></big>
                                             <small>Current price</small>
                                             <span>{100 - this.state.productsCount} T-SHIRT LEFT</span>
                                         </div>
@@ -501,7 +517,7 @@ export class Home extends Component {
                         <TransactionsContainer transactions={this.state.transactions} onHideTransactions={this.handleHideTransactions} />
                     </div> : null }
                     {this.state.products.length > 0 ? <div className="message">
-                        <ProductsContainer products={this.state.products} />
+                        <ProductsContainer products={this.state.products} onCloseAlert={this.handleCloseAlert} />
                     </div> : null }
                 </div> : null }
                 <ReactModal isOpen={this.state.showModal} id="buy" className="reveal-modal" >

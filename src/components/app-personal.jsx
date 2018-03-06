@@ -8,7 +8,6 @@ import * as transactionTypes from "../utils/transaction-types";
 import Header from './header';
 import MetaMaskAuthorizeWarning from './warnings/metamask-authorize-warning';
 import BecomeMemberWarning from './warnings/become-member-warning';
-import LowBalanceWarning from './warnings/low-balance-warning';
 import axios from "axios/index";
 import Utils from "../utils/utils";
 import PutSaleForm from './put-sale-form';
@@ -20,36 +19,6 @@ import SharePageForm from './share-page-form';
 import Footer from './footer';
 
 import SmallTshirt from '../images/lending/small-tshirt-wo-shadows-bg.png';
-import Web3 from "web3";
-
-
-const customStyles = {
-    overlay : {
-        position       : 'fixed',
-        top            : 0,
-        left           : 0,
-        right          : 0,
-        bottom         : 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.75)'
-    },
-    content : {
-        position               : 'absolute',
-        top                    : '50%',
-        left                   : '50%',
-        right                  : 'auto',
-        bottom                 : 'auto',
-        marginRight            : '-50%',
-        transform              : 'translate(-50%, -50%)',
-        border                 : '1px solid #ccc',
-        background             : '#fff',
-        overflow               : 'auto',
-        WebkitOverflowScrolling: 'touch',
-        borderRadius           : '4px',
-        outline                : 'none',
-        padding                : '20px'
-
-    }
-};
 
 ReactModal.setAppElement('#root');
 
@@ -187,6 +156,7 @@ export class App extends Component {
             });
         });
     }
+
     updateData() {
         if(this.blockchain.address && this.blockchain.address !=="") {
             this.blockchain.checkProduct(this.props.match.params.number).then(function (isProduct) {
@@ -208,6 +178,7 @@ export class App extends Component {
                         userName            : Utils.capitalizeFirstLetter(data.userName),
                         userAddress         : data.userAddress,
                         currentAccountLoaded: true,
+                        isWarning           : !data.isParticipant
                     });
                 }.bind(this))
                 .catch(function (error) {
@@ -265,48 +236,7 @@ export class App extends Component {
                 this.setState({productsCount: productsCount});
             }.bind(this));
             this.updateTransactions();
-        }else{
-            this.testInfura().then(function (data) {
-                $this.setState({
-                    startPrice          : data.startPrice,
-                    productsCount       : data.productsCount,
-                    startPriceInUsd     : data.startPriceInUsd,
-                    endPriceInUsd       : data.endPriceInUsd,
-                    currentAccountLoaded: true,
-                    isWarning           : true,
-                    isParticipant       : false,
-                    userName            : '',
-                    userEmail           : ''
-                });
-            }).catch(function (error) {
-                console.log(error);
-            })
         }
-    }
-
-    testInfura(){
-        let $this = this;
-        return new Promise(function (resolve, reject) {
-            let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
-                ContractAddr = "0xc1cf7f5344b2223bf2ef065ee281ad874e025085",
-                fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
-                productId    = web3.eth.getStorageAt(ContractAddr, 7);
-
-            $this.pingApi().then(function (data2) {
-                let web3          = new Web3(),
-                    minPrice      = web3.fromWei(parseInt(fixPrice, 16)),
-                    productCount  = parseInt(productId, 16),
-                    priceInUsd    = (data2[0].price_usd * (minPrice * productCount)).toFixed(2),
-                    maxPriceInUsd = (data2[0].price_usd * (minPrice * 1000)).toFixed(2);
-
-                resolve({
-                    startPrice      : minPrice * productCount,
-                    productsCount   : productCount,
-                    startPriceInUsd : priceInUsd,
-                    endPriceInUsd   : maxPriceInUsd
-                });
-            });
-        });
     }
 
     handleOpenModal () {
@@ -351,27 +281,21 @@ export class App extends Component {
         this.blockchain.becomeMember(userName, userEmail)
             .then(function (data) {
                 if(data.status === 200 && data.data.status === "success") {
-                    let requestData = {};
-                    this.blockchain.getOwnerProductInfo(this.state.userAddress)
-                        .then(function (data) {
-                            requestData.action    = "Become member";
-                            requestData.user      = data;
-                            requestData.productId = $this.props.match.params.number;
-                            $.ajax({
-                                method: "POST",
-                                url: 'http://bitshirt.co/sendmail.php',
-                                data: requestData,
-                                success: function () {
-                                    window.location.href = '/';
-                                },
-                                error: function (error) {
-                                    console.log(error);
-                                }
-                            });
-                        });
+                    let requestData = {user:{userEmail:userEmail,userName:userName},action:"Become member"};
+                    $.ajax({
+                        method: "POST",
+                        url: 'http://bitshirt.co/sendmail.php',
+                        data: requestData,
+                        success: function () {
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+
                     this.setState({
                         isParticipant: true,
-                        isWarning    : false,
                         newUser      : true,
                         userName     : userName,
                         userEmail    : userEmail
@@ -450,13 +374,18 @@ export class App extends Component {
         this.setState({transactions: this.transactionsStorage.getPendingTransactions()});
     }
 
+    handleCloseAlert(){
+        this.setState({isWarning: false});
+    }
+
     renderWarnings() {
-        if(this.state.userAddress === "") {
-            return <MetaMaskAuthorizeWarning />;
-        }else if(this.state.userBalance < this.state.startPrice){
-            return <LowBalanceWarning />;
+        console.log(this.state);
+        if(!this.state.isParticipant) {
+            return <MetaMaskAuthorizeWarning  onCloseAlert={this.handleCloseAlert} />;
         }else if(!this.state.currentAccountLoaded){
-            return <BecomeMemberWarning onOpenModal={this.handleOpenModal} />;
+            return <BecomeMemberWarning onOpenModal={this.handleOpenModal} onCloseAlert={this.handleCloseAlert} />;
+        }else{
+            this.setState({isWarning: false});
         }
     }
 
@@ -466,11 +395,15 @@ export class App extends Component {
                 return <p className="current-price">
                     <span className="sh_bought">THIS T-SHIRT WAS BOUGHT FOR:</span>
                     <span className="sh_price">{this.state.price} ETH</span>
+                    <span className="sh_price_usd">~ $ {this.state.priceInUsd}</span>
+                    <span className="clearfix" />
                 </p>
             }else{
                 return <p className="current-price">
-                    <span className="sh_bought">YOUR BOUGHT THIS T-SHIRT FOR:</span>
+                    <span className="sh_bought">BOUGHT THIS T-SHIRT:</span>
                     <span className="sh_price">{this.state.price} ETH</span>
+                    <span className="sh_price_usd">~ $ {this.state.priceInUsd}</span>
+                    <span className="clearfix" />
                 </p>
             }
         } else {
@@ -481,14 +414,14 @@ export class App extends Component {
                         <span>
                             <small>SELLING PRICE:</small>
                             <big>{this.state.price} ETH</big>
+                            <span className="sh_price_usd">~ $ {this.state.priceInUsd}</span>
+                            <span className="clearfix" />
                         </span>
                         <a className="blue_btn" onClick={this.handleOpenModal}>BUY T-SHIRT</a>
                     </div>
                 </div>);
             }else{
-                return <p className="current-price">
-                    <span className="sh_bought">THIS T-SHIRT IS NOT SALE!</span>
-                </p>
+                return <p className="current-price" />
             }
         }
     }
@@ -533,7 +466,6 @@ export class App extends Component {
         if (this.state.userAddress && !this.state.isParticipant) {
             return <FormMember onFormMember={this.handleBecomeMember} />
         }else{
-
             if(!this.state.pageShare){
                 return <div className='form-buy-product'>
                     <Form
@@ -564,6 +496,7 @@ export class App extends Component {
                         size={this.state.size}
                         userName={this.state.userName}
                         number={this.props.match.params.number}
+                        shareHandler={this.handleSharePage}
                     />
                     <div id="second_header">
                         <div className="container">
@@ -582,11 +515,12 @@ export class App extends Component {
                         size={this.state.size}
                         userName={this.state.userName}
                         number={this.props.match.params.number}
+                        shareHandler={this.handleSharePage}
                     />
                     <div id="second_header">
                         <div className="container">
                             <div className="header_container">
-                                <h1>{Utils.capitalizeFirstLetter(this.state.userName)}'s T-SHIRT</h1>
+                                <h1>{Utils.capitalizeString(this.state.userName)}'s T-SHIRT</h1>
                                 <p className="sh_pretext">This product is genuine</p>
                                 <span className="sh_number">
                                     <big>{this.props.match.params.number}</big>
@@ -614,10 +548,9 @@ export class App extends Component {
                             <TransactionsContainer transactions={this.state.transactions} onHideTransactions={this.handleHideTransactions} />
                         </div> : null }
                     </div> : null }
-                    <ReactModal id={1} key={1}
-                                isOpen={this.state.showModal} style={customStyles}>
-                        <button className="close-modal" onClick={this.handleCloseModal}>+</button>
+                    <ReactModal isOpen={this.state.showModal} id="buy" className="reveal-modal">
                         {this.renderForm()}
+                        <a className="close-reveal-modal" onClick={this.handleCloseModal} />
                     </ReactModal>
                 </div>
             );
