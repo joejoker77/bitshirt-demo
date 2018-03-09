@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactModal from 'react-modal';
 import {isMobile} from 'react-device-detect';
+import * as contract from '../contracts/TShirt.json';
 import _ from 'lodash';
 import Web3 from "web3";
 import axios from "axios/index";
@@ -80,7 +81,7 @@ export class Home extends Component {
                                 requestData.product = data2;
                                 $.ajax({
                                     method: "POST",
-                                    url: 'http://bitshirt.co/sendmail.php',
+                                    url: 'https://bitshirt.co/sendmail.php',
                                     data: requestData,
                                     success: function () {
                                         window.location.href = '/t-shirt/' + (productCount+1);
@@ -290,7 +291,7 @@ export class Home extends Component {
         if(this.state.startPrice === 0){
             return new Promise(function (resolve, reject) {
                 let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
-                    ContractAddr = "0x3ad27356e958d2b8532ff7d42e342e8bffde227e",
+                    ContractAddr = contract.address,
                     fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
                     productId    = web3.eth.getStorageAt(ContractAddr, 7);
 
@@ -370,7 +371,7 @@ export class Home extends Component {
                     let requestData = {user:{userEmail:userEmail,userName:userName},action:"Become member"};
                     $.ajax({
                         method: "POST",
-                        url: 'http://bitshirt.co/sendmail.php',
+                        url: 'https://bitshirt.co/sendmail.php',
                         data: requestData,
                         success: function () {
                             $("html, body").animate({ scrollTop: 0 }, "slow");
@@ -449,16 +450,14 @@ export class Home extends Component {
                         <div className="header_container">
                             <h1><span>BITSHIRT</span> is the first ever <br/>crypto project with a real<br/> product</h1>
                             <h5>Each t-shirt sold means the rest of them rise in value</h5>
-                            <p>While others make promises, we act up to ours. Bitshirt is the first<br/>
-                                ever crypto project with a real product: a limited collection of <br/>
-                                amazing T-shirts that are impossible to fake up.</p>
+                            <p>ICOs keep making promises and the market gets flooded with<br />
+                                countless virtual collectibles. We offer the other way. Bitshirt<br />
+                                is the first ever crypto project with a real product: a limited<br />
+                                collection of amazing T-shirts that are impossible to fake up.</p>
                             <div className="header_box">
                                 <p>
                                     <span>
                                         {this.state.startPrice}&nbsp;<small>ETH</small>
-                                    </span>
-                                    <span>
-                                        ~ <small>$</small>&nbsp;{this.state.startPriceInUsd}
                                     </span>Current price
                                 </p>
                                 <p><span>10 <small>ETH</small></span> Final price</p>
@@ -479,8 +478,8 @@ export class Home extends Component {
                     <div className="container">
                         <div className="stock_container">
                             <h2>Less in stock, higher price</h2>
-                            <p>We created a limited collection of T-shirt that will never be restocked. It means that that the price will go unbelievably high when the T-shirts are sold out. </p>
-                            <p>With every T-shirt sold its price increases by $1. Just imagine, you buy a T-shirt for $3 and within a month it takes a jump and costs $100. Sounds juicy, right?</p>
+                            <p>We created a limited collection of T-shirt that will never be restocked. It means that that the price will go unbelievably high when the T-shirts are sold out.</p>
+                            <p>With every T-shirt sold its price increases by 0.1 ETH. Just imagine, you buy a T-shirt for 0.5 ETH and within a month it takes a jump and costs 8 ETH. Sounds juicy, right?</p>
                             <a onClick={this.handleOpenModal} className="blue_btn">Buy now for {this.state.startPrice} ETH</a>
                         </div>
                         <div className="stock_img">

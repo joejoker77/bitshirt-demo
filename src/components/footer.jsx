@@ -23,13 +23,10 @@ export class Footer extends Component {
                             <a className="example-image-link" href={Gallery8} data-lightbox="example-set">Gallery</a>
                         </div>
                         <div className="social">
-                            <a href="#">
-                                <img src={Soc1} alt="" />
-                            </a>
-                            <a href="#">
+                            <a href="https://www.facebook.com/bitshirtco" target="_blank">
                                 <img src={Soc2} alt="" />
                             </a>
-                            <a href="#">
+                            <a href="https://twitter.com/bitshirtco" target="_blank">
                                 <img src={Soc3} alt="" />
                             </a>
                         </div>

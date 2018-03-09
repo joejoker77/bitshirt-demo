@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactModal from 'react-modal';
 import {isMobile} from 'react-device-detect';
+import * as contract from '../contracts/TShirt.json';
 import _ from 'lodash';
 import Web3 from "web3";
 import axios from "axios/index";
@@ -179,7 +180,7 @@ class Disconnected extends Component{
         if(this.state.startPrice === 0){
             return new Promise(function (resolve, reject) {
                 let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
-                    ContractAddr = "0x3ad27356e958d2b8532ff7d42e342e8bffde227e",
+                    ContractAddr = contract.address,
                     fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
                     productId    = web3.eth.getStorageAt(ContractAddr, 7);
 
@@ -226,16 +227,14 @@ class Disconnected extends Component{
                         <div className="header_container">
                             <h1><span>BITSHIRT</span> is the first ever <br/>crypto project with a real<br/> product</h1>
                             <h5>Each t-shirt sold means the rest of them rise in value</h5>
-                            <p>While others make promises, we act up to ours. Bitshirt is the first<br/>
-                                ever crypto project with a real product: a limited collection of <br/>
-                                amazing T-shirts that are impossible to fake up.</p>
+                            <p>ICOs keep making promises and the market gets flooded with<br />
+                                countless virtual collectibles. We offer the other way. Bitshirt<br />
+                                is the first ever crypto project with a real product: a limited<br />
+                                collection of amazing T-shirts that are impossible to fake up.</p>
                             <div className="header_box">
                                 <p>
                                     <span>
                                         {this.state.startPrice}&nbsp;<small>ETH</small>
-                                    </span>
-                                    <span>
-                                        ~ <small>$</small>&nbsp;{this.state.startPriceInUsd}
                                     </span>Current price
                                 </p>
                                 <p><span>{1} <small>ETH</small></span> Final price</p>

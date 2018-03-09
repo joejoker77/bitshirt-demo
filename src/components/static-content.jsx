@@ -26,10 +26,10 @@ export class StaticContent extends Component {
                                 is the future of the fashion<br/>
                                 industry
                             </h2>
-                            <p>Blockchain technology secures every purchase and sale<br/>
-                                at all stages. A unique QR code on every single T-shirt <br/>
-                                out of 1,000 opens up the information about all <br/>
-                                previous owners.
+                            <p>Blockchain technology secures every purchase and<br />
+                                sale at all stages. A unique QR code on every single<br />
+                                T-shirt out of 100 opens up the information about<br />
+                                all previous owners.
                             </p>
                             <p>A product like this can’t be faked up, replicated to a<br/>
                                 million copies or be a subject in other widespread <br/>
@@ -42,7 +42,7 @@ export class StaticContent extends Component {
                                 height={450}
                                 id="video4"
                                 className="video-react-video"
-                                preload={true}
+                                preload="true"
                                 autoPlay={true}
                                 muted={true}
                                 playsInline={true}
@@ -160,7 +160,7 @@ export class StaticContent extends Component {
                             </ul>
                             <ul>
                                 <li><span>wants to make an impact</span></li>
-                                <li><span>can see promising start-ups and know their<br/> potential</span></li>
+                                <li><span>can see promising start-ups<br />and know their potential</span></li>
                                 <li><span>follow fashion trends</span></li>
                                 <li><span>value exclusive things</span></li>
                             </ul>
@@ -172,18 +172,30 @@ export class StaticContent extends Component {
                         <div className="faq_container">
                             <h2>FAQ</h2>
                             <div className="accordion">
+                                <span className="faq_head">What do I need to buy a T-shirt?</span>
+                                <div>Here’s what you need to get started:
+                                    <ol>
+                                        <li>A computer or laptop running the desktop version of Chrome, Firefox or Opera</li>
+                                        <li>MetaMask, a digital wallet used specifically with web apps</li>
+                                        <li>Ether, the cryptocurrency used to buy T-shirt</li>
+                                    </ol>
+                                    If you have any questions, please don’t hesitate to contact us. </div>
                                 <span className="faq_head">What if several people buy one and the same T-shirt simultaneously?</span>
-                                <div>It’s impossible to buy one and the same T-shirt. The payment made first is considered the purchase. All the others get their money back.</div>
+                                <div>It’s impossible to buy one and the same T-shirt. The payment made first is considered the purchase. All the others get their money back automatically due to the smart contract.</div>
                                 <span className="faq_head">How can I resell my T-shirt?</span>
-                                <div>In order to do that the owner needs to sign up to Metamask platform. He will receive a URL and will be granted access to manage his T-shirt in the Blockchain.</div>
-                                <span className="faq_head">What if somebody replicates it in China and starts selling it cheap?</span>
-                                <div>it is impossible due to unique QR-codes. All operations with every T-shirt will be saved into the Blockchain.</div>
+                                <div>After successful purchase, a web page is created from where it is possible to resell the T-shirt.</div>
+                                <span className="faq_head">When a public catalogue of T-shirts will be available?</span>
+                                <div>We will launch as soon as all the 100 T-shirts are sold.  Until then the resell function is performed from the webpage of your purchased T-shirt.</div>
+                                <span className="faq_head">What if somebody replicates it and starts selling it cheap?</span>
+                                <div>It is impossible due to unique QR-codes. All operations with every T-shirt will be saved into the Blockchain.</div>
                                 <span className="faq_head">Why haven’t major fashion brands done it yet?</span>
                                 <div>Large companies are not easy to adopt new technologies and integrate them into their efficient process. Our success is going to be the first step on the way to the new era in the fashion industry.</div>
                                 <span className="faq_head">What if I don’t like the T-shirt I bought or it comes imperfect?</span>
                                 <div>You can return your T-shirt within 30 days after the purchase.</div>
-                                <span className="faq_head">Where can you deliver my T-shirt?</span>
-                                <div>Anywhere. We deliver our products worldwide.</div>
+                                <span className="faq_head">Where can you deliver my T-shirt? How long does it take?</span>
+                                <div>We submit your T-shirt to worldwide express delivery services immediately after purchase and provide you with a tracking number.</div>
+                                <span className="faq_head">Is it some kind of scam?</span>
+                                <div>No, this is a real project we have dedicated months of work to. Our system is transparent and every action is validated thanks to the blockchain technology and open source. </div>
                             </div>
                         </div>
                     </div>
@@ -192,12 +204,7 @@ export class StaticContent extends Component {
                     <div className="container">
                         <div className="time_container wow fadeInUp">
                             <h3>It’s time to <span>turn the fashion industry</span> and<br/> both real and crypto worlds</h3>
-                            <p>
-                                We created the first product of the future. World market leaders and developing<br/>
-                                companies will soon take up the initiative and adopt our idea. By that time Bitshirts will<br/>
-                                cost as much as bars of gold. Be among the first to start shift profitability vector in the<br/>
-                                world of fashion. Choose your size and style right now, while others ponder!
-                            </p>
+                            <p>We created the first concept of truly impossible to fabricate clothing. World market leaders and developing companies will soon take up the initiative and adopt our idea. Be among the first, while others ponder!</p>
                             <a className="blue_btn">I want one right now!</a>
                         </div>
                     </div>

@@ -5,11 +5,11 @@ import Icon3 from '../images/lending/icon3.png';
 
 export class PreContent extends Component {
 
-    _playPause(event){
+    _playPause = (event) => {
         let videoBlockId = 'video' + event.target.parentElement.dataset.play,
             video        = document.getElementById(videoBlockId);
         video.play();
-    }
+    };
 
     render() {
         return (
@@ -37,7 +37,7 @@ export class PreContent extends Component {
                             <h2 className="wow fadeInUp" data-wow-delay="0.3s"><span>What</span> is it and <span>how</span> it works?</h2>
                             <div className="collum">
                                 <div className="coll_2 wow fadeInUp" data-wow-delay="0.3s">
-                                    <p>98% of present-day crypto projects launch without having a real product behind them. The give promises they can’t keep.</p>
+                                    <p>99% of present-day crypto projects launch without having a real product behind them. They give promises they can’t keep.</p>
                                     <p>We do vice versa. We created a truly revolutionary product employing all the good things the Blockchain technology offers.</p>
                                 </div>
                                 <div className="coll_2 wow fadeInUp" data-wow-delay="0.3s">
@@ -53,7 +53,7 @@ export class PreContent extends Component {
                                     <li className="wow fadeInUp" data-wow-delay="0.3s">
                                         <a href="#tabs-1" className="tabulous_active" onClick={(event) => this._playPause(event)} data-play="1" title="">
                                             <span>1</span>
-                                            <small>You place an order — We save the date into the Blockchain and no one can edit it even the authors. </small>
+                                            <small>You place an order - the data is automatically stored into the blockchain via smart contract and no one can edit it even the developers.</small>
                                         </a>
                                     </li>
                                     <li className="wow fadeInUp" data-wow-delay="0.3s">
@@ -65,7 +65,7 @@ export class PreContent extends Component {
                                     <li className="wow fadeInUp" data-wow-delay="0.3s">
                                         <a href="#tabs-3" onClick={(event) => this._playPause(event)} data-play="3" title="">
                                             <span>3</span>
-                                            <small>You can sell the T-shirt whenever you want and the right of possession will go over to the buyer according to our smart contract. However, the Blockchain will store the information forever and remember that you were the first to own the T-shirt.</small>
+                                            <small>You can sell your T-shirt whenever you want and ownership will go over to the buyer according to our smart contract. However, the Blockchain will always remember that you were the previous one to own the T-shirt.</small>
                                         </a>
                                     </li>
                                 </ul>

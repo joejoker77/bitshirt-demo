@@ -229,7 +229,7 @@ export class App extends Component {
         mailData.to = data.get('email');
         $.ajax({
             method: "POST",
-            url: 'http://bitshirt.co/sendmail.php',
+            url: 'https://bitshirt.co/sendmail.php',
             data: mailData,
             success: function () {
                 $this.setState({mailData: {}});

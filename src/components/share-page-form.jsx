@@ -84,7 +84,7 @@ class MyForm extends Component {
                 <form onSubmit={this.handleSubmit} noValidate className={displayErrors ? 'displayErrors' : ''} >
                     <label htmlFor="email">Email:</label>
                     <input className="form-control" id="email" name="email" type="email" required />
-                    <button className="blue_btn">Send data!</button>
+                    <button className="blue_btn">Send email!</button>
                 </form>
 
                 <div className="res-block">

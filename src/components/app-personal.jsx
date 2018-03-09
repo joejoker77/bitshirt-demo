@@ -78,7 +78,7 @@ export class App extends Component {
                                 requestData.userEmail = $this.state.userEmail;
                                 $.ajax({
                                     method: "POST",
-                                    url: 'http://bitshirt.co/sendmail.php',
+                                    url: 'https://bitshirt.co/sendmail.php',
                                     data: requestData,
                                     success: function (data) {
                                         console.log('Server answer: ', data);
@@ -103,7 +103,7 @@ export class App extends Component {
                                                 requestData.product = data2;
                                                 $.ajax({
                                                     method: "POST",
-                                                    url: 'http://bitshirt.co/sendmail.php',
+                                                    url: 'https://bitshirt.co/sendmail.php',
                                                     data: requestData,
                                                     success: function (data) {
                                                         console.log('Server answer: ', data);
@@ -284,7 +284,7 @@ export class App extends Component {
                     let requestData = {user:{userEmail:userEmail,userName:userName},action:"Become member"};
                     $.ajax({
                         method: "POST",
-                        url: 'http://bitshirt.co/sendmail.php',
+                        url: 'https://bitshirt.co/sendmail.php',
                         data: requestData,
                         success: function () {
                             $("html, body").animate({ scrollTop: 0 }, "slow");
@@ -339,8 +339,7 @@ export class App extends Component {
             .then(function (data) {
                 mailData.user      = data;
                 mailData.productId = $this.props.match.params.number;
-                $this.setState({pageShare: true});
-                $this.setState({mailData: mailData});
+                $this.setState({pageShare: true, mailData: mailData});
                 $this.handleOpenModal();
             });
     }
@@ -357,7 +356,7 @@ export class App extends Component {
         mailData.to = data.get('email');
         $.ajax({
             method: "POST",
-            url: 'http://bitshirt.co/sendmail.php',
+            url: 'https://bitshirt.co/sendmail.php',
             data: mailData,
             success: function () {
                 $this.setState({mailData: {}});
