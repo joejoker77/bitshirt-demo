@@ -81,7 +81,7 @@ export class Home extends Component {
                                 requestData.product = data2;
                                 $.ajax({
                                     method: "POST",
-                                    url: 'https://bitshirt.co/sendmail.php',
+                                    url: 'http://bitshirt.co/sendmail.php',
                                     data: requestData,
                                     success: function () {
                                         window.location.href = '/t-shirt/' + (productCount+1);
@@ -371,9 +371,10 @@ export class Home extends Component {
                     let requestData = {user:{userEmail:userEmail,userName:userName},action:"Become member"};
                     $.ajax({
                         method: "POST",
-                        url: 'https://bitshirt.co/sendmail.php',
+                        url: 'http://bitshirt.co/sendmail.php',
                         data: requestData,
                         success: function () {
+                            console.log('test');
                             $("html, body").animate({ scrollTop: 0 }, "slow");
                         },
                         error: function (error) {

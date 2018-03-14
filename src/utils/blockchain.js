@@ -47,7 +47,7 @@ Blockchain.prototype.becomeMember = function (userName, userEmail) {
                     sig: result.result
                 });
                 if(recovered === from) {
-                    axios.post("https://bitshirt.co/db.php", {
+                    axios.post("http://bitshirt.co/db.php", {
                         method   : "register",
                         userName : userName,
                         userEmail: userEmail,
@@ -152,7 +152,7 @@ Blockchain.prototype.getCurrentAccountInfo = function () {
         });
     }.bind(this));
 
-    const checkIsParticipant = axios.post("https://bitshirt.co/db.php", {
+    const checkIsParticipant = axios.post("http://bitshirt.co/db.php", {
         method: "check",
         userAddress: address
     });
@@ -218,7 +218,7 @@ Blockchain.prototype.getCurrentPersonalAccountInfo = function () {
         });
     }.bind(this));
 
-    const checkIsParticipant = axios.post("https://bitshirt.co/db.php", {
+    const checkIsParticipant = axios.post("http://bitshirt.co/db.php", {
         method: "check",
         userAddress: address
     });

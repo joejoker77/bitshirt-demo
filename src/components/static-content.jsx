@@ -195,7 +195,9 @@ export class StaticContent extends Component {
                                 <span className="faq_head">Where can you deliver my T-shirt? How long does it take?</span>
                                 <div>We submit your T-shirt to worldwide express delivery services immediately after purchase and provide you with a tracking number.</div>
                                 <span className="faq_head">Is it some kind of scam?</span>
-                                <div>No, this is a real project we have dedicated months of work to. Our system is transparent and every action is validated thanks to the blockchain technology and open source. </div>
+                                <div>No, this is a real project we have dedicated months of work to. Our system is transparent and every action is validated thanks to the blockchain technology and open source.</div>
+                                <span className="faq_head">How do I reach you regarding a project, partnership or question?</span>
+                                <div>Please feel free to contact us via email: team@bitshirt.co</div>
                             </div>
                         </div>
                     </div>
