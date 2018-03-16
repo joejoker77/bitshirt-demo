@@ -43,7 +43,7 @@ export class Header extends Component {
                                 <div className="facebook share-button">
                                     <div className="Demo__some-network">
                                         <FacebookShareButton
-                                            url={"http://bitshirt.co/t-shirt/" + this.props.number}
+                                            url={"https://bitshirt.co/t-shirt/" + this.props.number}
                                             quote={<p>Check my T-shirt out!<br/> Unique number – {this.props.number}. Size: {this.props.size}</p>}
                                             className="Demo__some-network__share-button">
                                             <FacebookIcon  size={32} round />
@@ -53,7 +53,7 @@ export class Header extends Component {
                                 <div className="twitter share-button">
                                     <div className="Demo__some-network">
                                         <TwitterShareButton
-                                            url={"http://bitshirt.co/t-shirt/" + this.props.number}
+                                            url={"https://bitshirt.co/t-shirt/" + this.props.number}
                                             title={<p>Check my T-shirt out!<br/> Unique number – {this.props.number}. Size: {this.props.size}</p>}
                                             className="Demo__some-network__share-button">
                                             <TwitterIcon size={32} round />
@@ -63,7 +63,7 @@ export class Header extends Component {
                                 <div className="telegram share-button">
                                     <div className="Demo__some-network">
                                         <TelegramShareButton
-                                            url={"http://bitshirt.co/t-shirt/" + this.props.number}
+                                            url={"https://bitshirt.co/t-shirt/" + this.props.number}
                                             title={<p>Check my T-shirt out!<br/> Unique number – {this.props.number}. Size: {this.props.size}</p>}
                                             className="Demo__some-network__share-button">
                                             <TelegramIcon size={32} round />
@@ -73,7 +73,7 @@ export class Header extends Component {
                                 <div className="whatsaap share-button">
                                     <div className="Demo__some-network">
                                         <WhatsappShareButton
-                                            url={"http://bitshirt.co/t-shirt/" + this.props.number}
+                                            url={"https://bitshirt.co/t-shirt/" + this.props.number}
                                             title={<p>Check my T-shirt out!<br/> Unique number – {this.props.number}. Size: {this.props.size}</p>}
                                             separator=":: "
                                             className="Demo__some-network__share-button">
@@ -84,7 +84,7 @@ export class Header extends Component {
                                 <div className="google-plus share-button">
                                     <div className="Demo__some-network">
                                         <GooglePlusShareButton
-                                            url={"http://bitshirt.co/t-shirt/" + this.props.number}
+                                            url={"https://bitshirt.co/t-shirt/" + this.props.number}
                                             className="Demo__some-network__share-button">
                                             <GooglePlusIcon size={32} round />
                                         </GooglePlusShareButton>
@@ -93,7 +93,7 @@ export class Header extends Component {
                                 <div className="linkedin share-button">
                                     <div className="Demo__some-network">
                                         <LinkedinShareButton
-                                            url={"http://bitshirt.co/t-shirt/" + this.props.number}
+                                            url={"https://bitshirt.co/t-shirt/" + this.props.number}
                                             title={<p>Check my T-shirt out!<br/> Unique number – {this.props.number}. Size: {this.props.size}</p>}
                                             windowWidth={750}
                                             windowHeight={600}
@@ -117,7 +117,7 @@ export class Header extends Component {
                                 <div className="reddit share-button">
                                     <div className="Demo__some-network">
                                         <RedditShareButton
-                                            url={"http://bitshirt.co/t-shirt/" + this.props.number}
+                                            url={"https://bitshirt.co/t-shirt/" + this.props.number}
                                             title={<p>Check my T-shirt out!<br/> Unique number – {this.props.number}. Size: {this.props.size}</p>}
                                             windowWidth={660}
                                             windowHeight={460}
@@ -129,7 +129,7 @@ export class Header extends Component {
                                 <div className="tumblr share-button">
                                     <div className="Demo__some-network">
                                         <TumblrShareButton
-                                            url={"http://bitshirt.co/t-shirt/" + this.props.number}
+                                            url={"https://bitshirt.co/t-shirt/" + this.props.number}
                                             title={<p>Check my T-shirt out!<br/> Unique number – {this.props.number}. Size: {this.props.size}</p>}
                                             windowWidth={660}
                                             windowHeight={460}
@@ -141,7 +141,7 @@ export class Header extends Component {
                                 <div className="email share-button">
                                     <div className="Demo__some-network">
                                         <EmailShareButton
-                                            url={"http://bitshirt.co/sendmail.php"}
+                                            url={"https://bitshirt.co/sendmail.php"}
                                             subject={"Share page: " +
                                             Utils.capitalizeFirstLetter(this.props.userName) + 's t-shirt Size: ' + this.props.size}
                                             className="Demo__some-network__share-button"

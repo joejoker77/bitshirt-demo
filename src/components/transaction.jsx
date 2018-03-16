@@ -22,7 +22,7 @@ export function Transaction(props) {
 
     return (<p style={{whiteSpace: "no-wrap", margin: '0'}}>
         {txMessage}
-        <a href={"https://ropsten.etherscan.io/tx/" + props.address} target="_blank" className="transaction-link">
+        <a href={"https://etherscan.io/tx/" + props.address} target="_blank" className="transaction-link">
             Check status
             </a>
     </p>);

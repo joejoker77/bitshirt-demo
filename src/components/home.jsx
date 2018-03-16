@@ -81,7 +81,7 @@ export class Home extends Component {
                                 requestData.product = data2;
                                 $.ajax({
                                     method: "POST",
-                                    url: 'http://bitshirt.co/sendmail.php',
+                                    url: 'https://bitshirt.co/sendmail.php',
                                     data: requestData,
                                     success: function () {
                                         window.location.href = '/t-shirt/' + (productCount+1);
@@ -290,7 +290,7 @@ export class Home extends Component {
         let $this = this;
         if(this.state.startPrice === 0){
             return new Promise(function (resolve, reject) {
-                let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
+                let web3         = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
                     ContractAddr = contract.address,
                     fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
                     productId    = web3.eth.getStorageAt(ContractAddr, 7);
@@ -371,7 +371,7 @@ export class Home extends Component {
                     let requestData = {user:{userEmail:userEmail,userName:userName},action:"Become member"};
                     $.ajax({
                         method: "POST",
-                        url: 'http://bitshirt.co/sendmail.php',
+                        url: 'https://bitshirt.co/sendmail.php',
                         data: requestData,
                         success: function () {
                             console.log('test');

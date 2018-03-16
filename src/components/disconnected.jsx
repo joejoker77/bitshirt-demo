@@ -179,7 +179,7 @@ class Disconnected extends Component{
         let $this = this;
         if(this.state.startPrice === 0){
             return new Promise(function (resolve, reject) {
-                let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
+                let web3         = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
                     ContractAddr = contract.address,
                     fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
                     productId    = web3.eth.getStorageAt(ContractAddr, 7);

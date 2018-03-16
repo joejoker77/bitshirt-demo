@@ -60,7 +60,7 @@ export class App extends Component {
         }
     }
     initBlockchain(){
-        let web3         = new Web3(new Web3.providers.HttpProvider('https://ropsten.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
+        let web3         = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
             ContractAddr = contract.address,
             ABI          = contract.abi;
 
@@ -229,7 +229,7 @@ export class App extends Component {
         mailData.to = data.get('email');
         $.ajax({
             method: "POST",
-            url: 'http://bitshirt.co/sendmail.php',
+            url: 'https://bitshirt.co/sendmail.php',
             data: mailData,
             success: function () {
                 $this.setState({mailData: {}});

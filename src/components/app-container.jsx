@@ -32,9 +32,9 @@ export class AppContainer extends Component {
             .then(this.checkNetwork)
             .then(function (networkId) {
                 this.setState({
-                    isConnected: networkId.toString() === '3',
+                    isConnected: networkId.toString() === '1',
                     isConnecting: false,
-                    otherNetwork: networkId.toString() !== '3'
+                    otherNetwork: networkId.toString() !== '1'
                 });
             }.bind(this))
             .catch(function () {
