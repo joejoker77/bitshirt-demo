@@ -290,23 +290,36 @@ export class Home extends Component {
         let $this = this;
         if(this.state.startPrice === 0){
             return new Promise(function (resolve, reject) {
-                let web3         = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
-                    ContractAddr = contract.address,
-                    fixPrice     = web3.eth.getStorageAt(ContractAddr, 5),
-                    productId    = web3.eth.getStorageAt(ContractAddr, 7);
+                let web3             = new Web3(new Web3.providers.HttpProvider('https://mainnet.infura.io/7dH3Pu3mNLGa9Dvqbasp')),
+                    MyContract       = web3.eth.contract(contract.abi),
+                    contractInstance = MyContract.at(contract.address);
 
-                $this.pingApi().then(function (data2) {
-                    let web3          = new Web3(),
-                        minPrice      = parseFloat(web3.fromWei(parseInt(fixPrice, 16))),
-                        productCount  = parseInt(productId, 16),
-                        priceInUsd    = (data2[0].price_usd * (minPrice * productCount)).toFixed(2),
-                        maxPriceInUsd = (data2[0].price_usd * (minPrice * 100)).toFixed(2);
+                const fixPrice  = new Promise(function (resolve, reject) {
+                    contractInstance.fixPrice(function (err, res) {
+                        err ? reject(err) : resolve(res);
+                    });
+                });
 
-                    resolve({
-                        startPrice      : productCount > 0 ? parseFloat(((productCount * minPrice) + minPrice).toFixed(9)) : minPrice,
-                        productsCount   : productCount,
-                        startPriceInUsd : priceInUsd,
-                        endPriceInUsd   : maxPriceInUsd
+                const productId = new Promise(function (resolve, reject) {
+                    contractInstance.productId(function (err, res) {
+                        err ? reject(err) : resolve(res);
+                    });
+                });
+
+                Promise.all([fixPrice, productId]).then(function (data) {
+                    let fixPrice     = parseFloat(web3.fromWei(data[0].toString())),
+                        productCount = parseInt(data[1], 16) === 0 ? 1 : parseInt(data[1], 16);
+
+                    $this.pingApi().then(function (data2) {
+                        let priceInUsd    = (data2[0].price_usd * (fixPrice * productCount)).toFixed(2),
+                            maxPriceInUsd = (data2[0].price_usd * (fixPrice * 100)).toFixed(2);
+
+                        resolve({
+                            startPrice      : productCount * fixPrice,
+                            productsCount   : parseInt(data[1], 16),
+                            startPriceInUsd : priceInUsd,
+                            endPriceInUsd   : maxPriceInUsd
+                        });
                     });
                 });
             });
@@ -316,7 +329,6 @@ export class Home extends Component {
     }
 
     handleHideTransactions() {
-        console.log(this.transactionsStorage);
         this.transactionsStorage.hidePendingTransactions();
         this.updateTransactions();
     }
